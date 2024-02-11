@@ -61,8 +61,9 @@ public class CafeController {
 
     @Operation(summary = "음료 삭제",
             description = "해당 음료 삭제")
-    @PostMapping("/delete")
-    public ResponseEntity<CafeDto> delete(@RequestBody CafeFindDto cafeFindDto) throws CustomException {
-        return new ResponseEntity(cafeService.delete(cafeFindDto), HttpStatus.OK);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<CafeDto> delete(@PathVariable Long id) throws CustomException {
+        cafeService.delete(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

@@ -81,14 +81,17 @@ public class CafeService {
         }
         String cafeName = cafeFindDto.getCafeName();
         String beverageName = cafeFindDto.getBeverageName();
+        String size = cafeFindDto.getSize();
         if(cafeName == null){
             throw new CustomException(ErrorCode.CAFE_NAME_DOES_NOT_EXIST);
         }
         if(beverageName == null){
             throw new CustomException(ErrorCode.BEVERAGE_NAME_DOES_NOT_EXIST);
         }
-
-        Cafe findCafe = cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName)
+        if(size == null){
+            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
+        }
+        Cafe findCafe = cafeRepository.findByCafeNameAndBeverageNameAndSize(cafeName, beverageName, size)
                 .orElseThrow(() -> new CustomException(ErrorCode.CAFE_DOES_NOT_EXIST));
 
         return  CafeDto.builder()
@@ -102,24 +105,7 @@ public class CafeService {
                 .build();
     }
 
-    public CafeDto delete(CafeFindDto cafeFindDto) throws CustomException {
-        if(cafeFindDto == null){
-            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
-        }
-        String cafeName = cafeFindDto.getCafeName();
-        String beverageName = cafeFindDto.getBeverageName();
-        if(cafeName == null){
-            throw new CustomException(ErrorCode.CAFE_NAME_DOES_NOT_EXIST);
-        }
-        if(beverageName == null){
-            throw new CustomException(ErrorCode.BEVERAGE_NAME_DOES_NOT_EXIST);
-        }
-
-        Cafe cafe = cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName)
-                .orElseThrow(() -> new CustomException(ErrorCode.CAFE_DOES_NOT_EXIST));
-
-        cafeRepository.delete(cafe);
-
-        return new CafeDto(cafe);
+    public void delete(Long id){
+        cafeRepository.deleteById(id);
     }
 }

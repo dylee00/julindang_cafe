@@ -2,6 +2,7 @@ package com.POG.julindang.cafe.domain;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -9,37 +10,31 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(
-        uniqueConstraints={
-                @UniqueConstraint(
-                        columnNames={"CAFE_NAME", "BEVERAGE_NAME"}
-                )
-        }
-)
 public class Cafe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CAFE_ID")
-    Long id;
+    private Long id;
 
 
     @Column(name = "CAFE_NAME")
-    String cafeName;
+    private String cafeName;
 
     @Column(name = "BEVERAGE_NAME")
-    String beverageName;
+    private String beverageName;
 
-    String size;
+    private String size;
 
-    Double serve;
+    private Double serve;
 
-    Double sugar;
+    private Double sugar;
 
-    Double calorie;
+    private Double calorie;
 
-    Boolean temperature;
+    private Boolean temperature;
 
-    Boolean deleted;
+    private Boolean deleted;
 
+   // private String manager;  // 담당자
 
 }
