@@ -1,4 +1,9 @@
+server:
+  port:${PORT}
+
 spring:
+  application:
+    name: cafe
   main:
     allow-bean-definition-overriding: true
   profiles.active: local
@@ -25,3 +30,10 @@ spring:
         order_inserts: true
         order_updates: true
         format_sql: true
+
+    eureka:
+      client:
+        register-with-eureka: true
+        fetch-registry: true
+        service-url:
+          defaultZone: ${EUREKA_SERVER_HOST}/eureka

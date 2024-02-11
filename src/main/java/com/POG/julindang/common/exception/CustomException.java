@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-
 public class CustomException extends Exception{
     private ErrorCode errorCode;
     public CustomException(ErrorCode errorCode) {
