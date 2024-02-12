@@ -9,31 +9,37 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ToppingSaveDto {
+public class AdminToppingDto {
+    private Long id;
     private String toppingName;
     private Double sugar;
     private Double calorie;
     private Boolean deleted;
-    private String manager;
+
     @Builder
-    public ToppingSaveDto(String toppingName, Double sugar, Double calorie, String manager ,Boolean deleted) {
+    public AdminToppingDto(Long id, String toppingName, Double sugar, Double calorie, Boolean deleted) {
+        this.id = id;
         this.toppingName = toppingName;
         this.sugar = sugar;
         this.calorie = calorie;
-        this.manager = manager;
         this.deleted = deleted;
     }
 
-
-
+    public AdminToppingDto(Topping topping){
+        this.id = topping.getId();
+        this.toppingName = topping.getToppingName();
+        this.sugar = topping.getSugar();
+        this.calorie = topping.getCalorie();
+        this.deleted = topping.getDeleted();
+    }
 
     public Topping toEntity(){
         return Topping.builder()
+                .id(id)
                 .toppingName(toppingName)
                 .sugar(sugar)
                 .calorie(calorie)
-                .deleted(false)
-            //    .manager(manager)
+                .deleted(deleted)
                 .build();
     }
 }

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,24 +45,11 @@ public class CafeController {
     }
 
     @Operation(summary = "카페 이름과 음료 이름을 통해 탐색",
-            description = "카페 이름과 음료 이름과 일치하는 음료 정보 (하나) 로드")
-    @PostMapping("find-by-cafe-name-and-beverage-name")
-    public ResponseEntity<CafeDto> findByCafeNameAndBeverageName(@RequestBody CafeFindDto cafeFindDto) throws CustomException {
-        return new ResponseEntity(cafeService.findByCafeNameAndBeverageName(cafeFindDto), HttpStatus.OK);
+            description = "카페 이름과 음료 이름 + 사이즈와 일치하는 음료 정보 (하나) 로드")
+    @PostMapping("find-by-cafe-name-and-beverage-name-and-size")
+    public ResponseEntity<CafeDto> findByCafeNameAndBeverageNameAndSize(@RequestBody CafeFindDto cafeFindDto) throws CustomException {
+        return new ResponseEntity(cafeService.findByCafeNameAndBeverageNameAndSize(cafeFindDto), HttpStatus.OK);
     }
 
-    @Operation(summary = "음료 저장",
-            description = "해당 음료를 db에 저장")
-    @PostMapping("/save")
-    public ResponseEntity<CafeDto> save(@RequestBody CafeDto cafeDto) throws CustomException {
-        return new ResponseEntity(cafeService.save(cafeDto), HttpStatus.CREATED);
-    }
 
-    @Operation(summary = "음료 삭제",
-            description = "해당 음료 삭제")
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<CafeDto> delete(@PathVariable Long id) throws CustomException {
-        cafeService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

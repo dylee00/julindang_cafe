@@ -2,7 +2,6 @@ package com.POG.julindang.cafe.service;
 
 
 import com.POG.julindang.cafe.dto.ToppingDto;
-import com.POG.julindang.cafe.dto.ToppingSaveDto;
 import com.POG.julindang.cafe.repository.ToppingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,18 +18,20 @@ import java.util.stream.Collectors;
 public class ToppingService {
     private final ToppingRepository toppingRepository;
 
+
+    /**
+     *  TODO : 서비스 구축 더 해됨
+     *  find by 더 만들어라
+     *
+     *
+     */
     public List<ToppingDto> findAll(){
         return toppingRepository.findAll().stream()
+                .filter(x -> x.getDeleted() == false)
                 .map(ToppingDto::new)
                 .collect(Collectors.toList());
     }
 
-    public ToppingSaveDto save(ToppingSaveDto toppingSaveDto){
-        toppingRepository.save(toppingSaveDto.toEntity());
-        return toppingSaveDto;
-    }
 
-    public void delete(Long id){
-        toppingRepository.deleteById(id);
-    }
+
 }

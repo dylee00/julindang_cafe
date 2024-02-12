@@ -2,7 +2,6 @@ package com.POG.julindang.cafe.controller;
 
 
 import com.POG.julindang.cafe.dto.ToppingDto;
-import com.POG.julindang.cafe.dto.ToppingSaveDto;
 import com.POG.julindang.cafe.service.ToppingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +25,5 @@ public class ToppingController {
         return new ResponseEntity<>(toppingService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<ToppingSaveDto> save(@RequestBody ToppingSaveDto toppingSaveDto){
-        return new ResponseEntity(toppingService.save(toppingSaveDto), HttpStatus.CREATED);
-    }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable Long id){
-        toppingService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
-    }
 }

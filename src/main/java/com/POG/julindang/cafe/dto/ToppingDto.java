@@ -11,22 +11,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ToppingDto {
-    private Long id;
     private String toppingName;
     private Double sugar;
     private Double calorie;
 
-
     @Builder
-    public ToppingDto(Long id, String toppingName, Double sugar, Double calorie) {
-        this.id = id;
+    public ToppingDto(String toppingName, Double sugar, Double calorie) {
         this.toppingName = toppingName;
         this.sugar = sugar;
         this.calorie = calorie;
     }
 
+
+
     public ToppingDto(Topping topping) {
-        this.id = topping.getId();
         this.toppingName = topping.getToppingName();
         this.sugar =topping.getSugar();
         this.calorie = topping.getCalorie();
@@ -35,7 +33,6 @@ public class ToppingDto {
 
     public Topping toEntity(){
         return Topping.builder()
-                .id(id)
                 .toppingName(toppingName)
                 .sugar(sugar)
                 .calorie(calorie)

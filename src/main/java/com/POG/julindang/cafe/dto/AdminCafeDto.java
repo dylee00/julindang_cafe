@@ -1,11 +1,17 @@
 package com.POG.julindang.cafe.dto;
 
-import com.POG.julindang.cafe.domain.Cafe;
-import lombok.*;
 
-@Data
+import com.POG.julindang.cafe.domain.Cafe;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
 @NoArgsConstructor
-public class CafeDto {
+public class AdminCafeDto {
+    private Long id;
     private String cafeName;
 
     private String beverageName;
@@ -19,8 +25,12 @@ public class CafeDto {
     private Double calorie;
 
     private Boolean temperature;
+    private Boolean deleted;
+    private String manager;
+
     @Builder
-    public CafeDto(String cafeName, String beverageName, String size, Double serve, Double sugar, Double calorie, Boolean temperature) {
+    public AdminCafeDto(Long id, String cafeName, String beverageName, String size, Double serve, Double sugar, Double calorie, Boolean temperature, Boolean deleted, String manager) {
+        this.id = id;
         this.cafeName = cafeName;
         this.beverageName = beverageName;
         this.size = size;
@@ -28,12 +38,14 @@ public class CafeDto {
         this.sugar = sugar;
         this.calorie = calorie;
         this.temperature = temperature;
+        this.deleted = deleted;
+        //      this.manager = manager;
     }
 
 
 
 
-    public CafeDto(Cafe cafe) {
+    public AdminCafeDto(Cafe cafe) {
         this.cafeName = cafe.getCafeName();
         this.beverageName = cafe.getBeverageName();
         this.size = cafe.getSize();
@@ -41,6 +53,9 @@ public class CafeDto {
         this.sugar = cafe.getSugar();
         this.calorie = cafe.getCalorie();
         this.temperature = cafe.getTemperature();
+        this.id = cafe.getId();
+        this.deleted = cafe.getDeleted();
+//        this.manager = cafe.getmanager;
     }
 
 
@@ -53,9 +68,9 @@ public class CafeDto {
                 .size(size)
                 .beverageName(beverageName)
                 .cafeName(cafeName)
+                //.manager(manager)
                 .build();
 
 
     }
 }
-

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,31 +23,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class CafeService {
     private final CafeRepository cafeRepository;
-    public void clear(){    // 테스트 용 data 지우기 메서드
-        cafeRepository.deleteAll();
-    }
-
-    public CafeDto save(CafeDto cafeDto) throws CustomException {
-        if(cafeDto == null){
-            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
-        }
-        if(cafeDto.getCafeName() == null){
-            throw new CustomException(ErrorCode.CAFE_NAME_DOES_NOT_EXIST);
-        }
-        if(cafeDto.getBeverageName() == null){
-            throw new CustomException(ErrorCode.BEVERAGE_NAME_DOES_NOT_EXIST);
-        }
-
-        cafeRepository.save(cafeDto.toEntity());
-        return cafeDto;
-    }
-
     public List<CafeDto> findAll(){
        List<Cafe> result = cafeRepository.findAll();
 
-        return result.stream().map(CafeDto::new)
+        return result.stream().filter(x -> x.getDeleted() == false).map(CafeDto::new)
                 .collect(Collectors.toList());
     }
+
     public List<CafeDto> findByCafeName(CafeFindDto cafeFindDto) throws CustomException {
         if(cafeFindDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
@@ -57,7 +40,7 @@ public class CafeService {
         }
         List<Cafe> result = cafeRepository.findByCafeName(cafeName);
 
-        return result.stream().map(CafeDto::new)
+        return result.stream().filter(x -> x.getDeleted() == false).map(CafeDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -71,11 +54,11 @@ public class CafeService {
         }
         List<Cafe> result = cafeRepository.findByBeverageName(beverageName);
 
-        return result.stream().map(CafeDto::new)
+        return result.stream().filter(x -> x.getDeleted() == false).map(CafeDto::new)
                 .collect(Collectors.toList());
     }
 
-    public CafeDto findByCafeNameAndBeverageName(CafeFindDto cafeFindDto) throws CustomException {
+    public CafeDto findByCafeNameAndBeverageNameAndSize(CafeFindDto cafeFindDto) throws CustomException {
         if(cafeFindDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -105,7 +88,4 @@ public class CafeService {
                 .build();
     }
 
-    public void delete(Long id){
-        cafeRepository.deleteById(id);
-    }
 }
