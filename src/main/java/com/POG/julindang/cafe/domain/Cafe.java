@@ -44,8 +44,8 @@ public class Cafe {
     @ColumnDefault("false")
     private Boolean deleted;
 
-//    @NotNull
-   // private String manager;  // 담당자
+    @NotNull
+    private String manager;
 
 
     public void setDeleted(Boolean deleted) {

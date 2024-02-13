@@ -33,26 +33,25 @@ public class AdminToppingDto {
 
 
     public AdminToppingDto(Topping topping){
-        this.id = topping.getId();
+
         this.toppingName = topping.getToppingName();
         this.sugar = topping.getSugar();
         this.calorie = topping.getCalorie();
         this.deleted = topping.getDeleted();
         this.cafeName = topping.getCafeName();
         this.beverageName = topping.getBeverageName();
-     //   this.manager = topping.getManager();
+        this.manager = topping.getManager();
     }
 
     public Topping toEntity(){
         return Topping.builder()
-                .id(id)
                 .toppingName(toppingName)
                 .sugar(sugar)
                 .calorie(calorie)
                 .deleted(deleted)
                 .beverageName(beverageName)
                 .cafeName(cafeName)
-              //  .manager(manager)
+                .manager(manager)
                 .build();
     }
 }

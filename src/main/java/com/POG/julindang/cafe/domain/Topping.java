@@ -41,9 +41,8 @@ public class Topping {
     @ColumnDefault("false")
     private Boolean deleted;
 
-//    @Not null
-    // 담당자
-  //  private String manager;
+    @NotNull
+    private String manager;
 
 
     public void setDeleted(Boolean deleted) {

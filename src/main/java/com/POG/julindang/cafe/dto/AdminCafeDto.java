@@ -39,7 +39,7 @@ public class AdminCafeDto {
         this.calorie = calorie;
         this.temperature = temperature;
         this.deleted = deleted;
-        //      this.manager = manager;
+        this.manager = manager;
     }
 
 
@@ -55,7 +55,7 @@ public class AdminCafeDto {
         this.temperature = cafe.getTemperature();
         this.id = cafe.getId();
         this.deleted = cafe.getDeleted();
-//        this.manager = cafe.getManager();
+        this.manager = cafe.getManager();
     }
 
 
@@ -68,7 +68,7 @@ public class AdminCafeDto {
                 .size(size)
                 .beverageName(beverageName)
                 .cafeName(cafeName)
-                //.manager(manager)
+                .manager(manager)
                 .build();
 
 
