@@ -26,28 +26,21 @@ public class AdminService {
     private final CafeRepository cafeRepository;
     private final ToppingRepository toppingRepository;
 
-    public AdminCafeDto deleteCafe(Long cafeId) throws CustomException {
+    public AdminCafeDto toggleDeleteCafe(Long cafeId) throws CustomException {
         Cafe cafe = cafeRepository.findById(cafeId)
                 .orElseThrow(()->new CustomException(ErrorCode.CAFE_DOES_NOT_EXIST));
 
-        AdminCafeDto adminCafeDto = new AdminCafeDto(cafe);
-        adminCafeDto.setDeleted(true);
+        cafe.setDeleted(!cafe.getDeleted());
 
-        cafeRepository.save(adminCafeDto.toEntity());
-
-        return adminCafeDto;
+        return new AdminCafeDto(cafe);
     }
 
-    public AdminToppingDto deleteTopping(Long toppingId) throws CustomException {
+    public AdminToppingDto toggleDeleteTopping(Long toppingId) throws CustomException {
         Topping topping = toppingRepository.findById(toppingId)
                 .orElseThrow(() -> new CustomException(ErrorCode.TOPPING_DOES_NOT_EXIST));
 
-        AdminToppingDto adminToppingDto = new AdminToppingDto(topping);
-        adminToppingDto.setDeleted(true);
-
-        toppingRepository.save(adminToppingDto.toEntity());
-
-        return adminToppingDto;
+        topping.setDeleted(!topping.getDeleted());
+        return new AdminToppingDto(topping);
     }
 
     public List<AdminCafeDto> findAllCafes(){
@@ -93,5 +86,11 @@ public class AdminService {
         return toppingSaveDto;
     }
 
+    public AdminToppingDto updateTopping(AdminToppingDto adminToppingDto) throws CustomException {
+        return null;
+    }
+    public AdminCafeDto updateCafe(AdminCafeDto adminCafeDto){
+        return null;
+    }
 }
 

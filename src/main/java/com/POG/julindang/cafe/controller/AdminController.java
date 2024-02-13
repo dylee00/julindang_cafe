@@ -38,12 +38,12 @@ public class AdminController {
     }
 
     @DeleteMapping("/cafe/delete/{id}")
-    public ResponseEntity<AdminCafeDto> deleteCafe(@PathVariable Long id) throws CustomException {
-        return new ResponseEntity(adminService.deleteCafe(id), HttpStatus.OK);
+    public ResponseEntity<AdminCafeDto> toggleDeleteCafe(@PathVariable Long id) throws CustomException {
+        return new ResponseEntity(adminService.toggleDeleteCafe(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/topping/delete/{id}")
-    public ResponseEntity<AdminToppingDto> deleteTopping(@PathVariable Long id) throws CustomException {
-        return new ResponseEntity(adminService.deleteTopping(id), HttpStatus.OK);
+    public ResponseEntity<AdminToppingDto> toggleDeleteTopping(@PathVariable Long id) throws CustomException {
+        return new ResponseEntity(adminService.toggleDeleteTopping(id), HttpStatus.OK);
     }
 }

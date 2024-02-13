@@ -19,6 +19,7 @@ public class CafeDto {
     private Double calorie;
 
     private Boolean temperature;
+
     @Builder
     public CafeDto(String cafeName, String beverageName, String size, Double serve, Double sugar, Double calorie, Boolean temperature) {
         this.cafeName = cafeName;

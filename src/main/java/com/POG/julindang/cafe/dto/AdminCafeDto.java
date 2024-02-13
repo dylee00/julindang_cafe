@@ -55,7 +55,7 @@ public class AdminCafeDto {
         this.temperature = cafe.getTemperature();
         this.id = cafe.getId();
         this.deleted = cafe.getDeleted();
-//        this.manager = cafe.getmanager;
+//        this.manager = cafe.getManager();
     }
 
 

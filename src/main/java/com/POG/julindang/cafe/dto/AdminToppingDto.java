@@ -15,15 +15,22 @@ public class AdminToppingDto {
     private Double sugar;
     private Double calorie;
     private Boolean deleted;
-
+    private String cafeName;
+    private String beverageName;
+    private String manager;
     @Builder
-    public AdminToppingDto(Long id, String toppingName, Double sugar, Double calorie, Boolean deleted) {
-        this.id = id;
+    public AdminToppingDto(Long id, String toppingName, Double sugar, Double calorie, Boolean deleted, String cafeName, String beverageName, String manager) {
         this.toppingName = toppingName;
         this.sugar = sugar;
         this.calorie = calorie;
         this.deleted = deleted;
+        this.cafeName = cafeName;
+        this.beverageName = beverageName;
+        this.manager = manager;
     }
+
+
+
 
     public AdminToppingDto(Topping topping){
         this.id = topping.getId();
@@ -31,6 +38,9 @@ public class AdminToppingDto {
         this.sugar = topping.getSugar();
         this.calorie = topping.getCalorie();
         this.deleted = topping.getDeleted();
+        this.cafeName = topping.getCafeName();
+        this.beverageName = topping.getBeverageName();
+     //   this.manager = topping.getManager();
     }
 
     public Topping toEntity(){
@@ -40,6 +50,9 @@ public class AdminToppingDto {
                 .sugar(sugar)
                 .calorie(calorie)
                 .deleted(deleted)
+                .beverageName(beverageName)
+                .cafeName(cafeName)
+              //  .manager(manager)
                 .build();
     }
 }

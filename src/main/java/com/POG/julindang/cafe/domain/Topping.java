@@ -29,8 +29,24 @@ public class Topping {
     private Double calorie;
 
     @NotNull
+    private Long cafeId;
+
+    @NotNull
+    private String cafeName;
+
+    @NotNull
+    private String beverageName;
+
+    @NotNull
     @ColumnDefault("false")
     private Boolean deleted;
 
-  //  private String manager; 담당자
+//    @Not null
+    // 담당자
+  //  private String manager;
+
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 }

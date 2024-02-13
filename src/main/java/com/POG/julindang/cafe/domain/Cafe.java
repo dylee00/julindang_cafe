@@ -47,4 +47,8 @@ public class Cafe {
 //    @NotNull
    // private String manager;  // 담당자
 
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 }
