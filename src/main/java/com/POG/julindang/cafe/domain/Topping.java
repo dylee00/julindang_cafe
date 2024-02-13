@@ -29,9 +29,6 @@ public class Topping {
     private Double calorie;
 
     @NotNull
-    private Long cafeId;
-
-    @NotNull
     private String cafeName;
 
     @NotNull

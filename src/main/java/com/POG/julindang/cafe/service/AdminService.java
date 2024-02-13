@@ -31,7 +31,6 @@ public class AdminService {
                 .orElseThrow(()->new CustomException(ErrorCode.CAFE_DOES_NOT_EXIST));
 
         cafe.setDeleted(!cafe.getDeleted());
-
         return new AdminCafeDto(cafe);
     }
 

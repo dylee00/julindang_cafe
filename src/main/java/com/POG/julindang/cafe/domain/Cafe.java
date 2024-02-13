@@ -39,10 +39,10 @@ public class Cafe {
 
     @NotNull
     private Boolean temperature;
-
     @NotNull
     @ColumnDefault("false")
     private Boolean deleted;
+
 
     @NotNull
     private String manager;

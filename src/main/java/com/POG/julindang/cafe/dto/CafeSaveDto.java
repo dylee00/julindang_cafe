@@ -43,7 +43,7 @@ public class CafeSaveDto {
                 .temperature(temperature)
                 .serve(serve)
                 .size(size)
-//                .manager(manager)
+                .manager(manager)
                 .build();
     }
 }

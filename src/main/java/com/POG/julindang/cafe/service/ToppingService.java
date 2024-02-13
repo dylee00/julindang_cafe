@@ -1,8 +1,12 @@
 package com.POG.julindang.cafe.service;
 
 
+import com.POG.julindang.cafe.domain.Topping;
 import com.POG.julindang.cafe.dto.ToppingDto;
+import com.POG.julindang.cafe.dto.ToppingFindDto;
 import com.POG.julindang.cafe.repository.ToppingRepository;
+import com.POG.julindang.common.exception.CustomException;
+import com.POG.julindang.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,13 +22,6 @@ import java.util.stream.Collectors;
 public class ToppingService {
     private final ToppingRepository toppingRepository;
 
-
-    /**
-     *  TODO : 서비스 구축 더 해됨
-     *  find by 더 만들어라
-     *
-     *
-     */
     public List<ToppingDto> findAll(){
         return toppingRepository.findAll().stream()
                 .filter(x -> x.getDeleted() == false)
@@ -32,6 +29,20 @@ public class ToppingService {
                 .collect(Collectors.toList());
     }
 
+    public List<ToppingDto> findAllByCafeNameAndBeverageName(ToppingFindDto toppingFindDto) throws CustomException {
+        if(toppingFindDto==null){
+            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
+        }
 
+        String cafeName = toppingFindDto.getCafeName();
+        String beverageName = toppingFindDto.getBeverageName();
+
+        List<Topping> result = toppingRepository.findByCafeNameAndBeverageName(cafeName, beverageName)
+                .orElseThrow(()-> new CustomException(ErrorCode.TOPPING_DOES_NOT_EXIST));
+
+        return result.stream().filter(x -> x.getDeleted() == false)
+                .map(ToppingDto::new)
+                .collect(Collectors.toList());
+    }
 
 }
