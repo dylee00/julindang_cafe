@@ -33,7 +33,7 @@ public class AdminToppingDto {
 
 
     public AdminToppingDto(Topping topping){
-
+        this.id = topping.getId();
         this.toppingName = topping.getToppingName();
         this.sugar = topping.getSugar();
         this.calorie = topping.getCalorie();
