@@ -17,8 +17,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/cafe/topping")
-@Tag(name = "카페 관련 컨트롤러")
+@RequestMapping("/topping")
+@Tag(name = "토핑 관련 컨트롤러")
 public class ToppingController {
     private final ToppingService toppingService;
 
