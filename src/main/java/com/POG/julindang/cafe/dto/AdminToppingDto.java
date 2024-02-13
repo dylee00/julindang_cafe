@@ -19,7 +19,7 @@ public class AdminToppingDto {
     private String beverageName;
     private String manager;
     @Builder
-    public AdminToppingDto(Long id, String toppingName, Double sugar, Double calorie, Boolean deleted, String cafeName, String beverageName, String manager) {
+    public AdminToppingDto(String toppingName, Double sugar, Double calorie, Boolean deleted, String cafeName, String beverageName, String manager) {
         this.toppingName = toppingName;
         this.sugar = sugar;
         this.calorie = calorie;
