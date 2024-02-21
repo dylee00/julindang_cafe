@@ -3,7 +3,8 @@ package com.POG.julindang.cafe.dto;
 import com.POG.julindang.cafe.domain.Cafe;
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class CafeDto {
     private String cafeName;

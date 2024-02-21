@@ -29,6 +29,7 @@ public class Topping {
     private Double calorie;
 
     @NotNull
+    @Column(columnDefinition = "LONGTEXT")
     private String cafeName;
 
     @NotNull
@@ -42,7 +43,4 @@ public class Topping {
     private String manager;
 
 
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
 }

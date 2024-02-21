@@ -31,9 +31,12 @@ spring:
         order_updates: true
         format_sql: true
 
-    eureka:
-      client:
-        register-with-eureka: true
-        fetch-registry: true
-        service-url:
-          defaultZone: ${EUREKA_SERVER_HOST}/eureka
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${EUREKA_SERVER_HOST}/eureka
+    instance:
+      prefer-ip-address: ${EUREKA_INSTANCE_PREFER_IP_ADDRESS}
+      ip-address: ${EUREKA_INSTANCE_IP_ADDRESS}

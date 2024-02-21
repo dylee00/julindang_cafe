@@ -35,7 +35,6 @@ public enum ErrorCode {
     /**
      * 4xxx -> 공통 정보 관련 에러
      */
-
     SUGAR_DOES_NOT_EXIST(4000, "Sugar Doesn't Exist", HttpStatus.NOT_FOUND),
     CALORIE_DOES_NOT_EXIST(4001, "Calorie Doesn't Exist",HttpStatus.NOT_FOUND),
     DELETED_STATUS_DOES_NOT_EXIST(4002, "Deleted Status Doesn't Exist",HttpStatus.NOT_FOUND),
@@ -43,7 +42,6 @@ public enum ErrorCode {
     /**
      * 5xxx -> 계정 관련 에러
      */
-
     EMAIL_NOT_FOUND(5000, "Email Doesn't Exist", HttpStatus.NOT_FOUND);
 
 

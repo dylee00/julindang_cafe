@@ -1,20 +1,24 @@
 package com.POG.julindang.cafe.service;
 
 import com.POG.julindang.cafe.domain.Cafe;
+import com.POG.julindang.cafe.dto.BeverageNameDto;
 import com.POG.julindang.cafe.dto.CafeDto;
 import com.POG.julindang.cafe.dto.CafeFindDto;
+import com.POG.julindang.cafe.dto.CafeNameDto;
 import com.POG.julindang.cafe.repository.CafeRepository;
-import com.POG.julindang.common.exception.CustomException;
+import com.POG.julindang.common.exception.ApiErrorResponse;
 import com.POG.julindang.common.exception.ErrorCode;
+import com.POG.julindang.common.exception.cafe.BeverageNameDoesNotExist;
+import com.POG.julindang.common.exception.cafe.CafeNameDoesNotExist;
+import com.POG.julindang.common.exception.cafe.CafeObjectDoesNotExist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,13 +34,10 @@ public class CafeService {
                 .collect(Collectors.toList());
     }
 
-    public List<CafeDto> findByCafeName(CafeFindDto cafeFindDto) throws CustomException {
-        if(cafeFindDto == null){
-            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
-        }
+    public List<CafeDto> findByCafeName(CafeFindDto cafeFindDto) {
         String cafeName = cafeFindDto.getCafeName();
         if(cafeName == null){
-            throw new CustomException(ErrorCode.CAFE_NAME_DOES_NOT_EXIST);
+            throw new CafeNameDoesNotExist();
         }
         List<Cafe> result = cafeRepository.findByCafeName(cafeName);
 
@@ -44,13 +45,10 @@ public class CafeService {
                 .collect(Collectors.toList());
     }
 
-    public List<CafeDto> findByBeverageName(CafeFindDto cafeFindDto) throws CustomException {
-        if(cafeFindDto == null){
-            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
-        }
+    public List<CafeDto> findByBeverageName(CafeFindDto cafeFindDto) {
         String beverageName = cafeFindDto.getBeverageName();
         if(beverageName == null){
-            throw new CustomException(ErrorCode.BEVERAGE_NAME_DOES_NOT_EXIST);
+            throw new BeverageNameDoesNotExist();
         }
         List<Cafe> result = cafeRepository.findByBeverageName(beverageName);
 
@@ -58,34 +56,47 @@ public class CafeService {
                 .collect(Collectors.toList());
     }
 
-    public CafeDto findByCafeNameAndBeverageNameAndSize(CafeFindDto cafeFindDto) throws CustomException {
-        if(cafeFindDto == null){
-            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
-        }
+    public List<CafeDto> findByCafeNameAndBeverageName(CafeFindDto cafeFindDto) {
         String cafeName = cafeFindDto.getCafeName();
         String beverageName = cafeFindDto.getBeverageName();
-        String size = cafeFindDto.getSize();
         if(cafeName == null){
-            throw new CustomException(ErrorCode.CAFE_NAME_DOES_NOT_EXIST);
+            throw new CafeNameDoesNotExist();
         }
         if(beverageName == null){
-            throw new CustomException(ErrorCode.BEVERAGE_NAME_DOES_NOT_EXIST);
+            throw new BeverageNameDoesNotExist();
         }
-        if(size == null){
-            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
-        }
-        Cafe findCafe = cafeRepository.findByCafeNameAndBeverageNameAndSize(cafeName, beverageName, size)
-                .orElseThrow(() -> new CustomException(ErrorCode.CAFE_DOES_NOT_EXIST));
+        List<Cafe> cafes = cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName);
 
-        return  CafeDto.builder()
-                .temperature(findCafe.getTemperature())
-                .sugar(findCafe.getSugar())
-                .size(findCafe.getSize())
-                .serve(findCafe.getServe())
-                .beverageName(findCafe.getBeverageName())
-                .calorie(findCafe.getCalorie())
-                .cafeName(findCafe.getCafeName())
-                .build();
+        return cafes.stream()
+                .map(CafeDto::new)
+                .collect(Collectors.toList());
     }
 
+    public List<BeverageNameDto> findBeverageName(CafeFindDto cafeFindDto){
+        AtomicLong id = new AtomicLong(0);
+        String cafeName = cafeFindDto.getCafeName();
+        List<String> byCafeName = cafeRepository.findDistinctByCafeName(cafeName);
+        List<BeverageNameDto> result = new ArrayList<>();
+
+        for (String s : byCafeName) {
+            BeverageNameDto build = BeverageNameDto.builder()
+                    .id(id.getAndIncrement())
+                    .beverageName(s).build();
+            result.add(build);
+        }
+        return result;
+    }
+
+    public List<CafeNameDto> findCafeName(){
+        AtomicLong id = new AtomicLong(0);
+        List<String> cafeNames = cafeRepository.findDistinctCafeName();
+        List<CafeNameDto> result = new ArrayList<>();
+        for (String cafeName : cafeNames) {
+            CafeNameDto build = CafeNameDto.builder()
+                    .id(id.getAndIncrement())
+                    .cafeName(cafeName).build();
+            result.add(build);
+        }
+        return result;
+    }
 }

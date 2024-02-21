@@ -2,7 +2,8 @@ package com.POG.julindang.cafe.dto;
 
 import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class CafeFindDto {
     private String cafeName;
