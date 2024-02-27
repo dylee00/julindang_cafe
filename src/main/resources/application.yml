@@ -40,3 +40,8 @@ eureka:
     instance:
       prefer-ip-address: ${EUREKA_INSTANCE_PREFER_IP_ADDRESS}
       ip-address: ${EUREKA_INSTANCE_IP_ADDRESS}
+
+logging:
+  slack:
+    webhook-url: ${SLACK_WEBHOOK_URL}
+  config: classpath:logback.xml
