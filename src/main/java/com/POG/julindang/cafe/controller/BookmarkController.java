@@ -20,13 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/bookmark")
-@Tag(name = "즐겨찾기 관련 컨트롤러")
+@Tag(name = "bookmark")
 public class BookmarkController {
     private final BookmarkService bookmarkService;
 
     @Operation(summary = "즐겨찾기 전체 탐색",
             description = "모든 즐겨찾기 정보를 상용자 이메일을 통해 로드")
-    @GetMapping("/find-all")
+    @GetMapping
     public ResponseEntity<List<BookmarkDto>> findAll(@RequestParam(name="email", required = false) String email){
         return new ResponseEntity(bookmarkService.findAllByUserEmail(email), HttpStatus.OK);
     }

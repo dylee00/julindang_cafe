@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/cafe")
-@Tag(name = "카페 관련 컨트롤러")
+@Tag(name = "cafe")
 public class CafeController {
     private final CafeService cafeService;
 
