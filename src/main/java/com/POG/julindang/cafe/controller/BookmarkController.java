@@ -33,8 +33,10 @@ public class BookmarkController {
     @Operation(summary = "즐겨찾기 삭제",
             description = "해당 즐겨찾기 정보를 삭제(토글)")
     @DeleteMapping("/delete")
-    public ResponseEntity<BookmarkDto> toggleDeleted(@RequestBody BookMarkDeleteRequestDto bookmarkDto){
-        return new ResponseEntity<>(bookmarkService.toggleDeleted(bookmarkDto), HttpStatus.OK);
+    public ResponseEntity<BookmarkDto> toggleDeleted(@RequestParam(name="beverageName", required = false) String beverageName,
+                                                     @RequestParam(name="cafeName", required = false) String cafeName,
+                                                     @RequestParam(name="userEmail", required = false) String userEmail){
+        return new ResponseEntity<>(bookmarkService.toggleDeleted(beverageName, cafeName, userEmail), HttpStatus.OK);
     }
 
     @Operation(summary = "즐겨찾기 저장",

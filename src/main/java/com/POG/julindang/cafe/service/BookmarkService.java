@@ -43,10 +43,7 @@ public class BookmarkService {
         return new BookmarkDto(result);
     }
 
-    public BookmarkDto toggleDeleted(BookMarkDeleteRequestDto bookmarkDto){
-        String beverageName = bookmarkDto.getBeverageName();
-        String cafeName = bookmarkDto.getCafeName();
-        String userEmail = bookmarkDto.getUserEmail();
+    public BookmarkDto toggleDeleted(String beverageName, String cafeName, String userEmail){
         if(beverageName == null){
             throw new BeverageNameDoesNotExist();
         }
