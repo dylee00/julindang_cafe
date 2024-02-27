@@ -1,4 +1,4 @@
-package com.POG.julindang.cafe.dto;
+package com.POG.julindang.cafe.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

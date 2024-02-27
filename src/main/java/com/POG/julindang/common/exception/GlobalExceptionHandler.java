@@ -3,6 +3,7 @@ package com.POG.julindang.common.exception;
 import com.POG.julindang.common.exception.cafe.BeverageNameDoesNotExist;
 import com.POG.julindang.common.exception.cafe.CafeNameDoesNotExist;
 import com.POG.julindang.common.exception.cafe.CafeObjectDoesNotExist;
+import com.POG.julindang.common.exception.user.UserEmailDoesNotExist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UserEmailDoesNotExist.class)
+    public ResponseEntity<ApiErrorResponse> handleException(UserEmailDoesNotExist ex){
+        ApiErrorResponse response = new ApiErrorResponse("JEC-004", "User Email Doesn't Exist." + ex.getMessage());
 
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }

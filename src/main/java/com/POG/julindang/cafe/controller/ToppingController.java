@@ -1,8 +1,7 @@
 package com.POG.julindang.cafe.controller;
 
 
-import com.POG.julindang.cafe.dto.ToppingDto;
-import com.POG.julindang.cafe.dto.ToppingFindDto;
+import com.POG.julindang.cafe.dto.response.ToppingDto;
 import com.POG.julindang.cafe.service.ToppingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,10 +27,11 @@ public class ToppingController {
         return new ResponseEntity<>(toppingService.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/find-by-cafe-name-and-beverage-name")
+    @GetMapping("/find-by-cafe-name-and-beverage-name")
     @Operation(summary = "카페 이름과 음료를 이용해 해당되는 토핑 정보 로드",
             description = "카페 이름과 음료와 일치하는 토핑 정보들 로드")
-    public ResponseEntity<List<ToppingDto>> findToppingsByCafeNameAndBeverageName(ToppingFindDto toppingFindDto) {
-        return new ResponseEntity<>(toppingService.findAllByCafeNameAndBeverageName(toppingFindDto), HttpStatus.OK);
+    public ResponseEntity<List<ToppingDto>> findToppingsByCafeNameAndBeverageName(@RequestParam(name="cafeName", required = false) String cafeName,
+                                                                                  @RequestParam(name = "beverageName", required = false) String beverageName) {
+        return new ResponseEntity<>(toppingService.findAllByCafeNameAndBeverageName(cafeName, beverageName), HttpStatus.OK);
     }
 }

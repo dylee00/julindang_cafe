@@ -1,4 +1,4 @@
-package com.POG.julindang.cafe.dto;
+package com.POG.julindang.cafe.dto.response;
 
 
 import com.POG.julindang.cafe.domain.Topping;

@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface CafeRepository extends JpaRepository <Cafe, Long>{
@@ -17,7 +16,7 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
     @Query("select c.beverageName from Cafe c where c.cafeName=:cafeName and c.deleted=false group by c.beverageName")
     List<String> findDistinctByCafeName(@Param("cafeName") String cafeName);
     List<Cafe> findByCafeNameAndBeverageName(@Param("cafeName") String cafeName, @Param("beverageName") String beverageName);
-    @Query("SELECT distinct c.cafeName from Cafe c")
+    @Query("SELECT distinct c.cafeName from Cafe c where c.deleted=false")
     List<String> findDistinctCafeName();
 
 }
