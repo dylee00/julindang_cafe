@@ -1,5 +1,4 @@
-package com.POG.julindang.cafe.dto.response;
-
+package com.POG.julindang.cafe.dto.response.bookmark;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,12 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CafeNameDto {
+public class BookmarkCafeNameResponseDto {
     private Long id;
     private String cafeName;
 
     @Builder
-    public CafeNameDto(Long id, String cafeName) {
+    public BookmarkCafeNameResponseDto(Long id, String cafeName) {
         this.id = id;
         this.cafeName = cafeName;
     }

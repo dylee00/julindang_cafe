@@ -1,4 +1,4 @@
-package com.POG.julindang.cafe.dto.response;
+package com.POG.julindang.cafe.dto.response.cafe;
 
 
 import com.POG.julindang.cafe.domain.Topping;
@@ -10,13 +10,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ToppingDto {
+public class ToppingResponseDto {
     private String toppingName;
     private Double sugar;
     private Double calorie;
 
     @Builder
-    public ToppingDto(String toppingName, Double sugar, Double calorie) {
+    public ToppingResponseDto(String toppingName, Double sugar, Double calorie) {
         this.toppingName = toppingName;
         this.sugar = sugar;
         this.calorie = calorie;
@@ -24,7 +24,7 @@ public class ToppingDto {
 
 
 
-    public ToppingDto(Topping topping) {
+    public ToppingResponseDto(Topping topping) {
         this.toppingName = topping.getToppingName();
         this.sugar =topping.getSugar();
         this.calorie = topping.getCalorie();

@@ -13,23 +13,23 @@ import lombok.Setter;
 public class BookMarkSaveRequestDto {
     private String userEmail;
     private String cafeName;
-    private String beverageName;
+    private String productName;
 
     @Builder
-    public BookMarkSaveRequestDto(String userEmail, String cafeName, String beverageName) {
+    public BookMarkSaveRequestDto(String userEmail, String cafeName, String productName) {
         this.userEmail = userEmail;
         this.cafeName = cafeName;
-        this.beverageName = beverageName;
+        this.productName = productName;
     }
 
     public BookMarkSaveRequestDto(Bookmark bookmark){
         this.userEmail = bookmark.getUserEmail();
         this.cafeName = bookmark.getCafeName();
-        this.beverageName = bookmark.getBeverageName();
+        this.productName = bookmark.getProductName();
     }
     public Bookmark toEntity(){
         return Bookmark.builder()
-                .beverageName(beverageName)
+                .productName(productName)
                 .cafeName(cafeName)
                 .userEmail(userEmail)
                 .build();

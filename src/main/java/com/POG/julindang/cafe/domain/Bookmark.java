@@ -19,6 +19,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class Bookmark {
 
+    /**
+     * TODO : 이거 domain 수정 방안좀 생각하자
+     *
+     */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "BOOKMARK_ID")
@@ -26,13 +31,16 @@ public class Bookmark {
 
     @NotNull
     private String userEmail;
+
     @NotNull
     private String cafeName;
+
     @NotNull
-    private String beverageName;
+    private String productName;
 
     @ColumnDefault(value = "false")
     private Boolean deleted;
+
     @CreationTimestamp
     private Date createdAt;
 

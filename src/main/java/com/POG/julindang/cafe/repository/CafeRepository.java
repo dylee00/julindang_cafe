@@ -18,5 +18,4 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
     List<Cafe> findByCafeNameAndBeverageName(@Param("cafeName") String cafeName, @Param("beverageName") String beverageName);
     @Query("SELECT distinct c.cafeName from Cafe c where c.deleted=false")
     List<String> findDistinctCafeName();
-
 }

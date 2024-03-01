@@ -1,9 +1,9 @@
 package com.POG.julindang.cafe.service;
 
 import com.POG.julindang.cafe.domain.Cafe;
-import com.POG.julindang.cafe.dto.response.BeverageNameDto;
-import com.POG.julindang.cafe.dto.response.CafeDto;
-import com.POG.julindang.cafe.dto.response.CafeNameDto;
+import com.POG.julindang.cafe.dto.response.cafe.BeverageNameResponseDto;
+import com.POG.julindang.cafe.dto.response.cafe.CafeResponseDto;
+import com.POG.julindang.cafe.dto.response.cafe.CafeNameResponseDto;
 import com.POG.julindang.cafe.repository.CafeRepository;
 import com.POG.julindang.common.exception.cafe.BeverageNameDoesNotExist;
 import com.POG.julindang.common.exception.cafe.CafeNameDoesNotExist;
@@ -32,7 +32,7 @@ public class CafeService {
 //                .collect(Collectors.toList());
 //    }
 
-    public List<CafeDto> findByCafeName(String cafeName) {
+    public List<CafeResponseDto> findByCafeName(String cafeName) {
         if(cafeName == null){
             throw new CafeNameDoesNotExist();
         }
@@ -40,43 +40,41 @@ public class CafeService {
 
         return result.stream()
                 .filter(x -> x.getDeleted() == false)
-                .map(CafeDto::new)
+                .map(CafeResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-    public List<CafeDto> findByBeverageName(String beverageName) {
+    public List<CafeResponseDto> findByBeverageName(String beverageName) {
         if(beverageName == null){
             throw new BeverageNameDoesNotExist();
         }
         List<Cafe> result = cafeRepository.findByBeverageName(beverageName);
 
-        return result.stream().filter(x -> x.getDeleted() == false).map(CafeDto::new)
+        return result.stream().filter(x -> x.getDeleted() == false).map(CafeResponseDto::new)
                 .collect(Collectors.toList());
     }
 
-//    public List<CafeDto> findByCafeNameAndBeverageName(CafeFindDto cafeFindDto) {
-//        String cafeName = cafeFindDto.getCafeName();
-//        String beverageName = cafeFindDto.getBeverageName();
-//        if(cafeName == null){
-//            throw new CafeNameDoesNotExist();
-//        }
-//        if(beverageName == null){
-//            throw new BeverageNameDoesNotExist();
-//        }
-//        List<Cafe> cafes = cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName);
-//
-//        return cafes.stream()
-//                .map(CafeDto::new)
-//                .collect(Collectors.toList());
-//    }
+    public List<CafeResponseDto> findCafeDetailsByCafeNameAndBeverageName(String cafeName, String beverageName) {
+        if(cafeName == null){
+            throw new CafeNameDoesNotExist();
+        }
+        if(beverageName == null){
+            throw new BeverageNameDoesNotExist();
+        }
+        List<Cafe> cafes = cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName);
 
-    public List<BeverageNameDto> findBeverageName(String cafeName){
+        return cafes.stream()
+                .map(CafeResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<BeverageNameResponseDto> findBeverageName(String cafeName){
         AtomicLong id = new AtomicLong(0);
         List<String> byCafeName = cafeRepository.findDistinctByCafeName(cafeName);
-        List<BeverageNameDto> result = new ArrayList<>();
+        List<BeverageNameResponseDto> result = new ArrayList<>();
 
         for (String s : byCafeName) {
-            BeverageNameDto build = BeverageNameDto.builder()
+            BeverageNameResponseDto build = BeverageNameResponseDto.builder()
                     .id(id.getAndIncrement())
                     .beverageName(s).build();
             result.add(build);
@@ -84,13 +82,13 @@ public class CafeService {
         return result;
     }
 
-    public List<CafeNameDto> findCafeName(){
+    public List<CafeNameResponseDto> findCafeName(){
         AtomicLong id = new AtomicLong(0);
         List<String> cafeNames = cafeRepository.findDistinctCafeName();
-        List<CafeNameDto> result = new ArrayList<>();
+        List<CafeNameResponseDto> result = new ArrayList<>();
 
         for (String cafeName : cafeNames) {
-            CafeNameDto build = CafeNameDto.builder()
+            CafeNameResponseDto build = CafeNameResponseDto.builder()
                     .id(id.getAndIncrement())
                     .cafeName(cafeName).build();
             result.add(build);

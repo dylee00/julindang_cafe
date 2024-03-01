@@ -1,5 +1,7 @@
 package com.POG.julindang.common.exception;
 
+import com.POG.julindang.common.exception.bookmark.BookMarkDoesNotExist;
+import com.POG.julindang.common.exception.bread.BreadNameDoesNotExist;
 import com.POG.julindang.common.exception.cafe.BeverageNameDoesNotExist;
 import com.POG.julindang.common.exception.cafe.CafeNameDoesNotExist;
 import com.POG.julindang.common.exception.cafe.CafeObjectDoesNotExist;
@@ -41,5 +43,21 @@ public class GlobalExceptionHandler {
         ApiErrorResponse response = new ApiErrorResponse("JEC-004", "User Email Doesn't Exist." + ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BreadNameDoesNotExist.class)
+    public ResponseEntity<ApiErrorResponse> handleException(BreadNameDoesNotExist ex){
+        ApiErrorResponse response = new ApiErrorResponse("JEC-005", "Bread Name Doesn't Exist." + ex.getMessage());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(BookMarkDoesNotExist.class)
+    public ResponseEntity<ApiErrorResponse> handleException(BookMarkDoesNotExist ex){
+        ApiErrorResponse response = new ApiErrorResponse("JEC-006", "Bread Name Doesn't Exist. [Cafe Name, Beverage Name, User Email] : [" + ex.getMessage() + "]");
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+
     }
 }

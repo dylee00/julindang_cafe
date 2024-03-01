@@ -1,4 +1,4 @@
-package com.POG.julindang.cafe.dto.response;
+package com.POG.julindang.cafe.dto.response.cafe;
 
 import com.POG.julindang.cafe.domain.Cafe;
 import lombok.*;
@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CafeDto {
+public class CafeResponseDto {
     private String cafeName;
 
     private String beverageName;
@@ -22,7 +22,7 @@ public class CafeDto {
     private Boolean temperature;
 
     @Builder
-    public CafeDto(String cafeName, String beverageName, String size, Double serve, Double sugar, Double calorie, Boolean temperature) {
+    public CafeResponseDto(String cafeName, String beverageName, String size, Double serve, Double sugar, Double calorie, Boolean temperature) {
         this.cafeName = cafeName;
         this.beverageName = beverageName;
         this.size = size;
@@ -35,7 +35,7 @@ public class CafeDto {
 
 
 
-    public CafeDto(Cafe cafe) {
+    public CafeResponseDto(Cafe cafe) {
         this.cafeName = cafe.getCafeName();
         this.beverageName = cafe.getBeverageName();
         this.size = cafe.getSize();

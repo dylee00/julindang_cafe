@@ -10,5 +10,5 @@ import lombok.Setter;
 public class BookMarkDeleteRequestDto {
     private String userEmail;
     private String cafeName;
-    private String beverageName;
+    private String productName;
 }

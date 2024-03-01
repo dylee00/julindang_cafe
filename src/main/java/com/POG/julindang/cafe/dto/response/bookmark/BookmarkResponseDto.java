@@ -1,8 +1,7 @@
-package com.POG.julindang.cafe.dto.response;
+package com.POG.julindang.cafe.dto.response.bookmark;
 
 
 import com.POG.julindang.cafe.domain.Bookmark;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,27 +10,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookmarkDto {
+public class BookmarkResponseDto {
     private String userEmail;
     private String cafeName;
-    private String beverageName;
+    private String productName;
 
     @Builder
-    public BookmarkDto(String userEmail, String cafeName, String beverageName) {
+    public BookmarkResponseDto(String userEmail, String cafeName, String productName) {
         this.userEmail = userEmail;
         this.cafeName = cafeName;
-        this.beverageName = beverageName;
+        this.productName = productName;
     }
 
-    public BookmarkDto(Bookmark bookmark){
+    public BookmarkResponseDto(Bookmark bookmark){
         this.userEmail = bookmark.getUserEmail();
-        this.beverageName = bookmark.getBeverageName();
+        this.productName = bookmark.getProductName();
         this.cafeName = bookmark.getCafeName();
     }
 
     public Bookmark toEntity(){
         return Bookmark.builder()
-                .beverageName(beverageName)
+                .productName(productName)
                 .cafeName(cafeName)
                 .userEmail(userEmail)
                 .build();
