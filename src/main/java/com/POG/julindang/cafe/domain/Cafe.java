@@ -17,7 +17,7 @@ public class Cafe {
     @Column(name = "CAFE_ID")
     private Long id;
     @NotNull
-    @Column(name = "CAFE_NAME")
+
     private String cafeName;
     @NotNull
     @Column(name = "BEVERAGE_NAME")
