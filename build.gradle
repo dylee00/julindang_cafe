@@ -28,6 +28,7 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 	//log
 	implementation 'com.github.maricn:logback-slack-appender:1.4.0'
 
