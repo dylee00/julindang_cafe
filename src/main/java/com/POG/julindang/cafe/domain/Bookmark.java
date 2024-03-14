@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -30,22 +31,29 @@ public class Bookmark {
     private Long id;
 
     @NotNull
+    @Column(name="USER_EMAIL", columnDefinition = "varchar", length = 30)
     private String userEmail;
 
     @NotNull
+    @Column(name="CAFE_NAME", columnDefinition = "varchar", length = 30)
     private String cafeName;
 
     @NotNull
+    @Column(name="PRODUCT_NAME", columnDefinition = "varchar", length = 50)
     private String productName;
 
     @ColumnDefault(value = "false")
+    @NotNull
+    @Column(name="DELETED", columnDefinition = "tinyint")
     private Boolean deleted;
 
+    @NotNull
     @CreationTimestamp
-    private Date createdAt;
+    @Column(name="CREATED_AT", columnDefinition = "datetime")
+    private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="member_id")
     private Member member;
 
     public void toggleDeleted(){

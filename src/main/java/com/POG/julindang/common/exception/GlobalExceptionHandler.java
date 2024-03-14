@@ -1,13 +1,10 @@
 package com.POG.julindang.common.exception;
 
 import com.POG.julindang.common.exception.bookmark.BookMarkDoesNotExist;
-import com.POG.julindang.common.exception.bread.BreadNameDoesNotExist;
+import com.POG.julindang.common.exception.dessert.DessertNameDoesNotExist;
 import com.POG.julindang.common.exception.cafe.BeverageNameDoesNotExist;
 import com.POG.julindang.common.exception.cafe.CafeNameDoesNotExist;
-import com.POG.julindang.common.exception.cafe.CafeObjectDoesNotExist;
 import com.POG.julindang.common.exception.user.UserEmailDoesNotExist;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -45,8 +42,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(BreadNameDoesNotExist.class)
-    public ResponseEntity<ApiErrorResponse> handleException(BreadNameDoesNotExist ex){
+    @ExceptionHandler(DessertNameDoesNotExist.class)
+    public ResponseEntity<ApiErrorResponse> handleException(DessertNameDoesNotExist ex){
         ApiErrorResponse response = new ApiErrorResponse("JEC-005", "Bread Name Doesn't Exist." + ex.getMessage());
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

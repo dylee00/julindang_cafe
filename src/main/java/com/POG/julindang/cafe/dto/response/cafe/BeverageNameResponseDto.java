@@ -11,11 +11,13 @@ import lombok.Setter;
 public class BeverageNameResponseDto {
     private Long id;
     private String beverageName;
-
+    private Double maxSugar;
+    private Double minSugar;
     @Builder
-    public BeverageNameResponseDto(Long id, String beverageName) {
+    public BeverageNameResponseDto(Long id, String beverageName, Double maxSugar, Double minSugar) {
         this.id = id;
         this.beverageName = beverageName;
+        this.maxSugar = maxSugar;
+        this.minSugar = minSugar;
     }
-
 }

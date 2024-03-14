@@ -1,6 +1,7 @@
 package com.POG.julindang.cafe.service;
 
 import com.POG.julindang.cafe.domain.Cafe;
+import com.POG.julindang.cafe.dto.response.cafe.BeverageNameGetterResponseDto;
 import com.POG.julindang.cafe.dto.response.cafe.BeverageNameResponseDto;
 import com.POG.julindang.cafe.dto.response.cafe.CafeResponseDto;
 import com.POG.julindang.cafe.dto.response.cafe.CafeNameResponseDto;
@@ -69,17 +70,24 @@ public class CafeService {
     }
 
     public List<BeverageNameResponseDto> findBeverageName(String cafeName){
-        AtomicLong id = new AtomicLong(0);
-        List<String> byCafeName = cafeRepository.findDistinctByCafeName(cafeName);
-        List<BeverageNameResponseDto> result = new ArrayList<>();
+        if(cafeName == null){
+            throw new CafeNameDoesNotExist();
+        }
 
-        for (String s : byCafeName) {
-            BeverageNameResponseDto build = BeverageNameResponseDto.builder()
-                    .id(id.getAndIncrement())
-                    .beverageName(s).build();
+        AtomicLong id = new AtomicLong(0);
+        List<BeverageNameGetterResponseDto> distinctByCafeNameUsingNative = cafeRepository.findDistinctByCafeNameUsingNative(cafeName);
+        List<BeverageNameResponseDto> result = new ArrayList<>();
+        for (BeverageNameGetterResponseDto beverageNameGetterResponseDto : distinctByCafeNameUsingNative) {
+            BeverageNameResponseDto build = BeverageNameResponseDto.builder().id(id.getAndIncrement())
+                    .beverageName(beverageNameGetterResponseDto.getBeverageName())
+                    .minSugar(beverageNameGetterResponseDto.getMinSugar())
+                    .maxSugar(beverageNameGetterResponseDto.getMaxSugar())
+                    .build();
+
             result.add(build);
         }
         return result;
+
     }
 
     public List<CafeNameResponseDto> findCafeName(){

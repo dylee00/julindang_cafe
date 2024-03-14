@@ -1,9 +1,9 @@
 package com.POG.julindang.cafe.controller;
 
 
-import com.POG.julindang.cafe.dto.response.bread.BreadNameResponseDto;
-import com.POG.julindang.cafe.dto.response.bread.BreadResponseDto;
-import com.POG.julindang.cafe.service.BreadService;
+import com.POG.julindang.cafe.dto.response.dessert.DessertNameResponseDto;
+import com.POG.julindang.cafe.dto.response.dessert.DessertResponseDto;
+import com.POG.julindang.cafe.service.DessertService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/cafe/bread")
 @Tag(name = "bread")
-public class BreadController {
-    private final BreadService breadService;
+public class DessertController {
+    private final DessertService breadService;
 
     @Operation(summary = "카페 이름으로 빵류 찾기",
             description = "카페 이름으로 해당 카페에 존재하는 빵류 로드")
     @GetMapping("/find-bread-names")
-    public ResponseEntity<List<BreadNameResponseDto>> findBreadNamesByCafeName(
+    public ResponseEntity<List<DessertNameResponseDto>> findBreadNamesByCafeName(
             @RequestParam(name = "cafeName", required = false) String cafeName){
 
         return new ResponseEntity<>(breadService.findBreadNamesByCafeName(cafeName), HttpStatus.OK);
@@ -35,10 +35,10 @@ public class BreadController {
     @Operation(summary = "카페 이름과 빵류 이름으로 해당 빵류 정보 로드",
             description = "카페 이름과 빵류 이름으로 해당 빵류 정보의 상세 정보 로드")
     @GetMapping("/find-bread-details")
-    public ResponseEntity<List<BreadResponseDto>> findBreadDetailsByCafeNameAndBreadName(
+    public ResponseEntity<List<DessertResponseDto>> findBreadDetailsByCafeNameAndBreadName(
             @RequestParam(name="cafeName", required = false) String cafeName,
-            @RequestParam(name="breadName", required = false) String breadName){
+            @RequestParam(name= "dessertName", required = false) String dessertName){
 
-        return new ResponseEntity<>(breadService.findBreadDetailsByCafeNameAndBreadName(cafeName,breadName), HttpStatus.OK);
+        return new ResponseEntity<>(breadService.findBreadDetailsByCafeNameAndBreadName(cafeName, dessertName), HttpStatus.OK);
     }
 }

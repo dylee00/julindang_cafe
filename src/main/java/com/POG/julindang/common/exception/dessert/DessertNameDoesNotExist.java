@@ -1,4 +1,4 @@
-package com.POG.julindang.common.exception.bread;
+package com.POG.julindang.common.exception.dessert;
 
 
 import lombok.Getter;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 @Getter
-public class BreadNameDoesNotExist extends RuntimeException{
-    public BreadNameDoesNotExist() {
+public class DessertNameDoesNotExist extends RuntimeException{
+    public DessertNameDoesNotExist() {
         super();
     }
 }

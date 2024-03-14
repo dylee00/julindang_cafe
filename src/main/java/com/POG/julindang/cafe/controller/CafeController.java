@@ -1,5 +1,6 @@
 package com.POG.julindang.cafe.controller;
 
+import com.POG.julindang.cafe.dto.response.cafe.BeverageNameGetterResponseDto;
 import com.POG.julindang.cafe.dto.response.cafe.BeverageNameResponseDto;
 import com.POG.julindang.cafe.dto.response.cafe.CafeResponseDto;
 import com.POG.julindang.cafe.dto.response.cafe.CafeNameResponseDto;
@@ -54,7 +55,7 @@ public class CafeController {
 
 
     @Operation(summary = "해당 카페에 포함된 음료 탐색",
-        description = "음료 이름만 리턴")
+        description = "음료 이름 & 최소 당류와 최대 당류 정보 리턴")
     @GetMapping("/find-beverage-name-by-cafe-name")
     public ResponseEntity<List<BeverageNameResponseDto>> findBeverageNameByCafeName(@RequestParam(name = "cafeName", required = false) String cafeName){
         return new ResponseEntity<>(cafeService.findBeverageName(cafeName), HttpStatus.OK);
@@ -66,5 +67,6 @@ public class CafeController {
     public ResponseEntity<List<CafeNameResponseDto>> findCafeNames(){
         return new ResponseEntity<>(cafeService.findCafeName(), HttpStatus.OK);
     }
+
 
 }

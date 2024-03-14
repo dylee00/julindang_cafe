@@ -29,7 +29,7 @@ public class Topping {
     private Double calorie;
 
     @NotNull
-    @Column(columnDefinition = "LONGTEXT")
+    @Column
     private String cafeName;
 
     @NotNull
