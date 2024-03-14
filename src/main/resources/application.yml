@@ -4,7 +4,6 @@ server:
 spring:
   application:
     name: cafe
-#  main:
-#    allow-bean-definition-overriding: true
+  main:
+    allow-bean-definition-overriding: true
   profiles.active: prod
-
