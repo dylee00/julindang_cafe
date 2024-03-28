@@ -33,7 +33,6 @@ public class Cafe {
     private Double calorie;
     @NotNull
     private Boolean temperature;
-
     @NotNull
     @Column(name="MANAGER", columnDefinition = "varchar", length = 10)
     private String manager;

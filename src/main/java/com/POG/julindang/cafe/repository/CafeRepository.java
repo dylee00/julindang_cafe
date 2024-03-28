@@ -17,6 +17,8 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
     //max, min 함수 작성
     @Query("select c.beverageName from Cafe c where c.cafeName=:cafeName and c.deleted=false group by c.beverageName")
     List<String> findDistinctByCafeName(@Param("cafeName") String cafeName);
+
+    // 쿼리 최적화
     @Query(nativeQuery = true, value = "select beverage_name as beverageName, MIN(sugar) as minSugar, MAX(sugar) as maxSugar from cafe where cafe_name=:cafeName group by beverage_name")
     List<BeverageNameGetterResponseDto> findDistinctByCafeNameUsingNative(@Param("cafeName") String cafeName);
     List<Cafe> findByCafeNameAndBeverageName(@Param("cafeName") String cafeName, @Param("beverageName") String beverageName);
