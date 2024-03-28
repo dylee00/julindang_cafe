@@ -6,4 +6,4 @@ spring:
     name: cafe
   main:
     allow-bean-definition-overriding: true
-  profiles.active: local
+  profiles.active: prod
