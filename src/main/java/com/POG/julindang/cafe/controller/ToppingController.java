@@ -3,6 +3,7 @@ package com.POG.julindang.cafe.controller;
 
 import com.POG.julindang.cafe.dto.response.cafe.ToppingResponseDto;
 import com.POG.julindang.cafe.service.ToppingService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/cafe/topping")
 @Tag(name = "topping")
+@Hidden
 public class ToppingController {
     private final ToppingService toppingService;
 

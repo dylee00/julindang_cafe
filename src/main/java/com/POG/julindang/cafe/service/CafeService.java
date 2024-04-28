@@ -24,14 +24,6 @@ import java.util.stream.Collectors;
 @Transactional
 public class CafeService {
     private final CafeRepository cafeRepository;
-//    public List<CafeDto> findAll(){
-//       List<Cafe> result = cafeRepository.findAll();
-//
-//        return result.stream()
-//                .filter(x -> x.getDeleted() == false)
-//                .map(CafeDto::new)
-//                .collect(Collectors.toList());
-//    }
 
     public List<CafeResponseDto> findByCafeName(String cafeName) {
         if(cafeName == null){
@@ -40,7 +32,6 @@ public class CafeService {
         List<Cafe> result = cafeRepository.findByCafeName(cafeName);
 
         return result.stream()
-                .filter(x -> x.getDeleted() == false)
                 .map(CafeResponseDto::new)
                 .collect(Collectors.toList());
     }
@@ -51,7 +42,8 @@ public class CafeService {
         }
         List<Cafe> result = cafeRepository.findByBeverageName(beverageName);
 
-        return result.stream().filter(x -> x.getDeleted() == false).map(CafeResponseDto::new)
+        return result.stream()
+                .map(CafeResponseDto::new)
                 .collect(Collectors.toList());
     }
 
@@ -62,6 +54,7 @@ public class CafeService {
         if(beverageName == null){
             throw new BeverageNameDoesNotExist();
         }
+
         List<Cafe> cafes = cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName);
 
         return cafes.stream()
@@ -77,6 +70,7 @@ public class CafeService {
         AtomicLong id = new AtomicLong(0);
         List<BeverageNameGetterResponseDto> distinctByCafeNameUsingNative = cafeRepository.findDistinctByCafeNameUsingNative(cafeName);
         List<BeverageNameResponseDto> result = new ArrayList<>();
+
         for (BeverageNameGetterResponseDto beverageNameGetterResponseDto : distinctByCafeNameUsingNative) {
             BeverageNameResponseDto build = BeverageNameResponseDto.builder().id(id.getAndIncrement())
                     .beverageName(beverageNameGetterResponseDto.getBeverageName())

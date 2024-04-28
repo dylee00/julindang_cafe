@@ -24,10 +24,10 @@ public class Member {
     @Column(name = "member_id", columnDefinition = "bigint")
     private Long memberId;
 
-    @Column(name = "nickname", columnDefinition = "varchar", length = 20)
+    @Column(name = "nickname", columnDefinition = "varchar(20)")
     private String nickname;
 
-    @Column(name = "email", columnDefinition = "varchar", length = 30)
+    @Column(name = "email", columnDefinition = "varchar(30)")
     private String email;
 
     @Column(name = "login_type", columnDefinition = "int")

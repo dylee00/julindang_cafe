@@ -81,7 +81,6 @@ public class BookmarkService {
         List<Bookmark> result = bookmarkRepository.findAllByUserEmail(userEmail);
 
         return result.stream()
-                .filter(x-> x.getDeleted()==false)
                 .map(BookmarkResponseDto::new)
                 .collect(Collectors.toList());
     }

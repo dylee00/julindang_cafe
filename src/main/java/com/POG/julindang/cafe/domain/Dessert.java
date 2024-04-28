@@ -10,6 +10,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 
 @Entity
+@Table(name = "dessert")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -20,22 +21,21 @@ public class Dessert {
     @Column(name = "DESSERT_ID")
     private Long id;
     @NotNull
-    @Column(name="DESSERT_NAME", columnDefinition = "varchar", length = 50)
+    @Column(name="DESSERT_NAME", columnDefinition = "varchar(50)")
     private String dessertName;
     @NotNull
-    @Column(name="CAFE_NAME", columnDefinition = "varchar", length = 30)
+    @Column(name="CAFE_NAME", columnDefinition = "varchar(30)")
     private String cafeName;
     @NotNull
     private Double calorie;
     @NotNull
-    @ColumnDefault(value = "false")
     private Boolean deleted;
     @NotNull
     private Double serve;
     @NotNull
     private Double sugar;
     @NotNull
-    @Column(name="MANAGER", columnDefinition = "varchar", length = 10)
+    @Column(name="MANAGER", columnDefinition = "varchar(10)")
     private String manager;
     public void toggleDeleted(){
         this.deleted = !this.deleted;

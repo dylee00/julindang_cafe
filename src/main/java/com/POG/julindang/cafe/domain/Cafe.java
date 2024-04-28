@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
+@Table(name="cafe")
 @Getter
 @Builder
 @AllArgsConstructor
@@ -17,13 +18,13 @@ public class Cafe {
     @Column(name = "CAFE_ID")
     private Long id;
     @NotNull
-    @Column(name="CAFE_NAME", columnDefinition = "varchar", length = 30)
+    @Column(name="CAFE_NAME", columnDefinition = "varchar(30)", length = 30)
     private String cafeName;
     @NotNull
-    @Column(name = "BEVERAGE_NAME", columnDefinition = "varchar", length = 50)
+    @Column(name = "BEVERAGE_NAME", columnDefinition = "varchar(50)", length = 50)
     private String beverageName;
     @NotNull
-    @Column(name="SIZE", columnDefinition = "varchar", length = 10)
+    @Column(name="SIZE", columnDefinition = "varchar(10)", length = 10)
     private String size;
     @NotNull
     private Double serve;
@@ -34,7 +35,7 @@ public class Cafe {
     @NotNull
     private Boolean temperature;
     @NotNull
-    @Column(name="MANAGER", columnDefinition = "varchar", length = 10)
+    @Column(name="MANAGER", columnDefinition = "varchar(10)", length = 10)
     private String manager;
     @NotNull
     @ColumnDefault("false")

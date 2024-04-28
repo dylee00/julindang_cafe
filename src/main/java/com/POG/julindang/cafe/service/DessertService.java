@@ -27,15 +27,13 @@ public class DessertService {
     public List<DessertNameResponseDto> findBreadNamesByCafeName(String cafeName){
         List<Dessert> breadNamesByCafeName = dessertRepository.findBreadNamesByCafeName(cafeName);
         AtomicLong id = new AtomicLong(0);
-        List<DessertNameResponseDto> result =new ArrayList<>();
+        List<DessertNameResponseDto> result = new ArrayList<>();
         for (Dessert bread : breadNamesByCafeName) {
-            if(bread.getDeleted() == false) {
-                DessertNameResponseDto build = DessertNameResponseDto.builder()
-                        .id(id.getAndIncrement())
-                        .dessertName(bread.getDessertName())
-                        .build();
-                result.add(build);
-            }
+            DessertNameResponseDto build = DessertNameResponseDto.builder()
+                    .id(id.getAndIncrement())
+                    .dessertName(bread.getDessertName())
+                    .build();
+            result.add(build);
         }
 
         return result;
@@ -49,10 +47,10 @@ public class DessertService {
         if(dessertName==null){
             throw new DessertNameDoesNotExist();
         }
+
         List<Dessert> result = dessertRepository.findBreadByCafeNameAndDessertName(cafeName, dessertName);
 
         return result.stream()
-                .filter(x -> x.getDeleted() == false)
                 .map(DessertResponseDto::new)
                 .collect(Collectors.toList());
     }

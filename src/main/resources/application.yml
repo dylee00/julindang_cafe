@@ -1,9 +1,2 @@
-server:
-  port: ${PORT}
-
 spring:
-  application:
-    name: cafe
-  main:
-    allow-bean-definition-overriding: true
-  profiles.active: prod
+  profiles.active: local

@@ -24,7 +24,7 @@ public class ToppingService {
 
     public List<ToppingResponseDto> findAll(){
         return toppingRepository.findAll().stream()
-                .filter(x -> x.getDeleted() == false)
+                .filter(x -> !x.getDeleted())
                 .map(ToppingResponseDto::new)
                 .collect(Collectors.toList());
     }
@@ -39,7 +39,7 @@ public class ToppingService {
         List<Topping> result = toppingRepository.findByCafeNameAndBeverageName(cafeName, beverageName);
 
 
-        return result.stream().filter(x -> x.getDeleted() == false)
+        return result.stream().filter(x -> !x.getDeleted())
                 .map(ToppingResponseDto::new)
                 .collect(Collectors.toList());
     }
