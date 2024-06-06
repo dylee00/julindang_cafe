@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class BookMarkSaveRequestDto {
     @Schema(example = "ex@ex.com")
@@ -20,11 +19,4 @@ public class BookMarkSaveRequestDto {
     private Integer type;
     @Schema(description = "type 이 1 또는 2일때만 필요", example = "아이스 아메리카노")
     private String productName;
-
-    public CafeBookmark toEntity(){
-        return CafeBookmark.builder()
-                .cafeName(cafeName)
-                .userEmail(userEmail)
-                .build();
-    }
 }
