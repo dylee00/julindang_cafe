@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.Set;
+
 @Entity
 @Table(name="cafe")
 @Getter
@@ -40,5 +42,8 @@ public class Cafe {
     @NotNull
     @ColumnDefault("false")
     private Boolean deleted;
+
+
+
 
 }

@@ -1,10 +1,12 @@
 package com.POG.julindang.cafe.controller;
 
 
-import com.POG.julindang.cafe.dto.response.dessert.DessertNameResponseDto;
-import com.POG.julindang.cafe.dto.response.dessert.DessertResponseDto;
+import com.POG.julindang.cafe.dto.response.dessert.DessertDetailResponseDto;
+import com.POG.julindang.cafe.dto.response.dessert.DessertFindResponseDto;
 import com.POG.julindang.cafe.service.DessertService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,27 +20,56 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cafe/bread")
-@Tag(name = "bread")
+@RequestMapping("/cafe/dessert")
+@Tag(name = "dessert")
 public class DessertController {
-    private final DessertService breadService;
+    private final DessertService dessertService;
 
-    @Operation(summary = "카페 이름으로 빵류 찾기",
-            description = "카페 이름으로 해당 카페에 존재하는 빵류 로드")
-    @GetMapping("/find-bread-names")
-    public ResponseEntity<List<DessertNameResponseDto>> findBreadNamesByCafeName(
-            @RequestParam(name = "cafeName", required = false) String cafeName){
-
-        return new ResponseEntity<>(breadService.findBreadNamesByCafeName(cafeName), HttpStatus.OK);
+    @Operation(summary = "디저트 정보 전체 불러오기",
+            description = "디저트 정보 전체 불러오기")
+    @GetMapping
+    @Parameters({
+            @Parameter(name="page", description = "페이지 수 0 부터 시작"),
+            @Parameter(name="userEmail", description = "유저 이메일 (즐겨찾기 조회용)")
+    })
+    public ResponseEntity<List<DessertFindResponseDto>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                                @RequestParam("userEmail") String userEmail){
+        return new ResponseEntity<>(dessertService.findAll(page, userEmail), HttpStatus.OK);
     }
 
-    @Operation(summary = "카페 이름과 빵류 이름으로 해당 빵류 정보 로드",
-            description = "카페 이름과 빵류 이름으로 해당 빵류 정보의 상세 정보 로드")
-    @GetMapping("/find-bread-details")
-    public ResponseEntity<List<DessertResponseDto>> findBreadDetailsByCafeNameAndBreadName(
-            @RequestParam(name="cafeName", required = false) String cafeName,
-            @RequestParam(name= "dessertName", required = false) String dessertName){
+    @Operation(summary = "디저트 디테일 불러오기",
+            description = "디저트 이름과 카페 이름으로 디테일 불러오기")
+    @GetMapping("/details")
+    @Parameters({
+            @Parameter(name="cafeName", description = "카페 이름"),
+            @Parameter(name="beverageName", description = "디저트 이름")
+    })
+    public ResponseEntity<List<DessertDetailResponseDto>> findByCafeNameAndBeverageName(@RequestParam(value = "cafeName") String cafeName,
+                                                                                        @RequestParam(value = "beverageName") String beverageName){
+        return new ResponseEntity<>(dessertService.findDessertDetails(cafeName, beverageName), HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(breadService.findBreadDetailsByCafeNameAndBreadName(cafeName, dessertName), HttpStatus.OK);
+    @Operation(summary = "카페 이름에 따른 디저트들 불러오기",
+            description = "카페 이름에 따른 디저트들 불러오기")
+    @GetMapping("/by-cafe-name")
+    @Parameters({
+            @Parameter(name="cafeName", description = "카페 이름"),
+            @Parameter(name="userEmail", description = "유저 이메일 (즐겨찾기 조회용)")
+    })
+    public ResponseEntity<List<DessertFindResponseDto>> findByCafeName(@RequestParam(value = "cafeName") String cafeName,
+                                                                       @RequestParam("userEmail") String userEmail){
+        return new ResponseEntity<>(dessertService.findByCafeName(cafeName, userEmail), HttpStatus.OK);
+    }
+
+    @Operation(summary = "디저트 이름에 따른 디저트들 불러오기",
+            description = "디저트 이름에 따른 디저트들 불러오기")
+    @GetMapping("/by-dessert-name")
+    @Parameters({
+            @Parameter(name="beverageName", description = "디저트 이름"),
+            @Parameter(name="userEmail", description = "유저 이메일 (즐겨찾기 조회용)")
+    })
+    public ResponseEntity<List<DessertFindResponseDto>> findByBeverageName(@RequestParam(value = "beverageName") String beverageName,
+                                                                           @RequestParam("userEmail") String userEmail){
+        return new ResponseEntity<>(dessertService.findByDessertName(beverageName, userEmail), HttpStatus.OK);
     }
 }

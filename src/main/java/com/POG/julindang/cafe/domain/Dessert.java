@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "dessert")
@@ -37,6 +39,8 @@ public class Dessert {
     @NotNull
     @Column(name="MANAGER", columnDefinition = "varchar(10)")
     private String manager;
+
+
     public void toggleDeleted(){
         this.deleted = !this.deleted;
     }

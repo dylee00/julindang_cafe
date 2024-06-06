@@ -1,25 +1,30 @@
 package com.POG.julindang.cafe.service;
 
 
-import com.POG.julindang.cafe.domain.Bookmark;
+import com.POG.julindang.cafe.domain.BeverageBookmark;
+import com.POG.julindang.cafe.domain.CafeBookmark;
+import com.POG.julindang.cafe.domain.DessertBookmark;
+import com.POG.julindang.cafe.domain.Member;
 import com.POG.julindang.cafe.dto.request.BookMarkSaveRequestDto;
 import com.POG.julindang.cafe.dto.response.bookmark.BookmarkResponseDto;
-import com.POG.julindang.cafe.dto.response.bookmark.BookmarkCafeNameResponseDto;
-import com.POG.julindang.cafe.dto.response.bookmark.BookmarkProductNameResponseDto;
-import com.POG.julindang.cafe.repository.BookmarkRepository;
+import com.POG.julindang.cafe.repository.*;
 import com.POG.julindang.common.exception.bookmark.BookMarkDoesNotExist;
-import com.POG.julindang.common.exception.bookmark.ProductNameDoesNotExist;
+import com.POG.julindang.common.exception.bookmark.BookmarkAlreadyExist;
+import com.POG.julindang.common.exception.bookmark.BookmarkTypeDoesNotExist;
+import com.POG.julindang.common.exception.bookmark.InvalidBookmarkType;
 import com.POG.julindang.common.exception.cafe.BeverageNameDoesNotExist;
+import com.POG.julindang.common.exception.cafe.CafeDoesNotExist;
 import com.POG.julindang.common.exception.cafe.CafeNameDoesNotExist;
+import com.POG.julindang.common.exception.dessert.DessertNameDoesNotExist;
+import com.POG.julindang.common.exception.user.AccountNotFound;
 import com.POG.julindang.common.exception.user.UserEmailDoesNotExist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 
@@ -29,42 +34,164 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class BookmarkService {
-    private final BookmarkRepository bookmarkRepository;
+    private final CafeBookmarkRepository cafeBookmarkRepository;
+    private final BeverageBookmarkRepository beverageBookmarkRepository;
+    private final DessertBookmarkRepository dessertBookmarkRepository;
+    private final MemberRepository memberRepository;
 
     public BookmarkResponseDto saveBookmark(BookMarkSaveRequestDto bookMarkSaveRequestDto){
+
         String cafeName = bookMarkSaveRequestDto.getCafeName();
-        String productName = bookMarkSaveRequestDto.getProductName();
         String userEmail = bookMarkSaveRequestDto.getUserEmail();
+        Integer type = bookMarkSaveRequestDto.getType();
 
-        if(cafeName == null){
-            throw new CafeNameDoesNotExist();
-        }
-        if(productName == null){
-            throw new ProductNameDoesNotExist();
-        }
-        if(userEmail == null){
-            throw new UserEmailDoesNotExist();
-        }
-        Bookmark result = bookmarkRepository.save(bookMarkSaveRequestDto.toEntity());
+        Member member = memberRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new AccountNotFound(userEmail));
 
-        return new BookmarkResponseDto(result);
+        switch (type){
+            case 0:
+                cafeBookmarkRepository.findByUserEmailAndCafeName(userEmail, cafeName)
+                        .ifPresentOrElse(x -> {
+                            if(x.getDeleted()){
+                                x.toggleDeleted();
+                                cafeBookmarkRepository.save(x);
+                            }
+                            else{
+                                throw new BookmarkAlreadyExist("User Email : " + userEmail + " Cafe Name : " + cafeName);
+                            }
+                        }, ()->{
+                            cafeBookmarkRepository.save(CafeBookmark.builder()
+                                                .cafeName(cafeName)
+                                                .deleted(false)
+                                                .createdAt(LocalDateTime.now())
+                                                .member(member)
+                                                .userEmail(userEmail)
+                                                .build());
+                        });
+
+                break;
+
+            case 1:
+                // 음료 즐찾 저장
+                String beverageName = bookMarkSaveRequestDto.getProductName();
+                beverageBookmarkRepository.findByUserEmailAndCafeNameAndBeverageName(userEmail, cafeName, beverageName)
+                        .ifPresentOrElse(x -> {
+                            if(x.getDeleted()){
+                                x.toggleDeleted();
+                                beverageBookmarkRepository.save(x);
+                            }
+                            else{
+                                throw new BookmarkAlreadyExist("User Email : " + userEmail + " Cafe Name : " + cafeName + " Beverage Name : " + beverageName);
+                            }
+                        }, () ->{
+                            beverageBookmarkRepository.save(BeverageBookmark.builder()
+                                            .beverageName(beverageName)
+                                            .cafeName(cafeName)
+                                            .member(member)
+                                            .createdAt(LocalDateTime.now())
+                                            .deleted(false)
+                                            .userEmail(userEmail)
+                                            .build());
+                        });
+
+                break;
+
+            case 2:
+                String dessertName = bookMarkSaveRequestDto.getProductName();
+                dessertBookmarkRepository.findByUserEmailAndCafeNameAndDessertName(userEmail, cafeName, dessertName)
+                        .ifPresentOrElse(x -> {
+                            if (x.getDeleted()) {
+                                x.toggleDeleted();
+                                dessertBookmarkRepository.save(x);
+                            } else {
+                                throw new BookmarkAlreadyExist("User Email : " + userEmail + " Cafe Name : " + cafeName + " Dessert Name : " + dessertName);
+                            }
+                        }, () -> {
+                            dessertBookmarkRepository.save(DessertBookmark.builder()
+                                    .dessertName(dessertName)
+                                    .cafeName(cafeName)
+                                    .member(member)
+                                    .createdAt(LocalDateTime.now())
+                                    .deleted(false)
+                                    .userEmail(userEmail)
+                                    .build());
+                        });
+
+                break;
+
+            default:
+                throw new InvalidBookmarkType(type);
+
+        }
+        return BookmarkResponseDto.builder()
+                .cafeName(cafeName)
+                .productName(bookMarkSaveRequestDto.getProductName())
+                .userEmail(userEmail)
+                .build();
     }
 
-    public BookmarkResponseDto toggleDeleted(String productName, String cafeName, String userEmail){
-        if(productName == null){
-            throw new BeverageNameDoesNotExist();
-        }
-        if(cafeName == null){
-            throw new CafeNameDoesNotExist();
-        }
-        if(userEmail == null){
-            throw new UserEmailDoesNotExist();
+    public BookmarkResponseDto delete(String productName, String cafeName, String userEmail, Integer type){
+        switch (type){
+            case 0:
+                // 카페 즐찾
+                cafeBookmarkRepository.findByUserEmailAndCafeName(userEmail, cafeName)
+                                .ifPresentOrElse(x ->{
+                                    if(x.getDeleted()){
+                                        throw new BookMarkDoesNotExist("User Email : " + userEmail + " Cafe Name : " + cafeName);
+                                    }
+                                    else{
+                                        x.toggleDeleted();
+                                        cafeBookmarkRepository.save(x);
+                                    }
+                                },
+                                        () -> {
+                                            throw new BookMarkDoesNotExist("User Email : " + userEmail + " Cafe Name : " + cafeName);
+                                        });
+
+                break;
+
+            case 1:
+                // 음료 즐찾
+                beverageBookmarkRepository.findByUserEmailAndCafeNameAndBeverageName(userEmail, cafeName, productName)
+                                .ifPresentOrElse(x -> {
+                                    if (x.getDeleted()) {
+                                        throw new BookMarkDoesNotExist("User Email : " + userEmail + " Cafe Name : " + cafeName + " Beverage Name : " + productName);
+                                    }
+                                    else{
+                                        x.toggleDeleted();
+                                        beverageBookmarkRepository.save(x);
+                                    }
+                                },
+                                        ()-> {
+                                    throw new BookMarkDoesNotExist("User Email : " + userEmail + " Cafe Name : " + cafeName + " Beverage Name : " + productName);
+                                });
+
+
+                break;
+
+            case 2:
+                // 디저트 즐찾
+                dessertBookmarkRepository.findByUserEmailAndCafeNameAndDessertName(userEmail, cafeName, productName)
+                                .ifPresentOrElse(x -> {
+                                    if(x.getDeleted()){
+                                        throw new BookMarkDoesNotExist("User Email : " + userEmail + " Cafe Name : " + cafeName + "Dessert Name : " + productName);
+                                    }
+                                    else{
+                                        x.toggleDeleted();
+                                        dessertBookmarkRepository.save(x);
+                                    }
+                                },
+                                        () -> {
+                                    throw new BookMarkDoesNotExist("User Email : " + userEmail + " Cafe Name : " + cafeName + "Dessert Name : " + productName);
+                                });
+
+                break;
+
+            default:
+                throw new InvalidBookmarkType(type);
+
         }
 
-        Bookmark result = bookmarkRepository.findByCafeNameAndProductNameAndUserEmail(cafeName, productName, userEmail)
-                .orElseThrow(()-> new BookMarkDoesNotExist(cafeName + " " + productName + " " + userEmail));
-
-        result.toggleDeleted();
 
         return BookmarkResponseDto.builder()
                 .userEmail(userEmail)
@@ -74,56 +201,4 @@ public class BookmarkService {
 
     }
 
-    public List<BookmarkResponseDto> findAllByUserEmail(String userEmail){
-        if(userEmail == null){
-            throw new UserEmailDoesNotExist();
-        }
-        List<Bookmark> result = bookmarkRepository.findAllByUserEmail(userEmail);
-
-        return result.stream()
-                .map(BookmarkResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<BookmarkCafeNameResponseDto> findBookmarkedCafeNamesByUserEmail(String userEmail){
-        if(userEmail == null){
-            throw new UserEmailDoesNotExist();
-        }
-        AtomicLong id = new AtomicLong(0);
-        List<BookmarkCafeNameResponseDto> result = new ArrayList<>();
-        List<String> cafeNames = bookmarkRepository.findDistinctCafeNameByUserEmail(userEmail);
-        for (String cafeName : cafeNames) {
-            BookmarkCafeNameResponseDto build = BookmarkCafeNameResponseDto.builder()
-                    .id(id.getAndIncrement())
-                    .cafeName(cafeName)
-                    .build();
-
-            result.add(build);
-        }
-        return result;
-    }
-
-    public List<BookmarkProductNameResponseDto> findBookmarkedProductNamesByCafeNameAndUserEmail(String cafeName, String userEmail){
-        if(userEmail == null){
-            throw new UserEmailDoesNotExist();
-        }
-        if(cafeName == null){
-            throw new CafeNameDoesNotExist();
-        }
-
-        AtomicLong id = new AtomicLong(0);
-        List<BookmarkProductNameResponseDto> result = new ArrayList<>();
-        List<String> productNames = bookmarkRepository.findDistinctProductNameByUserEmailAndCafeName(userEmail, cafeName);
-
-        for (String productName : productNames) {
-            BookmarkProductNameResponseDto build = BookmarkProductNameResponseDto.builder()
-                    .id(id.getAndIncrement())
-                    .productName(productName)
-                    .build();
-
-            result.add(build);
-        }
-
-        return result;
-    }
 }

@@ -1,13 +1,13 @@
 package com.POG.julindang.cafe.service;
 
-import com.POG.julindang.cafe.domain.Cafe;
-import com.POG.julindang.cafe.dto.response.cafe.BeverageNameGetterResponseDto;
-import com.POG.julindang.cafe.dto.response.cafe.BeverageNameResponseDto;
-import com.POG.julindang.cafe.dto.response.cafe.CafeResponseDto;
-import com.POG.julindang.cafe.dto.response.cafe.CafeNameResponseDto;
-import com.POG.julindang.cafe.repository.CafeRepository;
-import com.POG.julindang.common.exception.cafe.BeverageNameDoesNotExist;
-import com.POG.julindang.common.exception.cafe.CafeNameDoesNotExist;
+
+import com.POG.julindang.cafe.domain.CafeImage;
+import com.POG.julindang.cafe.dto.response.cafe.CafeFindResponseDto;
+
+import com.POG.julindang.cafe.repository.CafeImageRepository;
+
+import com.POG.julindang.common.exception.cafe.CafeDoesNotExist;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,78 +23,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 public class CafeService {
-    private final CafeRepository cafeRepository;
+    private final CafeImageRepository cafeImageRepository;
 
-    public List<CafeResponseDto> findByCafeName(String cafeName) {
-        if(cafeName == null){
-            throw new CafeNameDoesNotExist();
-        }
-        List<Cafe> result = cafeRepository.findByCafeName(cafeName);
 
-        return result.stream()
-                .map(CafeResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<CafeResponseDto> findByBeverageName(String beverageName) {
-        if(beverageName == null){
-            throw new BeverageNameDoesNotExist();
-        }
-        List<Cafe> result = cafeRepository.findByBeverageName(beverageName);
+    // 카페 정보 불러오기
+    public List<CafeFindResponseDto> findCafeNames(){
+        List<CafeImage> result = cafeImageRepository.findAll();
 
         return result.stream()
-                .map(CafeResponseDto::new)
+                .map(CafeFindResponseDto::new)
                 .collect(Collectors.toList());
     }
-
-    public List<CafeResponseDto> findCafeDetailsByCafeNameAndBeverageName(String cafeName, String beverageName) {
-        if(cafeName == null){
-            throw new CafeNameDoesNotExist();
-        }
-        if(beverageName == null){
-            throw new BeverageNameDoesNotExist();
-        }
-
-        List<Cafe> cafes = cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName);
-
-        return cafes.stream()
-                .map(CafeResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
-    public List<BeverageNameResponseDto> findBeverageName(String cafeName){
-        if(cafeName == null){
-            throw new CafeNameDoesNotExist();
-        }
-
-        AtomicLong id = new AtomicLong(0);
-        List<BeverageNameGetterResponseDto> distinctByCafeNameUsingNative = cafeRepository.findDistinctByCafeNameUsingNative(cafeName);
-        List<BeverageNameResponseDto> result = new ArrayList<>();
-
-        for (BeverageNameGetterResponseDto beverageNameGetterResponseDto : distinctByCafeNameUsingNative) {
-            BeverageNameResponseDto build = BeverageNameResponseDto.builder().id(id.getAndIncrement())
-                    .beverageName(beverageNameGetterResponseDto.getBeverageName())
-                    .minSugar(beverageNameGetterResponseDto.getMinSugar())
-                    .maxSugar(beverageNameGetterResponseDto.getMaxSugar())
-                    .build();
-
-            result.add(build);
-        }
-        return result;
-
-    }
-
-    public List<CafeNameResponseDto> findCafeName(){
-        AtomicLong id = new AtomicLong(0);
-        List<String> cafeNames = cafeRepository.findDistinctCafeName();
-        List<CafeNameResponseDto> result = new ArrayList<>();
-
-        for (String cafeName : cafeNames) {
-            CafeNameResponseDto build = CafeNameResponseDto.builder()
-                    .id(id.getAndIncrement())
-                    .cafeName(cafeName).build();
-            result.add(build);
-        }
-        return result;
+    // 카페 검색
+    public CafeFindResponseDto findByCafeName(String cafeName){
+        CafeImage result = cafeImageRepository.findByCafeName(cafeName).orElseThrow(() -> new CafeDoesNotExist(cafeName));
+        return CafeFindResponseDto.builder()
+                .cafeName(result.getCafeName())
+                .url(result.getUrl())
+                .build();
     }
 }

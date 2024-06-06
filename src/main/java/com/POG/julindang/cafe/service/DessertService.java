@@ -2,11 +2,10 @@ package com.POG.julindang.cafe.service;
 
 
 import com.POG.julindang.cafe.domain.Dessert;
-import com.POG.julindang.cafe.dto.response.dessert.DessertNameResponseDto;
-import com.POG.julindang.cafe.dto.response.dessert.DessertResponseDto;
+import com.POG.julindang.cafe.dto.response.dessert.DessertFindResponseDto;
+import com.POG.julindang.cafe.dto.response.dessert.DessertDetailResponseDto;
 import com.POG.julindang.cafe.repository.DessertRepository;
-import com.POG.julindang.common.exception.dessert.DessertNameDoesNotExist;
-import com.POG.julindang.common.exception.cafe.CafeNameDoesNotExist;
+import com.POG.julindang.cafe.vo.DessertNameVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,35 +21,42 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DessertService {
     private final DessertRepository dessertRepository;
-
-    public List<DessertNameResponseDto> findBreadNamesByCafeName(String cafeName){
-        List<Dessert> breadNamesByCafeName = dessertRepository.findBreadNamesByCafeName(cafeName);
-        AtomicLong id = new AtomicLong(0);
-        List<DessertNameResponseDto> result = new ArrayList<>();
-        for (Dessert bread : breadNamesByCafeName) {
-            DessertNameResponseDto build = DessertNameResponseDto.builder()
-                    .id(id.getAndIncrement())
-                    .dessertName(bread.getDessertName())
-                    .build();
-            result.add(build);
-        }
-
-        return result;
+    // 디저트 정보 전체 불러오기
+    // 디저트 디테일 불러오기
+    // 카페 이름에 따른 디저트 정보 불러오기
+    // 디저트 이름에 따른 디저트 정보 불러오기
+    private final Integer size = 10;
+    public List<DessertFindResponseDto> findAll(Integer page, String userEmail){
+        Integer offset = page * size;
+        return getDessertNameResponseDto(dessertRepository.findAll(size, offset, userEmail));
     }
 
-    public List<DessertResponseDto> findBreadDetailsByCafeNameAndBreadName(String cafeName, String dessertName){
-        if(cafeName == null){
-            throw new CafeNameDoesNotExist();
-        }
+    public List<DessertFindResponseDto> findByCafeName(String cafeName, String userEmail){
+        return getDessertNameResponseDto(dessertRepository.findByCafeName(cafeName, userEmail));
+    }
+    public List<DessertFindResponseDto> findByDessertName(String dessertName, String userEmail){
+        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertName, userEmail));
+    }
 
-        if(dessertName==null){
-            throw new DessertNameDoesNotExist();
-        }
-
-        List<Dessert> result = dessertRepository.findBreadByCafeNameAndDessertName(cafeName, dessertName);
-
+    public List<DessertDetailResponseDto> findDessertDetails(String cafeName, String dessertName){
+        List<Dessert> result = dessertRepository.findByCafeNameAndDessertName(cafeName, dessertName);
         return result.stream()
-                .map(DessertResponseDto::new)
+                .map(DessertDetailResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    private List<DessertFindResponseDto> getDessertNameResponseDto(List<DessertNameVo> find){
+        List<DessertFindResponseDto> result = new ArrayList<>();
+        for (DessertNameVo dessertNameVo : find) {
+            result.add(DessertFindResponseDto.builder()
+                    .dessertName(dessertNameVo.getDessertName())
+                    .url(dessertNameVo.getUrl())
+                    .cafeName(dessertNameVo.getCafeName())
+                    .maxSugar(dessertNameVo.getMaxSugar())
+                    .minSugar(dessertNameVo.getMinSugar())
+                    .bookmarked(dessertNameVo.getBookmarked())
+                    .build());
+        }
+        return result;
     }
 }

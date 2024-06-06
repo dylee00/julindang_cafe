@@ -11,11 +11,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BookmarkProductNameResponseDto {
     private Long id;
-    private String productName;
 
     @Builder
-    public BookmarkProductNameResponseDto(Long id, String productName) {
+    public BookmarkProductNameResponseDto(Long id) {
         this.id = id;
-        this.productName = productName;
     }
 }

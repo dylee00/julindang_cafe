@@ -6,42 +6,29 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.context.annotation.Bean;
 
 @Entity
+@Table(name="dessert_image")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Topping {
+public class DessertImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TOPPING_ID")
+    @Column(name = "IMAGE_ID")
     private Long id;
 
     @NotNull
-    private String toppingName;
-
-    @NotNull
-    private Double sugar;
-
-    @NotNull
-    private Double calorie;
-
-    @NotNull
-    @Column
+    @Column(columnDefinition = "varchar(30)")
     private String cafeName;
 
     @NotNull
-    private String beverageName;
+    @Column(columnDefinition = "varchar(50)")
+    private String dessertName;
 
-    @NotNull
-    @ColumnDefault("false")
-    private Boolean deleted;
-
-    @NotNull
-    private String manager;
+    @Column(columnDefinition = "text")
+    private String url;
 
 
 }

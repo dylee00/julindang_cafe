@@ -17,7 +17,7 @@ public class SwaggerConfig {
 
     @Bean
     public GroupedOpenApi cafeOpenApi() {
-        String[] paths = {"/cafe/**", "/topping/**", "/bookmark/**"};
+        String[] paths = {"/cafe/**", "/topping/**", "/bookmark/**", "/beverage/**"};
         return GroupedOpenApi.builder()
                 .group("카페 API v1")  // 그룹 이름을 설정한다.
                 .pathsToMatch(paths)     // 그룹에 속하는 경로 패턴을 지정한다.

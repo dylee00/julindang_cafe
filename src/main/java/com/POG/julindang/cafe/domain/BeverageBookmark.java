@@ -1,34 +1,27 @@
 package com.POG.julindang.cafe.domain;
 
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "bookmark")
+@Table(name = "beverage_bookmark")
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Bookmark {
-
-    /**
-     * TODO : 이거 domain 수정 방안좀 생각하자
-     *
-     */
-
+@SQLDelete(sql = "UPDATE beverage_bookmark SET deleted = true WHERE id = ?")
+public class BeverageBookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "BOOKMARK_ID")
+    @Column(name = "id")
     private Long id;
 
     @NotNull
@@ -40,8 +33,8 @@ public class Bookmark {
     private String cafeName;
 
     @NotNull
-    @Column(name="PRODUCT_NAME", columnDefinition = "varchar(50)")
-    private String productName;
+    @Column(name="BEVERAGE_NAME", columnDefinition = "varchar(30)")
+    private String beverageName;
 
     @NotNull
     @Column(name="DELETED", columnDefinition = "tinyint")
@@ -55,6 +48,7 @@ public class Bookmark {
     @ManyToOne
     @JoinColumn(name="member_id")
     private Member member;
+
 
     public void toggleDeleted(){
         this.deleted = !this.deleted;
