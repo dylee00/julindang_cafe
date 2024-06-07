@@ -16,17 +16,17 @@ import lombok.NoArgsConstructor;
 public class BeverageImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IMAGE_ID")
+    @Column(name = "BEVERAGE_IMAGE_ID")
     private Long id;
 
     @NotNull
-    @Column(columnDefinition = "varchar(30)")
+    @Column(name = "cafe_name", columnDefinition = "varchar(30)")
     private String cafeName;
 
     @NotNull
-    @Column(columnDefinition = "varchar(50)")
+    @Column(name = "beverage_name", columnDefinition = "varchar(50)")
     private String beverageName;
 
-    @Column(columnDefinition = "text")
+    @Column(name = "url", columnDefinition = "text")
     private String url;
 }

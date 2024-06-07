@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
 public class CafeImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IMAGE_ID")
+    @Column(name = "CAFE_IMAGE_ID")
     private Long id;
 
     @NotNull
-    @Column(columnDefinition = "varchar(30)")
+    @Column(name = "cafe_name", columnDefinition = "varchar(30)")
     private String cafeName;
 
     @Column(columnDefinition = "text")
