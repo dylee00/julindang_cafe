@@ -11,10 +11,4 @@ import lombok.Setter;
 public class BookmarkCafeNameResponseDto {
     private Long id;
     private String cafeName;
-
-    @Builder
-    public BookmarkCafeNameResponseDto(Long id, String cafeName) {
-        this.id = id;
-        this.cafeName = cafeName;
-    }
 }

@@ -107,7 +107,6 @@ public class BookmarkService {
         return BookmarkResponseDto.builder()
                 .cafeName(cafeName)
                 .productName(bookMarkSaveRequestDto.getProductName())
-                .userEmail(JwtUtil.getEmail())
                 .build();
     }
 
@@ -175,7 +174,6 @@ public class BookmarkService {
 
 
         return BookmarkResponseDto.builder()
-                .userEmail(JwtUtil.getEmail())
                 .productName(productName)
                 .cafeName(cafeName)
                 .build();

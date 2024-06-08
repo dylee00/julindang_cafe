@@ -10,8 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class BookmarkResponseDto {
-    private String userEmail;
     private String cafeName;
     private String productName;
-
 }

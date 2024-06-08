@@ -11,9 +11,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BookmarkProductNameResponseDto {
     private Long id;
-
-    @Builder
-    public BookmarkProductNameResponseDto(Long id) {
-        this.id = id;
-    }
 }
