@@ -30,14 +30,12 @@ public class BookmarkController {
     @Parameters({
                     @Parameter(name = "productName", description = "제품 이름"),
                     @Parameter(name="cafeName", description = "카페 이름"),
-                    @Parameter(name="userEmail", description = "유저 이메일"),
                     @Parameter(name="type", description = "즐겨찾기 타입 [ 0 : 카페 브렌드 즐겨찾기(이때는 productName 불필요), 1 : 음료 즐겨찾기 (모든 파라미터 필요), 2 : 디저트 즐겨찾기 (모든 파라미터 필요) ]")
             })
     public ResponseEntity<BookmarkResponseDto> toggleDeleted(@RequestParam(name="productName", required = false) String productName,
                                                              @RequestParam(name="cafeName", required = false) String cafeName,
-                                                             @RequestParam(name="userEmail", required = false) String userEmail,
                                                              @RequestParam(name="type", required = false) Integer type){
-        return new ResponseEntity<>(bookmarkService.delete(productName, cafeName, userEmail, type), HttpStatus.OK);
+        return new ResponseEntity<>(bookmarkService.delete(productName, cafeName, type), HttpStatus.OK);
     }
     @Operation(summary = "즐겨찾기 저장",
             description = "즐겨찾기 정보를 저장")

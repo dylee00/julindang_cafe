@@ -45,11 +45,6 @@ public class DessertBookmark {
     @Column(name="CREATED_AT", columnDefinition = "datetime")
     private LocalDateTime createdAt;
 
-    @ManyToOne
-    @JoinColumn(name="member_id")
-    private Member member;
-
-
     public void toggleDeleted(){
         this.deleted = !this.deleted;
     }

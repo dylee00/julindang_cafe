@@ -5,6 +5,7 @@ import com.POG.julindang.cafe.domain.Dessert;
 import com.POG.julindang.cafe.dto.response.dessert.DessertFindResponseDto;
 import com.POG.julindang.cafe.dto.response.dessert.DessertDetailResponseDto;
 import com.POG.julindang.cafe.repository.DessertRepository;
+import com.POG.julindang.cafe.util.JwtUtil;
 import com.POG.julindang.cafe.vo.DessertNameVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,21 +22,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DessertService {
     private final DessertRepository dessertRepository;
-    // 디저트 정보 전체 불러오기
-    // 디저트 디테일 불러오기
-    // 카페 이름에 따른 디저트 정보 불러오기
-    // 디저트 이름에 따른 디저트 정보 불러오기
-    private final Integer size = 10;
-    public List<DessertFindResponseDto> findAll(Integer page, String userEmail){
+
+    public List<DessertFindResponseDto> findAll(Integer page){
+        // 디저트 정보 전체 불러오기
+        // 디저트 디테일 불러오기
+        // 카페 이름에 따른 디저트 정보 불러오기
+        // 디저트 이름에 따른 디저트 정보 불러오기
+        Integer size = 10;
         Integer offset = page * size;
-        return getDessertNameResponseDto(dessertRepository.findAll(size, offset, userEmail));
+        return getDessertNameResponseDto(dessertRepository.findAll(size, offset, JwtUtil.getEmail()));
     }
 
-    public List<DessertFindResponseDto> findByCafeName(String cafeName, String userEmail){
-        return getDessertNameResponseDto(dessertRepository.findByCafeName(cafeName, userEmail));
+    public List<DessertFindResponseDto> findByCafeName(String cafeName){
+        return getDessertNameResponseDto(dessertRepository.findByCafeName(cafeName, JwtUtil.getEmail()));
     }
-    public List<DessertFindResponseDto> findByDessertName(String dessertName, String userEmail){
-        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertName, userEmail));
+    public List<DessertFindResponseDto> findByDessertName(String dessertName){
+        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertName, JwtUtil.getEmail()));
     }
 
     public List<DessertDetailResponseDto> findDessertDetails(String cafeName, String dessertName){
