@@ -24,8 +24,7 @@ import java.util.List;
 @Tag(name = "bookmark")
 public class BookmarkController {
     private final BookmarkService bookmarkService;
-    @Operation(summary = "즐겨찾기 삭제",
-            description = "해당 즐겨찾기 정보를 삭제(토글)")
+    @Operation(description = "해당 즐겨찾기 정보를 삭제(토글)")
     @DeleteMapping("/delete")
     @Parameters({
                     @Parameter(name = "productName", description = "제품 이름"),
@@ -37,8 +36,7 @@ public class BookmarkController {
                                                              @RequestParam(name="type", required = false) Integer type){
         return new ResponseEntity<>(bookmarkService.delete(productName, cafeName, type), HttpStatus.OK);
     }
-    @Operation(summary = "즐겨찾기 저장",
-            description = "즐겨찾기 정보를 저장")
+    @Operation(description = "즐겨찾기 정보를 저장")
     @PostMapping("/save")
     public ResponseEntity<BookmarkResponseDto> saveBookmark(@RequestBody BookMarkSaveRequestDto bookMarkSaveRequestDto){
         return new ResponseEntity<>(bookmarkService.saveBookmark(bookMarkSaveRequestDto), HttpStatus.CREATED);

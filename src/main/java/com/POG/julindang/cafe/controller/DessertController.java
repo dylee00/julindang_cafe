@@ -25,8 +25,7 @@ import java.util.List;
 public class DessertController {
     private final DessertService dessertService;
 
-    @Operation(summary = "디저트 정보 전체 불러오기",
-            description = "디저트 정보 전체 불러오기")
+    @Operation(description = "디저트 정보 전체 불러오기")
     @GetMapping
     @Parameters({
             @Parameter(name="page", description = "페이지 수 0 부터 시작")
@@ -35,8 +34,7 @@ public class DessertController {
         return new ResponseEntity<>(dessertService.findAll(page), HttpStatus.OK);
     }
 
-    @Operation(summary = "디저트 디테일 불러오기",
-            description = "디저트 이름과 카페 이름으로 디테일 불러오기")
+    @Operation(description = "디저트 이름과 카페 이름으로 디테일 불러오기")
     @GetMapping("/details")
     @Parameters({
             @Parameter(name="cafeName", description = "카페 이름"),
@@ -47,8 +45,7 @@ public class DessertController {
         return new ResponseEntity<>(dessertService.findDessertDetails(cafeName, beverageName), HttpStatus.OK);
     }
 
-    @Operation(summary = "카페 이름에 따른 디저트들 불러오기",
-            description = "카페 이름에 따른 디저트들 불러오기")
+    @Operation(description = "카페 이름에 따른 디저트들 불러오기")
     @GetMapping("/by-cafe-name")
     @Parameters({
             @Parameter(name="cafeName", description = "카페 이름"),
@@ -58,8 +55,7 @@ public class DessertController {
         return new ResponseEntity<>(dessertService.findByCafeName(cafeName), HttpStatus.OK);
     }
 
-    @Operation(summary = "디저트 이름에 따른 디저트들 불러오기",
-            description = "디저트 이름에 따른 디저트들 불러오기")
+    @Operation(description = "디저트 이름에 따른 디저트들 불러오기")
     @GetMapping("/by-dessert-name")
     @Parameters({
             @Parameter(name="beverageName", description = "디저트 이름"),

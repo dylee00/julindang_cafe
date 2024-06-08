@@ -20,16 +20,14 @@ import java.util.List;
 public class CafeController {
     private final CafeService cafeService;
 
-    @Operation(summary = "카페 이름을 통해 탐색 카페 탐색",
-            description = "카페이름 like 연산자")
+    @Operation(description = "카페이름 like 연산자")
     @GetMapping("/search")
     public ResponseEntity<List<CafeResponseDto>> findByCafeName(@RequestParam(name = "query", required = false) String cafeName){
         return new ResponseEntity<>(cafeService.findByCafeName(cafeName), HttpStatus.OK);
     }
 
 
-    @Operation(summary = "카페 이름 리턴",
-            description = "모든 카페 정보(isLike: 1은 좋아요) 리턴")
+    @Operation(description = "모든 카페 정보(isLike: 1은 좋아요) 리턴")
     @GetMapping
     public ResponseEntity<List<CafeLikeResponseDto>> findCafeNames(){
         return new ResponseEntity<>(cafeService.findCafeNames(), HttpStatus.OK);

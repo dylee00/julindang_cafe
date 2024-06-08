@@ -2,6 +2,7 @@ package com.POG.julindang.cafe.controller;
 
 import com.POG.julindang.cafe.dto.response.beverage.BeverageDetailResponseDto;
 import com.POG.julindang.cafe.dto.response.beverage.BeverageFindResponseDto;
+import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
 import com.POG.julindang.cafe.service.BeverageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,18 +25,7 @@ import java.util.List;
 public class BeverageController {
     private final BeverageService beverageService;
 
-    @Operation(summary = "음료 정보 전체 불러오기",
-            description = "음료 정보 전체 불러오기")
-    @GetMapping
-    @Parameters({
-            @Parameter(name="page", description = "페이지 수 0 부터 시작")
-    })
-    public ResponseEntity<List<BeverageFindResponseDto>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page){
-        return new ResponseEntity<>(beverageService.findAll(page), HttpStatus.OK);
-    }
-
-    @Operation(summary = "음료 디테일 불러오기",
-            description = "음료 이름과 카페 이름으로 디테일 불러오기")
+    @Operation(description = "음료 이름과 카페 이름으로 디테일 불러오기")
     @GetMapping("/details")
     @Parameters({
             @Parameter(name="cafeName", description = "카페 이름"),
@@ -47,8 +37,7 @@ public class BeverageController {
         return new ResponseEntity<>(beverageService.findBeverageDetails(cafeName, beverageName), HttpStatus.OK);
     }
 
-    @Operation(summary = "카페 이름에 따른 음료들 불러오기",
-            description = "카페 이름에 따른 음료들 불러오기")
+    @Operation(description = "카페 이름에 따른 음료들 불러오기")
     @GetMapping("/by-cafe-name")
     @Parameters({
             @Parameter(name="cafeName", description = "카페 이름")
@@ -57,13 +46,18 @@ public class BeverageController {
         return new ResponseEntity<>(beverageService.findByCafeName(cafeName), HttpStatus.OK);
     }
 
-    @Operation(summary = "음료 이름에 따른 음료들 불러오기",
-            description = "음료 이름에 따른 음료들 불러오기")
+    @Operation(description = "음료 이름에 따른 음료들 불러오기")
     @GetMapping("/by-beverage-name")
     @Parameters({
             @Parameter(name="beverageName", description = "음료 이름")
     })
     public ResponseEntity<List<BeverageFindResponseDto>> findByBeverageName(@RequestParam(value = "beverageName") String beverageName){
-        return new ResponseEntity<>(beverageService.findByBeverageName(beverageName), HttpStatus.OK);
+        return ResponseEntity.ok(beverageService.findByBeverageName(beverageName));
+    }
+
+    @Operation(description = "홈 화면의 음료/디저트 항목들")
+    @GetMapping("/all")
+    public ResponseEntity<List<CommonResponseDto>> findAll(){
+        return ResponseEntity.ok(null);
     }
 }
