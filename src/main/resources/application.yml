@@ -13,7 +13,7 @@ spring:
     password: ${DB_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
-    show-sql: false
+    show-sql: true
     generate-ddl: false
     database: mysql
     hibernate:
