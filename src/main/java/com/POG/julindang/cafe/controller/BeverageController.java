@@ -4,6 +4,7 @@ import com.POG.julindang.cafe.dto.response.beverage.BeverageDetailResponseDto;
 import com.POG.julindang.cafe.dto.response.beverage.BeverageFindResponseDto;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
 import com.POG.julindang.cafe.service.BeverageService;
+import com.POG.julindang.cafe.service.DessertService;
 import com.POG.julindang.common.exception.beverage.ParameterInvalidException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,6 +26,7 @@ import java.util.List;
 @Tag(name = "beverage")
 public class BeverageController {
     private final BeverageService beverageService;
+    private final DessertService dessertService;
 
     @Operation(description = "음료 이름과 카페 이름으로 디테일 불러오기")
     @GetMapping("/details")
@@ -64,7 +66,7 @@ public class BeverageController {
         else if (type == 1)
             return ResponseEntity.ok(beverageService.getBeverageList(sort));
         else if (type == 2) {
-            return null;
+            return ResponseEntity.ok(dessertService.getDessertList(sort));
         }
         else throw new ParameterInvalidException("Parameter type can be 0 or 1 or 2, but type: " + type);
     }

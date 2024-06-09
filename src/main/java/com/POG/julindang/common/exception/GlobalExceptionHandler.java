@@ -1,5 +1,6 @@
 package com.POG.julindang.common.exception;
 
+import com.POG.julindang.common.exception.beverage.ParameterInvalidException;
 import com.POG.julindang.common.exception.bookmark.BookMarkDoesNotExist;
 import com.POG.julindang.common.exception.bookmark.BookmarkAlreadyExist;
 import com.POG.julindang.common.exception.bookmark.BookmarkTypeDoesNotExist;
@@ -104,5 +105,16 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
+    }
+
+    @ExceptionHandler(ParameterInvalidException.class)
+    public ResponseEntity<ApiErrorResponse> handleException(ParameterInvalidException ex){
+        return new ResponseEntity<>(
+                new ApiErrorResponse(
+                        "JEC-012",
+                        ex.getMessage()
+                ),
+                HttpStatus.BAD_REQUEST
+        );
     }
 }
