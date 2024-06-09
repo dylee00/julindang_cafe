@@ -3,9 +3,11 @@ package com.POG.julindang.cafe.service;
 import com.POG.julindang.cafe.domain.Cafe;
 import com.POG.julindang.cafe.dto.response.beverage.BeverageDetailResponseDto;
 import com.POG.julindang.cafe.dto.response.beverage.BeverageFindResponseDto;
+import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
 import com.POG.julindang.cafe.repository.CafeRepository;
 import com.POG.julindang.cafe.util.JwtUtil;
 import com.POG.julindang.cafe.vo.BeverageNameVo;
+import com.POG.julindang.common.exception.beverage.ParameterInvalidException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -58,5 +60,18 @@ public class BeverageService {
                     .build());
         }
         return result;
+    }
+
+    public List<CommonResponseDto> getBeverageList(Long sort) {
+        List<CommonResponseDto> beverages = new ArrayList<>();
+
+        // response from repository with max 10 sugar
+        if(sort == 0)
+            beverages = cafeRepository.getMaxSugarBeverageDesc();
+        else if(sort == 1)
+            beverages = cafeRepository.getMaxSugarBeverageAsc();
+        else throw new ParameterInvalidException("Parameter sort can be 0 or 1 but sort: " + sort);
+
+        return beverages;
     }
 }
