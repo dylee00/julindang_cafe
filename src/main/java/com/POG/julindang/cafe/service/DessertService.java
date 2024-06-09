@@ -66,7 +66,7 @@ public class DessertService {
 
     public List<CommonResponseDto> getDessertList(Long sort) {
         if(sort == 0)
-            return dessertRepository.getDesserListDesc();
+            return dessertRepository.getDessertListDesc();
         else if(sort == 1)
             return dessertRepository.findDessertListAsc();
         else

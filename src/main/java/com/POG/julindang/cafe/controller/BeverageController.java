@@ -4,6 +4,7 @@ import com.POG.julindang.cafe.dto.response.beverage.BeverageDetailResponseDto;
 import com.POG.julindang.cafe.dto.response.beverage.BeverageFindResponseDto;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
 import com.POG.julindang.cafe.service.BeverageService;
+import com.POG.julindang.cafe.service.CafeService;
 import com.POG.julindang.cafe.service.DessertService;
 import com.POG.julindang.common.exception.beverage.ParameterInvalidException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +28,7 @@ import java.util.List;
 public class BeverageController {
     private final BeverageService beverageService;
     private final DessertService dessertService;
+    private final CafeService cafeService;
 
     @Operation(description = "음료 이름과 카페 이름으로 디테일 불러오기")
     @GetMapping("/details")
@@ -62,7 +64,7 @@ public class BeverageController {
     @GetMapping("/all")
     public ResponseEntity<List<CommonResponseDto>> findAll(@RequestParam Long type, @RequestParam Long sort){
         if (type == 0)
-            return null;
+            return ResponseEntity.ok(cafeService.getBeveragesAndDesserts(sort));
         else if (type == 1)
             return ResponseEntity.ok(beverageService.getBeverageList(sort));
         else if (type == 2) {

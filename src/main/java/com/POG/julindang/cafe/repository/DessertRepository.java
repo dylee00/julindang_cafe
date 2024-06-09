@@ -135,7 +135,7 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "  dessert_bookmark db ON td.name = db.dessert_name AND td.cafe_name = db.cafe_name " +
             "ORDER BY " +
             "  td.min_sugar DESC")
-    public List<CommonResponseDto> getDesserListDesc();
+    public List<CommonResponseDto> getDessertListDesc();
 
 
     /**

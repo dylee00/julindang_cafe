@@ -121,7 +121,7 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "  tb.min_sugar as minSugar, " +
             "  tb.max_sugar as maxSugar, " +
             "  CASE " +
-            "    WHEN bb.beverage_name IS NOT NULL THEN 1 " +
+            "    WHEN bb.beverage_name IS NOT NULL and bb.member_id = :memberId THEN 1 " +
             "    ELSE 0 " +
             "  END AS isLiked " +
             "FROM " +
@@ -132,7 +132,7 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "  beverage_bookmark bb ON tb.name = bb.beverage_name AND tb.cafe_name = bb.cafe_name " +
             "ORDER BY " +
             "  tb.min_sugar DESC")
-    public List<CommonResponseDto> getMaxSugarBeverageDesc();
+    public List<CommonResponseDto> getMaxSugarBeverageDesc(@Param("memberId") Long memberId);
 
     /**
      * 음료 중 당이 제일 높은 10개 가져오기 => 중복 제거 + 최소 최대 구하기 오름차순
