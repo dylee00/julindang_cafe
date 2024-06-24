@@ -11,6 +11,7 @@ import lombok.*;
 @Builder
 public class DessertFindResponseDto {
     private String dessertName;
+    private Long dessertId;
     private Double maxSugar;
     private Double minSugar;
     private String cafeName;

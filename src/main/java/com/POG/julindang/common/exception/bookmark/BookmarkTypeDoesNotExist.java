@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Getter
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class BookmarkTypeDoesNotExist extends RuntimeException{
-    public BookmarkTypeDoesNotExist() {
-        super();
+    String message;
+    public BookmarkTypeDoesNotExist(String message) {
+        super(message);
+        this.message = message;
     }
 }

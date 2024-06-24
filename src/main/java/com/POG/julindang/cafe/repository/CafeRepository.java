@@ -12,21 +12,23 @@ import java.util.List;
 
 @Repository
 public interface CafeRepository extends JpaRepository <Cafe, Long>{
+
     @Query(nativeQuery = true, value = "select c.beverage_name as beverageName, " +
             "MIN(c.sugar) as minSugar, " +
             "MAX(c.sugar) as maxSugar, " +
             "MIN(i.url) as url, " +
             "c.cafe_name as cafeName, " +
+            "c.cafe_id as cafeId, " +
             "case when b.user_email is not null then true else false end as bookmarked " +
             "from cafe as c " +
             "left join beverage_image as i " +
             "on i.beverage_name = c.beverage_name " +
             "left join beverage_bookmark as b " +
-            "on c.beverage_name = (select b.beverage_name where b.user_email = :userEmail) " +
+            "on c.beverage_name = b.beverage_name and b.user_email = :userEmail " +
             "where c.deleted = false and c.cafe_name=:cafeName " +
-            "group by b.user_email, c.cafe_name, c.beverage_name " +
-            "order by count is null, count desc " +
-            "limit :limit offset :offset")
+            "group by b.user_email, c.cafe_name, c.beverage_name, c.cafe_id " +
+            "order by bookmarked DESC, c.beverage_name ASC " +
+            "limit 10")
     public List<BeverageNameVo> findByCafeName(@Param("cafeName") String cafeName, @Param("userEmail") String userEmail);
 
     @Query(nativeQuery = true, value = "select c.beverage_name as beverageName, " +
@@ -34,16 +36,17 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "MAX(c.sugar) as maxSugar, " +
             "MIN(i.url) as url, " +
             "c.cafe_name as cafeName, " +
+            "c.cafe_id as cafeId, " +
             "case when b.user_email is not null then true else false end as bookmarked " +
             "from cafe as c " +
             "left join beverage_image as i " +
             "on i.beverage_name = c.beverage_name " +
             "left join beverage_bookmark as b " +
-            "on c.beverage_name = (select b.beverage_name where b.user_email = :userEmail) " +
-            "where c.deleted = false and c.beverage_name=:beverageName" +
-            "group by b.user_email, c.cafe_name, c.beverage_name " +
-            "order by count is null, count desc " +
-            "limit :limit offset :offset")
+            "on c.beverage_name = b.beverage_name and b.user_email = :userEmail " +
+            "where c.deleted = false and c.beverage_name=:beverageName " +
+            "group by b.user_email, c.cafe_name, c.beverage_name, c.cafe_id " +
+            "order by bookmarked DESC, c.beverage_name ASC " +
+            "limit 10")
     public List<BeverageNameVo> findByBeverageName(@Param("beverageName") String beverageName, @Param("userEmail") String userEmail);
 
     @Query("select c from Cafe c where c.cafeName=:cafeName and c.beverageName=:beverageName and c.deleted=false")
@@ -121,7 +124,7 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "  tb.min_sugar as minSugar, " +
             "  tb.max_sugar as maxSugar, " +
             "  CASE " +
-            "    WHEN bb.beverage_name IS NOT NULL and bb.member_id = :memberId THEN 1 " +
+            "    WHEN bb.beverage_name IS NOT NULL THEN 1 " +
             "    ELSE 0 " +
             "  END AS isLiked " +
             "FROM " +
@@ -132,7 +135,7 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "  beverage_bookmark bb ON tb.name = bb.beverage_name AND tb.cafe_name = bb.cafe_name " +
             "ORDER BY " +
             "  tb.min_sugar DESC")
-    public List<CommonResponseDto> getMaxSugarBeverageDesc(@Param("memberId") Long memberId);
+    public List<CommonResponseDto> getMaxSugarBeverageDesc();
 
     /**
      * 음료 중 당이 제일 높은 10개 가져오기 => 중복 제거 + 최소 최대 구하기 오름차순

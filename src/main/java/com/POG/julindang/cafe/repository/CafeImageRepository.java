@@ -12,8 +12,8 @@ import java.util.List;
 
 @Repository
 public interface CafeImageRepository extends JpaRepository<CafeImage, Long> {
-    @Query(nativeQuery = true, value = "select cafe_name cafeName, url from cafe_image where cafe_name like CONCAT('%', :query, '%')")
-    List<CafeResponseDto> getCafeName(@Param("query") String query);
+    @Query(nativeQuery = true, value = "select ci.cafe_name cafeName, ci.url from cafe_image ci where ci.cafe_name =:cafeName ")
+    List<CafeResponseDto> getCafeName(@Param("cafeName") String cafeName);
 
     @Query(nativeQuery = true, value = "SELECT " +
             "ci.cafe_name cafeName, " +
@@ -29,5 +29,22 @@ public interface CafeImageRepository extends JpaRepository<CafeImage, Long> {
             "ON " +
             "ci.cafe_name = cb.cafe_name " +
             "order by cafeName")
-    public List<CafeLikeResponseDto> getAllCafeImages();
+    List<CafeLikeResponseDto> getAllCafeImages();
+
+    @Query(nativeQuery = true, value = "SELECT " +
+            "ci.cafe_name cafeName, " +
+            "ci.url, " +
+            "CASE " +
+            "WHEN cb.cafe_name IS NOT NULL THEN TRUE " +
+            "ELSE FALSE " +
+            "END AS isLiked " +
+            "FROM " +
+            "cafe_image ci " +
+            "LEFT JOIN " +
+            "cafe_bookmark cb " +
+            "ON " +
+            "ci.cafe_name = cb.cafe_name " +
+            "WHERE cb.user_email = :userEmail " + // 특정 사용자의 북마크만 필터링
+            "ORDER BY cafeName")
+    List<CafeLikeResponseDto> getLikedCafeImages(@Param("userEmail") String userEmail);
 }

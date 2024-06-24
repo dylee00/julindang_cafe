@@ -4,15 +4,14 @@ import com.POG.julindang.cafe.dto.response.beverage.BeverageDetailResponseDto;
 import com.POG.julindang.cafe.dto.response.beverage.BeverageFindResponseDto;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
 import com.POG.julindang.cafe.service.BeverageService;
-import com.POG.julindang.cafe.service.CafeService;
-import com.POG.julindang.cafe.service.DessertService;
+import com.POG.julindang.cafe.service.CafeServiceImpl;
+import com.POG.julindang.cafe.service.DessertServiceImpl;
 import com.POG.julindang.common.exception.beverage.ParameterInvalidException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +26,10 @@ import java.util.List;
 @Tag(name = "beverage")
 public class BeverageController {
     private final BeverageService beverageService;
-    private final DessertService dessertService;
-    private final CafeService cafeService;
+    private final DessertServiceImpl dessertServiceImpl;
+    private final CafeServiceImpl cafeService;
 
+    //카페 + 음료 상세 정보
     @Operation(description = "음료 이름과 카페 이름으로 디테일 불러오기")
     @GetMapping("/details")
     @Parameters({
@@ -39,16 +39,17 @@ public class BeverageController {
     })
     public ResponseEntity<List<BeverageDetailResponseDto>> findByCafeNameAndBeverageName(@RequestParam(value = "cafeName") String cafeName,
                                                                                          @RequestParam(value = "beverageName") String beverageName){
-        return new ResponseEntity<>(beverageService.findBeverageDetails(cafeName, beverageName), HttpStatus.OK);
+        return ResponseEntity.ok(beverageService.findBeverageDetails(cafeName, beverageName));
     }
 
+    //카페이름 + 음료 -> 조건: 즐겨찾기 나오고 가나다순 정렬
     @Operation(description = "카페 이름에 따른 음료들 불러오기")
     @GetMapping("/by-cafe-name")
     @Parameters({
             @Parameter(name="cafeName", description = "카페 이름")
     })
     public ResponseEntity<List<BeverageFindResponseDto>> findByCafeName(@RequestParam(value = "cafeName") String cafeName){
-        return new ResponseEntity<>(beverageService.findByCafeName(cafeName), HttpStatus.OK);
+        return ResponseEntity.ok(beverageService.findByCafeName(cafeName));
     }
 
     @Operation(description = "음료 이름에 따른 음료들 불러오기")
@@ -68,7 +69,7 @@ public class BeverageController {
         else if (type == 1)
             return ResponseEntity.ok(beverageService.getBeverageList(sort));
         else if (type == 2) {
-            return ResponseEntity.ok(dessertService.getDessertList(sort));
+            return ResponseEntity.ok(dessertServiceImpl.getDessertList(sort));
         }
         else throw new ParameterInvalidException("Parameter type can be 0 or 1 or 2, but type: " + type);
     }

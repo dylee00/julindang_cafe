@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class BeverageFindResponseDto {
     private String beverageName;
+    private Long cafeId;
     private Double maxSugar;
     private Double minSugar;
     private String cafeName;

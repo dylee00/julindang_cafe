@@ -21,7 +21,7 @@ public class Dessert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DESSERT_ID")
-    private Long id;
+    private Long dessertId;
     @NotNull
     @Column(name="DESSERT_NAME", columnDefinition = "varchar(50)")
     private String dessertName;

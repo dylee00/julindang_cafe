@@ -18,7 +18,7 @@ public class Cafe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CAFE_ID")
-    private Long id;
+    private Long cafeId;
     @NotNull
     @Column(name="CAFE_NAME", columnDefinition = "varchar(30)", length = 30)
     private String cafeName;

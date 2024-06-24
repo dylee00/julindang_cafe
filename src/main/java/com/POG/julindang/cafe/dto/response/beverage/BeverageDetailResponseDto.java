@@ -13,6 +13,8 @@ import java.util.List;
 public class BeverageDetailResponseDto {
     private String cafeName;
 
+    private Long cafeId;
+
     private String beverageName;
 
     private String size;
@@ -25,15 +27,4 @@ public class BeverageDetailResponseDto {
 
     private Boolean temperature;
 
-
-
-    public BeverageDetailResponseDto(Cafe cafe) {
-        this.cafeName = cafe.getCafeName();
-        this.beverageName = cafe.getBeverageName();
-        this.size = cafe.getSize();
-        this.serve = cafe.getServe();
-        this.sugar = cafe.getSugar();
-        this.calorie = cafe.getCalorie();
-        this.temperature = cafe.getTemperature();
-    }
 }
