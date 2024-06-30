@@ -25,8 +25,7 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "on d.dessert_name = b.dessert_name and b.user_email = :userEmail " +
             "where d.deleted=false " +
             "group by b.user_email, d.dessert_name, d.cafe_name, d.dessert_id " +
-            "order by bookmarked desc , bookmarked asc " +
-            "limit 10")
+            "order by bookmarked desc , bookmarked asc")
     List<DessertNameVo> findAll(@Param("userEmail") String userEmail);
 
     @Query("select d from Dessert d where d.cafeName=:cafeName and d.dessertName=:dessertName and d.deleted=false")
@@ -37,37 +36,28 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "MAX(d.sugar) as maxSugar, " +
             "MIN(i.url) as url, " +
             "d.cafe_name as cafeName, " +
-            "d.dessert_id as dessertId, " +
-            "case when b.user_email is not null then true else false end as bookmarked " +
+            "d.dessert_id as dessertId " +
             "from dessert as d " +
             "left join dessert_image as i " +
             "on i.dessert_name=d.dessert_name " +
-            "left join dessert_bookmark as b " +
-            "on d.dessert_name = b.dessert_name and b.user_email = :userEmail " +
-            "where d.deleted = false and d.cafe_name=:cafeName " +
-            "group by b.user_email, d.dessert_name, d.cafe_name, d.dessert_id " +
-            "order by bookmarked desc, d.dessert_name asc " +
-            "limit 10 ")
-    public List<DessertNameVo> findByCafeName(@Param("cafeName") String cafeName, @Param("userEmail") String userEmail);
-
+            "where d.deleted = false and match(d.cafe_name) against(:cafeName IN BOOLEAN MODE) " +
+            "group by d.dessert_name, d.cafe_name, d.dessert_id " +
+            "order by d.dessert_name asc ")
+    public List<DessertNameVo> findByCafeName(@Param("cafeName") String cafeName);
 
     @Query(nativeQuery = true, value = "select d.dessert_name as dessertName, " +
             "MIN(d.sugar) as minSugar, " +
             "MAX(d.sugar) as maxSugar, " +
             "MIN(i.url) as url, " +
             "d.cafe_name as cafeName, " +
-            "d.dessert_id as dessertId, " +
-            "case when b.user_email is not null then true else false end as bookmarked " +
+            "d.dessert_id as dessertId " +
             "from dessert as d " +
             "left join dessert_image as i " +
             "on i.dessert_name=d.dessert_name " +
-            "left join dessert_bookmark as b " +
-            "on d.dessert_name = b.dessert_name and b.user_email = :userEmail " +
-            "where d.deleted=false and d.dessertName=:dessertName " +
-            "group by b.user_email, d.dessert_name, d.cafe_name, d.dessert_id " +
-            "order by bookmarked is null, bookmarked desc " +
-            "limit 10 ")
-    List<DessertNameVo> findByDessertName(@Param("dessertName") String dessertName, @Param("userEmail") String userEmail);
+            "where d.deleted=false and match(d.dessert_name) against(:dessertName IN BOOLEAN MODE) " +
+            "group by d.dessert_name, d.cafe_name, d.dessert_id " +
+            "order by d.dessert_name asc ")
+    List<DessertNameVo> findByDessertName(@Param("dessertName") String dessertName);
 
     /**
      * 당류 높은 순 10개 가져오기

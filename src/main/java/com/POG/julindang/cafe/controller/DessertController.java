@@ -56,9 +56,9 @@ public class DessertController {
     @Operation(description = "디저트 이름에 따른 디저트들 불러오기")
     @GetMapping("/by-dessert-name")
     @Parameters({
-            @Parameter(name="beverageName", description = "디저트 이름"),
+            @Parameter(name="dessertName", description = "디저트 이름"),
     })
-    public ResponseEntity<List<DessertFindResponseDto>> findByBeverageName(@RequestParam(value = "beverageName") String beverageName){
-        return ResponseEntity.ok(dessertService.findByDessertName(beverageName));
+    public ResponseEntity<List<DessertFindResponseDto>> findByDessertName(@RequestParam(value = "dessertName") String dessertName){
+        return ResponseEntity.ok(dessertService.findByDessertName(dessertName));
     }
 }

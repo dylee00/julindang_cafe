@@ -28,14 +28,16 @@ public class BeverageServiceImpl implements BeverageService {
     @Override
     @Transactional(readOnly = true)
     public List<BeverageFindResponseDto> findByCafeName(String cafeName){
-        return getBeverageFindResponseDto(cafeRepository.findByCafeName(cafeName, JwtUtil.getEmail()));
+        String cafeNameWithWildcards = "+" + cafeName + "*";
+        return getBeverageFindResponseDto(cafeRepository.findByCafeName(cafeNameWithWildcards));
     }
 
     //음료 이름에 따른 음료들 불러오기
     @Override
     @Transactional(readOnly = true)
     public List<BeverageFindResponseDto> findByBeverageName(String beverageName){
-        return getBeverageFindResponseDto(cafeRepository.findByBeverageName(beverageName, JwtUtil.getEmail()));
+        String beverageNameWithWildcards = "+" + beverageName + "*";
+        return getBeverageFindResponseDto(cafeRepository.findByBeverageName(beverageNameWithWildcards));
     }
 
     private List<BeverageFindResponseDto> getBeverageFindResponseDto(List<BeverageNameVo> find){

@@ -26,7 +26,8 @@ public class DessertServiceImpl implements DessertService {
     @Override
     @Transactional(readOnly = true)
     public List<DessertFindResponseDto> findByCafeName(String cafeName){
-        return getDessertNameResponseDto(dessertRepository.findByCafeName(cafeName, JwtUtil.getEmail()));
+        String cafeNameWithWildcards = "+" + cafeName + "*";
+        return getDessertNameResponseDto(dessertRepository.findByCafeName(cafeNameWithWildcards));
     }
 
     @Override
@@ -52,15 +53,16 @@ public class DessertServiceImpl implements DessertService {
 
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<DessertFindResponseDto> findAll(){
         return getDessertNameResponseDto(dessertRepository.findAll(JwtUtil.getEmail()));
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<DessertFindResponseDto> findByDessertName(String dessertName){
-        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertName, JwtUtil.getEmail()));
+        String dessertNameWithWildcards = "+" + dessertName + "*";
+        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertNameWithWildcards));
     }
 
     private List<DessertFindResponseDto> getDessertNameResponseDto(List<DessertNameVo> find){

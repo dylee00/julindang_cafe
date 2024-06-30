@@ -18,36 +18,28 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "MAX(c.sugar) as maxSugar, " +
             "MIN(i.url) as url, " +
             "c.cafe_name as cafeName, " +
-            "c.cafe_id as cafeId, " +
-            "case when b.user_email is not null then true else false end as bookmarked " +
+            "c.cafe_id as cafeId " +
             "from cafe as c " +
             "left join beverage_image as i " +
             "on i.beverage_name = c.beverage_name " +
-            "left join beverage_bookmark as b " +
-            "on c.beverage_name = b.beverage_name and b.user_email = :userEmail " +
-            "where c.deleted = false and c.cafe_name=:cafeName " +
-            "group by b.user_email, c.cafe_name, c.beverage_name, c.cafe_id " +
-            "order by bookmarked DESC, c.beverage_name ASC " +
-            "limit 10")
-    public List<BeverageNameVo> findByCafeName(@Param("cafeName") String cafeName, @Param("userEmail") String userEmail);
+            "where c.deleted = false and match(c.cafe_name) against (:cafeName IN BOOLEAN MODE) " +
+            "group by c.cafe_name, c.beverage_name, c.cafe_id " +
+            "order by c.beverage_name ASC")
+    public List<BeverageNameVo> findByCafeName(@Param("cafeName") String cafeName);
 
     @Query(nativeQuery = true, value = "select c.beverage_name as beverageName, " +
             "MIN(c.sugar) as minSugar, " +
             "MAX(c.sugar) as maxSugar, " +
             "MIN(i.url) as url, " +
             "c.cafe_name as cafeName, " +
-            "c.cafe_id as cafeId, " +
-            "case when b.user_email is not null then true else false end as bookmarked " +
+            "c.cafe_id as cafeId " +
             "from cafe as c " +
             "left join beverage_image as i " +
             "on i.beverage_name = c.beverage_name " +
-            "left join beverage_bookmark as b " +
-            "on c.beverage_name = b.beverage_name and b.user_email = :userEmail " +
-            "where c.deleted = false and c.beverage_name=:beverageName " +
-            "group by b.user_email, c.cafe_name, c.beverage_name, c.cafe_id " +
-            "order by bookmarked DESC, c.beverage_name ASC " +
-            "limit 10")
-    public List<BeverageNameVo> findByBeverageName(@Param("beverageName") String beverageName, @Param("userEmail") String userEmail);
+            "where c.deleted = false and match(c.beverage_name) against (:beverageName IN BOOLEAN MODE) " +
+            "group by c.cafe_name, c.beverage_name, c.cafe_id " +
+            "order by c.beverage_name ASC")
+    public List<BeverageNameVo> findByBeverageName(@Param("beverageName") String beverageName);
 
     @Query("select c from Cafe c where c.cafeName=:cafeName and c.beverageName=:beverageName and c.deleted=false")
     public List<Cafe> findByCafeNameAndBeverageName(@Param("cafeName") String cafeName, @Param("beverageName") String beverageName);
