@@ -44,7 +44,24 @@ public interface CafeImageRepository extends JpaRepository<CafeImage, Long> {
             "cafe_bookmark cb " +
             "ON " +
             "ci.cafe_name = cb.cafe_name " +
-            "WHERE cb.user_email = :userEmail " + // 특정 사용자의 북마크만 필터링
+            "WHERE cb.member_id = :memberId " + // 특정 사용자의 북마크만 필터링
             "ORDER BY cafeName")
-    List<CafeLikeResponseDto> getLikedCafeImages(@Param("userEmail") String userEmail);
+    List<CafeLikeResponseDto> getLikedCafeImages(@Param("memberId") Long memberId);
+
+    @Query(nativeQuery = true, value = "SELECT " +
+            "ci.cafe_name cafeName, " +
+            "ci.url, " +
+            "CASE " +
+            "WHEN cb.cafe_name IS NOT NULL THEN TRUE " +
+            "ELSE FALSE " +
+            "END AS isLiked " +
+            "FROM " +
+            "cafe_image ci " +
+            "LEFT JOIN " +
+            "cafe_bookmark cb " +
+            "ON " +
+            "ci.cafe_name = cb.cafe_name AND cb.member_id =:memberId " +
+            "WHERE cb.cafe_name IS NULL " +
+            "order by cafeName")
+    List<CafeLikeResponseDto> getNotLikedCafeImages(@Param("memberId") Long memberId);
 }

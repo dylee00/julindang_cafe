@@ -28,16 +28,18 @@ public class BeverageServiceImpl implements BeverageService {
     @Override
     @Transactional(readOnly = true)
     public List<BeverageFindResponseDto> findByCafeName(String cafeName){
+        Long memberId = JwtUtil.getMemberId();
         String cafeNameWithWildcards = "+" + cafeName + "*";
-        return getBeverageFindResponseDto(cafeRepository.findByCafeName(cafeNameWithWildcards));
+        return getBeverageFindResponseDto(cafeRepository.findByCafeName(cafeNameWithWildcards, memberId));
     }
 
     //음료 이름에 따른 음료들 불러오기
     @Override
     @Transactional(readOnly = true)
     public List<BeverageFindResponseDto> findByBeverageName(String beverageName){
+        Long memberId = JwtUtil.getMemberId();
         String beverageNameWithWildcards = "+" + beverageName + "*";
-        return getBeverageFindResponseDto(cafeRepository.findByBeverageName(beverageNameWithWildcards));
+        return getBeverageFindResponseDto(cafeRepository.findByBeverageName(beverageNameWithWildcards, memberId));
     }
 
     private List<BeverageFindResponseDto> getBeverageFindResponseDto(List<BeverageNameVo> find){
@@ -47,8 +49,7 @@ public class BeverageServiceImpl implements BeverageService {
                     .beverageName(beverageNameVo.getBeverageName())
                     .cafeId(beverageNameVo.getCafeId())
                     .url(beverageNameVo.getUrl())
-                    .maxSugar(beverageNameVo.getMaxSugar())
-                    .minSugar(beverageNameVo.getMinSugar())
+                    .sugar(beverageNameVo.getSugar())
                     .cafeName(beverageNameVo.getCafeName())
                     .bookmarked(beverageNameVo.getBookmarked())
                     .build());

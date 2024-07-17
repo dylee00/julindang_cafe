@@ -33,8 +33,8 @@ public class CafeController {
     }
 
 
-    //즐겨찾기 + 나머지 리턴
-    @Operation(description = "모든 카페 정보(isLike: 1은 좋아요) 리턴")
+    //모든 카페 리턴
+    @Operation(description = "모든 카페 정보 리턴")
     @GetMapping
     public ResponseEntity<List<CafeLikeResponseDto>> findCafeNames(){
         return ResponseEntity.ok(cafeService.findCafeNames());
@@ -46,4 +46,13 @@ public class CafeController {
     public ResponseEntity<List<CafeLikeResponseDto>> findCafeNamesByBookmark() {
         return ResponseEntity.ok(cafeService.findCafeNamesByBookmark());
     }
+
+    //즐겨찾기 하지 않은 카페 리턴
+    @Operation(description = "즐겨찾기 하지 않은 카페 리턴")
+    @GetMapping("/all")
+    public ResponseEntity<List<CafeLikeResponseDto>> findCafeNamesByNotBookmark() {
+        return ResponseEntity.ok(cafeService.findCafeNamesByNotBookmark());
+    }
+
+
 }

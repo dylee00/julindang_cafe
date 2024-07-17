@@ -13,5 +13,8 @@ public interface CafeService {
 
     public List<CafeLikeResponseDto> findCafeNamesByBookmark();
 
+    public List<CafeLikeResponseDto> findCafeNamesByNotBookmark();
+
     public List<CommonResponseDto> getBeveragesAndDesserts(Long sort);
+
 }

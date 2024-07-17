@@ -20,8 +20,8 @@ public class DessertBookmark{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-
     private Long id;
+
     @NotNull
     @Column(name="user_email", columnDefinition = "varchar(30)")
     private String userEmail;
@@ -45,5 +45,8 @@ public class DessertBookmark{
     @NotNull
     @Column(name="deleted", columnDefinition = "tinyint")
     private Boolean deleted;
+
+    @Column(name = "dessert_id", columnDefinition = "bigint")
+    private Long dessertId;
 
 }

@@ -21,8 +21,8 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
-public class CafeServiceImpl implements CafeService {
+public class
+CafeServiceImpl implements CafeService {
     private final CafeImageRepository cafeImageRepository;
     private final CafeRepository cafeRepository;
     private final DessertRepository dessertRepository;
@@ -30,22 +30,30 @@ public class CafeServiceImpl implements CafeService {
 
     // 카페 정보 불러오기
     @Override
+    @Transactional(readOnly = true)
     public List<CafeLikeResponseDto> findCafeNames(){
         return cafeImageRepository.getAllCafeImages();
     }
 
     // 카페 검색
     @Override
+    @Transactional(readOnly = true)
     public List<CafeResponseDto> findByCafeName(String cafeName){
         return cafeImageRepository.getCafeName(cafeName);
     }
 
     //즐겨찾기 한 카페
-
-
     @Override
+    @Transactional(readOnly = true)
     public List<CafeLikeResponseDto> findCafeNamesByBookmark() {
-        return cafeImageRepository.getLikedCafeImages(JwtUtil.getEmail());
+        return cafeImageRepository.getLikedCafeImages(JwtUtil.getMemberId());
+    }
+
+    //즐겨찾기 하지 않은 카페
+    @Override
+    @Transactional(readOnly = true)
+    public List<CafeLikeResponseDto> findCafeNamesByNotBookmark() {
+        return cafeImageRepository.getNotLikedCafeImages(JwtUtil.getMemberId());
     }
 
     @Override

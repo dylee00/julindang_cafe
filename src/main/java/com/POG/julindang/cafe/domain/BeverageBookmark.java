@@ -46,4 +46,7 @@ public class BeverageBookmark{
     @Column(name="deleted", columnDefinition = "tinyint")
     private Boolean deleted;
 
+    @Column(name = "beverage_id", columnDefinition = "bigint")
+    private Long beverageId;
+
 }

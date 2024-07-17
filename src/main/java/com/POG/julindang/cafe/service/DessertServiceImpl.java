@@ -26,8 +26,9 @@ public class DessertServiceImpl implements DessertService {
     @Override
     @Transactional(readOnly = true)
     public List<DessertFindResponseDto> findByCafeName(String cafeName){
+        Long memberId = JwtUtil.getMemberId();
         String cafeNameWithWildcards = "+" + cafeName + "*";
-        return getDessertNameResponseDto(dessertRepository.findByCafeName(cafeNameWithWildcards));
+        return getDessertNameResponseDto(dessertRepository.findByCafeName(cafeNameWithWildcards,memberId));
     }
 
     @Override
@@ -61,8 +62,9 @@ public class DessertServiceImpl implements DessertService {
     @Override
     @Transactional(readOnly = true)
     public List<DessertFindResponseDto> findByDessertName(String dessertName){
+        Long memberId = JwtUtil.getMemberId();
         String dessertNameWithWildcards = "+" + dessertName + "*";
-        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertNameWithWildcards));
+        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertNameWithWildcards,memberId));
     }
 
     private List<DessertFindResponseDto> getDessertNameResponseDto(List<DessertNameVo> find){
@@ -73,8 +75,7 @@ public class DessertServiceImpl implements DessertService {
                     .dessertId(dessertNameVo.getDessertId())
                     .url(dessertNameVo.getUrl())
                     .cafeName(dessertNameVo.getCafeName())
-                    .maxSugar(dessertNameVo.getMaxSugar())
-                    .minSugar(dessertNameVo.getMinSugar())
+                    .sugar(dessertNameVo.getSugar())
                     .bookmarked(dessertNameVo.getBookmarked())
                     .build());
         }

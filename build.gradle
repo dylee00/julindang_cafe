@@ -44,6 +44,10 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 	implementation group: 'com.auth0', name: 'java-jwt', version: '3.1.0'
+
+	// ByteBuddy 의존성 추가
+	implementation 'net.bytebuddy:byte-buddy:1.12.8'
+	implementation 'net.bytebuddy:byte-buddy-agent:1.12.8'
 }
 dependencyManagement {
 	imports {

@@ -12,37 +12,42 @@ import java.util.List;
 
 @Repository
 public interface CafeRepository extends JpaRepository <Cafe, Long>{
+    @Query(nativeQuery = true, value = "SELECT c.beverage_name AS beverageName, " +
+            "i.url AS url, " +
+            "c.cafe_name AS cafeName, " +
+            "c.cafe_id AS cafeId, " +
+            "c.sugar AS sugar, " +
+            "CASE " +
+            "  WHEN c.beverage_name IN (SELECT bb.beverage_name FROM beverage_bookmark AS bb WHERE bb.member_id = :memberId) " +
+            "  THEN 'true' " +
+            "  ELSE 'false' " +
+            "END AS bookmarked " +
+            "FROM cafe AS c " +
+            "LEFT JOIN beverage_image AS i " +
+            "ON i.beverage_name = c.beverage_name AND i.cafe_name = c.cafe_name " +
+            "WHERE c.deleted = false AND MATCH(c.cafe_name) AGAINST (:cafeName IN BOOLEAN MODE) " +
+            "ORDER BY c.beverage_name ")
+    List<BeverageNameVo> findByCafeName(@Param("cafeName") String cafeName, @Param("memberId")Long memberId);
 
     @Query(nativeQuery = true, value = "select c.beverage_name as beverageName, " +
-            "MIN(c.sugar) as minSugar, " +
-            "MAX(c.sugar) as maxSugar, " +
-            "MIN(i.url) as url, " +
-            "c.cafe_name as cafeName, " +
-            "c.cafe_id as cafeId " +
-            "from cafe as c " +
-            "left join beverage_image as i " +
-            "on i.beverage_name = c.beverage_name " +
-            "where c.deleted = false and match(c.cafe_name) against (:cafeName IN BOOLEAN MODE) " +
-            "group by c.cafe_name, c.beverage_name, c.cafe_id " +
-            "order by c.beverage_name ASC")
-    public List<BeverageNameVo> findByCafeName(@Param("cafeName") String cafeName);
-
-    @Query(nativeQuery = true, value = "select c.beverage_name as beverageName, " +
-            "MIN(c.sugar) as minSugar, " +
-            "MAX(c.sugar) as maxSugar, " +
-            "MIN(i.url) as url, " +
-            "c.cafe_name as cafeName, " +
-            "c.cafe_id as cafeId " +
-            "from cafe as c " +
-            "left join beverage_image as i " +
-            "on i.beverage_name = c.beverage_name " +
-            "where c.deleted = false and match(c.beverage_name) against (:beverageName IN BOOLEAN MODE) " +
-            "group by c.cafe_name, c.beverage_name, c.cafe_id " +
-            "order by c.beverage_name ASC")
-    public List<BeverageNameVo> findByBeverageName(@Param("beverageName") String beverageName);
+            "i.url AS url, " +
+            "c.cafe_name AS cafeName, " +
+            "c.cafe_id AS cafeId, " +
+            "c.sugar AS sugar, " +
+            "CASE " +
+            "  WHEN c.beverage_name IN (SELECT bb.beverage_name FROM beverage_bookmark AS bb WHERE bb.member_id = :memberId) " +
+            "  THEN 'true' " +
+            "  ELSE 'false' " +
+            "END AS bookmarked " +
+            "FROM cafe AS c " +
+            "LEFT JOIN beverage_image AS i " +
+            "ON i.beverage_name = c.beverage_name AND i.cafe_name = c.cafe_name " +
+            "WHERE c.deleted = false AND MATCH(c.beverage_name) AGAINST (:beverageName IN BOOLEAN MODE) " +
+            "ORDER BY c.beverage_name ")
+    List<BeverageNameVo> findByBeverageName(@Param("beverageName") String beverageName,@Param("memberId")Long memberId);
 
     @Query("select c from Cafe c where c.cafeName=:cafeName and c.beverageName=:beverageName and c.deleted=false")
-    public List<Cafe> findByCafeNameAndBeverageName(@Param("cafeName") String cafeName, @Param("beverageName") String beverageName);
+    List<Cafe> findByCafeNameAndBeverageName(@Param("cafeName") String cafeName, @Param("beverageName") String beverageName);
 
     @Query(nativeQuery = true,
             value = "select c.beverage_name as beverageName, " +
@@ -60,13 +65,13 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
                     "group by b.user_email, c.cafe_name, c.beverage_name " +
                     "order by count is null, count desc " +
                     "limit :limit offset :offset")
-    public List<BeverageNameVo> findAllBeverageNames(@Param("limit") Integer limit, @Param("offset") Integer offset, @Param("userEmail") String userEmail);
+    List<BeverageNameVo> findAllBeverageNames(@Param("limit") Integer limit, @Param("offset") Integer offset, @Param("userEmail") String userEmail);
 
     @Query(nativeQuery = true, value = "SELECT *" +
             "FROM dessert " +
             "ORDER BY sugar DESC " +
             "LIMIT 10")
-    public List<CommonResponseDto> getMaxSugarDessert();
+    List<CommonResponseDto> getMaxSugarDessert();
 
     /**
      * 음료 중 당이 제일 높은 10개 가져오기 => 중복 제거 + 최소 최대 구하기 내림차순

@@ -4,9 +4,8 @@ package com.POG.julindang.cafe.vo;
 public interface DessertNameVo {
     String getDessertName();
     Long getDessertId();
-    Double getMinSugar();
-    Double getMaxSugar();
+    Double getSugar();
     String getUrl();
     String getCafeName();
-    Integer getBookmarked();
+    String getBookmarked();
 }

@@ -11,9 +11,8 @@ import lombok.*;
 public class BeverageFindResponseDto {
     private String beverageName;
     private Long cafeId;
-    private Double maxSugar;
-    private Double minSugar;
+    private Double sugar;
     private String cafeName;
     private String url;
-    private Integer bookmarked;
+    private String bookmarked;
 }

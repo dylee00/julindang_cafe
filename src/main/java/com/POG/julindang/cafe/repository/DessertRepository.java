@@ -32,32 +32,36 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
     List<Dessert> findByCafeNameAndDessertName(@Param("cafeName") String cafeName, @Param("dessertName") String dessertName);
 
     @Query(nativeQuery = true, value = "select d.dessert_name as dessertName, " +
-            "MIN(d.sugar) as minSugar, " +
-            "MAX(d.sugar) as maxSugar, " +
-            "MIN(i.url) as url, " +
+            "i.url AS url, " +
             "d.cafe_name as cafeName, " +
-            "d.dessert_id as dessertId " +
+            "d.dessert_id as dessertId, " +
+            "d.sugar as sugar, " +
+            "CASE " +
+            "  WHEN d.dessert_name IN (SELECT db.dessert_name FROM dessert_bookmark AS db WHERE db.member_id = :memberId) " +
+            "  THEN 'true' " +
+            "  ELSE 'false' " +
+            "END AS bookmarked " +
             "from dessert as d " +
-            "left join dessert_image as i " +
-            "on i.dessert_name=d.dessert_name " +
+            "left join dessert_image as i ON i.dessert_name = d.dessert_name AND i.cafe_name = d.cafe_name " +
             "where d.deleted = false and match(d.cafe_name) against(:cafeName IN BOOLEAN MODE) " +
-            "group by d.dessert_name, d.cafe_name, d.dessert_id " +
-            "order by d.dessert_name asc ")
-    public List<DessertNameVo> findByCafeName(@Param("cafeName") String cafeName);
+            "order by d.dessert_name ")
+    List<DessertNameVo> findByCafeName(@Param("cafeName") String cafeName, @Param("memberId")Long memberId);
 
     @Query(nativeQuery = true, value = "select d.dessert_name as dessertName, " +
-            "MIN(d.sugar) as minSugar, " +
-            "MAX(d.sugar) as maxSugar, " +
-            "MIN(i.url) as url, " +
+            "i.url AS url, " +
             "d.cafe_name as cafeName, " +
-            "d.dessert_id as dessertId " +
+            "d.dessert_id as dessertId, " +
+            "d.sugar as sugar, " +
+            "CASE " +
+            "  WHEN d.dessert_name IN (SELECT db.dessert_name FROM dessert_bookmark AS db WHERE db.member_id = :memberId) " +
+            "  THEN 'true' " +
+            "  ELSE 'false' " +
+            "END AS bookmarked " +
             "from dessert as d " +
-            "left join dessert_image as i " +
-            "on i.dessert_name=d.dessert_name " +
-            "where d.deleted=false and match(d.dessert_name) against(:dessertName IN BOOLEAN MODE) " +
-            "group by d.dessert_name, d.cafe_name, d.dessert_id " +
+            "left join dessert_image as i ON i.dessert_name = d.dessert_name AND i.cafe_name = d.cafe_name " +
+            "where d.deleted = false and match(d.dessert_name) against(:dessertName IN BOOLEAN MODE) " +
             "order by d.dessert_name asc ")
-    List<DessertNameVo> findByDessertName(@Param("dessertName") String dessertName);
+    List<DessertNameVo> findByDessertName(@Param("dessertName") String dessertName, @Param("memberId")Long memberId);
 
     /**
      * 당류 높은 순 10개 가져오기
