@@ -1,6 +1,7 @@
 package com.POG.julindang.cafe.service;
 
 
+import com.POG.julindang.cafe.dto.response.beverage.BeverageAndDessertListDto;
 import com.POG.julindang.cafe.dto.response.cafe.CafeLikeResponseDto;
 import com.POG.julindang.cafe.dto.response.cafe.CafeResponseDto;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
@@ -57,12 +58,16 @@ CafeServiceImpl implements CafeService {
     }
 
     @Override
-    public List<CommonResponseDto> getBeveragesAndDesserts(Long sort) {
+    public BeverageAndDessertListDto getBeveragesAndDesserts(Long sort) {
+
+        List<CommonResponseDto> beverages;
+        List<CommonResponseDto> desserts;
+
         if(sort == 0) {
             //get beverages
-            List<CommonResponseDto> beverages = cafeRepository.getMaxSugarBeverageDesc();
+            beverages = cafeRepository.getMaxSugarBeverageDesc();
             //get desserts
-            List<CommonResponseDto> desserts = dessertRepository.getDessertListDesc();
+            desserts = dessertRepository.getDessertListDesc();
 
             // 두 리스트를 합친다
             List<CommonResponseDto> combinedList = new ArrayList<>();
@@ -70,16 +75,16 @@ CafeServiceImpl implements CafeService {
             combinedList.addAll(beverages);
 
             // sugar 값에 따라 내림차순으로 정렬하고 상위 10개를 선택한다
-            return combinedList.stream()
+            List<CommonResponseDto> sortedList =  combinedList.stream()
                     .sorted(Comparator.comparing(CommonResponseDto::getMinSugar).reversed())
                     .limit(10)
                     .toList();
         }
         else if(sort == 1) {
             //get beverages
-            List<CommonResponseDto> beverages = cafeRepository.getMaxSugarBeverageAsc();
+            beverages = cafeRepository.getMaxSugarBeverageAsc();
             //get desserts
-            List<CommonResponseDto> desserts = dessertRepository.findDessertListAsc();
+            desserts = dessertRepository.findDessertListAsc();
 
             // 두 리스트를 합친다
             List<CommonResponseDto> combinedList = new ArrayList<>();
@@ -87,7 +92,7 @@ CafeServiceImpl implements CafeService {
             combinedList.addAll(beverages);
 
             // sugar 값에 따라 내림차순으로 정렬하고 상위 10개를 선택한다
-            return combinedList.stream()
+            List<CommonResponseDto> sortedList =  combinedList.stream()
                     .sorted(Comparator.comparing(CommonResponseDto::getMinSugar))
                     .limit(10)
                     .toList();
@@ -95,6 +100,11 @@ CafeServiceImpl implements CafeService {
         else {
             throw new ParameterInvalidException("Parameter sort can be 0 or 1, but sort is " + sort);
         }
+        return BeverageAndDessertListDto.builder()
+                .beverages(beverages)
+                .desserts(desserts)
+                .build();
+
     }
 
 }

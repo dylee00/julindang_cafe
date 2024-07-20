@@ -1,5 +1,6 @@
 package com.POG.julindang.cafe.service;
 
+import com.POG.julindang.cafe.dto.response.beverage.BeverageAndDessertListDto;
 import com.POG.julindang.cafe.dto.response.cafe.CafeLikeResponseDto;
 import com.POG.julindang.cafe.dto.response.cafe.CafeResponseDto;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
@@ -15,6 +16,6 @@ public interface CafeService {
 
     public List<CafeLikeResponseDto> findCafeNamesByNotBookmark();
 
-    public List<CommonResponseDto> getBeveragesAndDesserts(Long sort);
+    public BeverageAndDessertListDto getBeveragesAndDesserts(Long sort);
 
 }

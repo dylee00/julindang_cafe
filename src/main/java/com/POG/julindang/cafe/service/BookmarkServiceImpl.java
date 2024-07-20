@@ -164,9 +164,9 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
 
         List<FreeConsumeBookmarkVo> freevos = beverageBookmarkRepository.findFreeConsumeBookmarkByMemberId(JwtUtil.getMemberId());
-        List<FreeConsumeResponseDto> freedtos = new ArrayList<>();
+        List<FreeConsumeBookmarkResponseDto> freedtos = new ArrayList<>();
         for(FreeConsumeBookmarkVo freeConsumeBookmarkVo : freevos){
-            freedtos.add(FreeConsumeResponseDto.builder()
+            freedtos.add(FreeConsumeBookmarkResponseDto.builder()
                     .name(freeConsumeBookmarkVo.getName())
                     .sugar(freeConsumeBookmarkVo.getSugar())
                     .calorie(freeConsumeBookmarkVo.getCalorie())
@@ -179,7 +179,7 @@ public class BookmarkServiceImpl implements BookmarkService {
         return BookmarkAllResponseDto.builder()
                 .cafeBeverages(cafes)
                 .cafeDesserts(desserts)
-                .freeConsumeDesserts(freedtos)
+                .freeConsumeBookmark(freedtos)
                 .build();
     }
 
@@ -202,9 +202,9 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
 
         List<FreeConsumeBookmarkVo> freevos = dessertBookmarkRepository.findFreeConsumeDessertBookmarkByMemberId(JwtUtil.getMemberId());
-        List<FreeConsumeResponseDto> freedtos = new ArrayList<>();
+        List<FreeConsumeBookmarkResponseDto> freedtos = new ArrayList<>();
         for(FreeConsumeBookmarkVo freeConsumeBookmarkVo : freevos){
-            freedtos.add(FreeConsumeResponseDto.builder()
+            freedtos.add(FreeConsumeBookmarkResponseDto.builder()
                             .name(freeConsumeBookmarkVo.getName())
                             .sugar(freeConsumeBookmarkVo.getSugar())
                             .calorie(freeConsumeBookmarkVo.getCalorie())
@@ -241,9 +241,9 @@ public class BookmarkServiceImpl implements BookmarkService {
         }
 
         List<FreeConsumeBookmarkVo> freevos = beverageBookmarkRepository.findFreeConsumeBeverageBookmarkByMemberId(JwtUtil.getMemberId());
-        List<FreeConsumeResponseDto> freedtos = new ArrayList<>();
+        List<FreeConsumeBookmarkResponseDto> freedtos = new ArrayList<>();
         for(FreeConsumeBookmarkVo freeConsumeBookmarkVo : freevos){
-            freedtos.add(FreeConsumeResponseDto.builder()
+            freedtos.add(FreeConsumeBookmarkResponseDto.builder()
                     .name(freeConsumeBookmarkVo.getName())
                     .sugar(freeConsumeBookmarkVo.getSugar())
                     .calorie(freeConsumeBookmarkVo.getCalorie())

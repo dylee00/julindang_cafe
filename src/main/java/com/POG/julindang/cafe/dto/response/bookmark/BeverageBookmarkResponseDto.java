@@ -2,7 +2,6 @@ package com.POG.julindang.cafe.dto.response.bookmark;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -12,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 public class BeverageBookmarkResponseDto {
     private List<CafeBeverageBookmarkResponseDto> cafeBeverages;
-    private List<FreeConsumeResponseDto> freeConsumeBeverages;
+    private List<FreeConsumeBookmarkResponseDto> freeConsumeBeverages;
 }

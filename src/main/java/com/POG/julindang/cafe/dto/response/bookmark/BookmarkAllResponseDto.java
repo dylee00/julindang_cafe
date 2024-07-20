@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class BookmarkAllResponseDto {
     private List<CafeDessertBookmarkResponseDto> cafeDesserts;
-    private List<FreeConsumeResponseDto> freeConsumeDesserts;
+    private List<FreeConsumeBookmarkResponseDto> freeConsumeBookmark;
     private List<CafeBeverageBookmarkResponseDto> cafeBeverages;
 }

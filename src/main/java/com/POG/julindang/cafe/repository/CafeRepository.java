@@ -2,6 +2,7 @@ package com.POG.julindang.cafe.repository;
 
 import com.POG.julindang.cafe.domain.Cafe;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
+import com.POG.julindang.cafe.vo.BeverageDetailVo;
 import com.POG.julindang.cafe.vo.BeverageNameVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,10 +14,11 @@ import java.util.List;
 @Repository
 public interface CafeRepository extends JpaRepository <Cafe, Long>{
     @Query(nativeQuery = true, value = "SELECT c.beverage_name AS beverageName, " +
-            "i.url AS url, " +
-            "c.cafe_name AS cafeName, " +
-            "c.cafe_id AS cafeId, " +
-            "c.sugar AS sugar, " +
+            "MIN(i.url) AS url, " +
+            "MIN(c.cafe_name) AS cafeName, " +
+            "MIN(c.cafe_id) AS cafeId, " +
+            "MIN(c.sugar) AS minSugar, " +
+            "MAX(c.sugar) AS maxSugar, " +
             "CASE " +
             "  WHEN c.beverage_name IN (SELECT bb.beverage_name FROM beverage_bookmark AS bb WHERE bb.member_id = :memberId) " +
             "  THEN 'true' " +
@@ -24,16 +26,18 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "END AS bookmarked " +
             "FROM cafe AS c " +
             "LEFT JOIN beverage_image AS i " +
-            "ON i.beverage_name = c.beverage_name AND i.cafe_name = c.cafe_name " +
+            "ON i.beverage_name = c.beverage_name " +
             "WHERE c.deleted = false AND MATCH(c.cafe_name) AGAINST (:cafeName IN BOOLEAN MODE) " +
+            "GROUP BY c.beverage_name " +
             "ORDER BY c.beverage_name ")
     List<BeverageNameVo> findByCafeName(@Param("cafeName") String cafeName, @Param("memberId")Long memberId);
 
     @Query(nativeQuery = true, value = "select c.beverage_name as beverageName, " +
-            "i.url AS url, " +
-            "c.cafe_name AS cafeName, " +
-            "c.cafe_id AS cafeId, " +
-            "c.sugar AS sugar, " +
+            "MIN(i.url) AS url, " +
+            "MIN(c.cafe_name) AS cafeName, " +
+            "MIN(c.cafe_id) AS cafeId, " +
+            "MIN(c.sugar) AS minSugar, " +
+            "MAX(c.sugar) AS maxSugar, " +
             "CASE " +
             "  WHEN c.beverage_name IN (SELECT bb.beverage_name FROM beverage_bookmark AS bb WHERE bb.member_id = :memberId) " +
             "  THEN 'true' " +
@@ -41,8 +45,9 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "END AS bookmarked " +
             "FROM cafe AS c " +
             "LEFT JOIN beverage_image AS i " +
-            "ON i.beverage_name = c.beverage_name AND i.cafe_name = c.cafe_name " +
+            "ON i.beverage_name = c.beverage_name " +
             "WHERE c.deleted = false AND MATCH(c.beverage_name) AGAINST (:beverageName IN BOOLEAN MODE) " +
+            "GROUP BY c.beverage_name " +
             "ORDER BY c.beverage_name ")
     List<BeverageNameVo> findByBeverageName(@Param("beverageName") String beverageName,@Param("memberId")Long memberId);
 
@@ -194,4 +199,8 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "ORDER BY " +
             "  tb.min_sugar")
     public List<CommonResponseDto> getMaxSugarBeverageAsc();
+
+    @Query(nativeQuery = true, value = "SELECT cafe_id cafeId, beverage_name beverageName, cafe_name cafeName, calorie, serve, size, sugar, temperature " +
+            "from cafe where deleted=false and cafe_id = :cafeId")
+    public List<BeverageDetailVo> getBeverageDetails(@Param("cafeId")Long cafeId);
 }

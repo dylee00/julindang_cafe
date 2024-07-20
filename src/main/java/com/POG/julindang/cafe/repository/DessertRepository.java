@@ -2,6 +2,7 @@ package com.POG.julindang.cafe.repository;
 
 import com.POG.julindang.cafe.domain.Dessert;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
+import com.POG.julindang.cafe.vo.DessertDetailVo;
 import com.POG.julindang.cafe.vo.DessertNameVo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,21 +13,20 @@ import java.util.List;
 public interface DessertRepository extends JpaRepository<Dessert, Long> {
 
     @Query(nativeQuery = true, value = "select d.dessert_name as dessertName, " +
-            "MIN(d.sugar) as minSugar, " +
-            "MAX(d.sugar) as maxSugar, " +
-            "MIN(i.url) as url, " +
+            "i.url AS url, " +
             "d.cafe_name as cafeName, " +
             "d.dessert_id as dessertId, " +
-            "case when b.user_email is not null then true else false end as bookmarked " +
+            "d.sugar as sugar, " +
+            "CASE " +
+            "  WHEN d.dessert_name IN (SELECT db.dessert_name FROM dessert_bookmark AS db WHERE db.member_id = :memberId) " +
+            "  THEN 'true' " +
+            "  ELSE 'false' " +
+            "END AS bookmarked " +
             "from dessert as d " +
-            "left join dessert_image as i " +
-            "on i.dessert_name=d.dessert_name " +
-            "left join dessert_bookmark as b " +
-            "on d.dessert_name = b.dessert_name and b.user_email = :userEmail " +
+            "left join dessert_image as i ON i.dessert_name = d.dessert_name AND i.cafe_name = d.cafe_name " +
             "where d.deleted=false " +
-            "group by b.user_email, d.dessert_name, d.cafe_name, d.dessert_id " +
-            "order by bookmarked desc , bookmarked asc")
-    List<DessertNameVo> findAll(@Param("userEmail") String userEmail);
+            "order by d.dessert_name ")
+    List<DessertNameVo> findAll(@Param("memberId") Long memberId);
 
     @Query("select d from Dessert d where d.cafeName=:cafeName and d.dessertName=:dessertName and d.deleted=false")
     List<Dessert> findByCafeNameAndDessertName(@Param("cafeName") String cafeName, @Param("dessertName") String dessertName);
@@ -179,4 +179,8 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "ORDER BY " +
             "  td.min_sugar ")
     public List<CommonResponseDto> findDessertListAsc();
+
+    @Query(nativeQuery = true,value = "select dessert_id dessertId, dessert_name dessertName, cafe_name cafeName, calorie, serve,sugar " +
+            "from dessert where deleted=false and dessert_id = :dessertId ")
+    public List<DessertDetailVo> getDessertDetails(@Param("dessertId")Long dessertId);
 }

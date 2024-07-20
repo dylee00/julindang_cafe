@@ -6,6 +6,7 @@ import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
 import com.POG.julindang.cafe.service.BeverageService;
 import com.POG.julindang.cafe.service.CafeServiceImpl;
 import com.POG.julindang.cafe.service.DessertServiceImpl;
+import com.POG.julindang.cafe.vo.BeverageDetailVo;
 import com.POG.julindang.common.exception.beverage.ParameterInvalidException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -63,7 +64,7 @@ public class BeverageController {
 
     @Operation(description = "홈 화면의 음료/디저트 항목들")
     @GetMapping("/all")
-    public ResponseEntity<List<CommonResponseDto>> findAll(@RequestParam Long type, @RequestParam Long sort){
+    public ResponseEntity<Object> findAll(@RequestParam Long type, @RequestParam Long sort){
         if (type == 0)
             return ResponseEntity.ok(cafeService.getBeveragesAndDesserts(sort));
         else if (type == 1)
@@ -72,5 +73,11 @@ public class BeverageController {
             return ResponseEntity.ok(dessertServiceImpl.getDessertList(sort));
         }
         else throw new ParameterInvalidException("Parameter type can be 0 or 1 or 2, but type: " + type);
+    }
+
+    @Operation(description = "cafeId에 따른 세부 정보")
+    @GetMapping("/details/cafeId")
+    public ResponseEntity<List<BeverageDetailVo>> getDetails(@RequestParam Long dessertId) {
+        return ResponseEntity.ok(beverageService.getDetails(dessertId));
     }
 }

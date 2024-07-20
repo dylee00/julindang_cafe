@@ -11,5 +11,5 @@ import java.util.List;
 @NoArgsConstructor
 public class DessertBookmarkResponseDto {
     private List<CafeDessertBookmarkResponseDto> cafeDesserts;
-    private List<FreeConsumeResponseDto> freeConsumeDesserts;
+    private List<FreeConsumeBookmarkResponseDto> freeConsumeDesserts;
 }

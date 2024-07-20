@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FreeConsumeResponseDto {
+public class FreeConsumeBookmarkResponseDto {
     private Long consumeId;
     private String name;
     private Long sugar;

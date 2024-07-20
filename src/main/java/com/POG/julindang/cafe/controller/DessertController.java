@@ -4,6 +4,8 @@ package com.POG.julindang.cafe.controller;
 import com.POG.julindang.cafe.dto.response.dessert.DessertDetailResponseDto;
 import com.POG.julindang.cafe.dto.response.dessert.DessertFindResponseDto;
 import com.POG.julindang.cafe.service.DessertService;
+import com.POG.julindang.cafe.vo.BeverageDetailVo;
+import com.POG.julindang.cafe.vo.DessertDetailVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -60,5 +62,11 @@ public class DessertController {
     })
     public ResponseEntity<List<DessertFindResponseDto>> findByDessertName(@RequestParam(value = "dessertName") String dessertName){
         return ResponseEntity.ok(dessertService.findByDessertName(dessertName));
+    }
+
+    @Operation(description = "dessertId에 따른 세부 정보")
+    @GetMapping("details/dessertId")
+    public ResponseEntity<List<DessertDetailVo>> getDetails(@RequestParam Long dessertId) {
+        return ResponseEntity.ok(dessertService.getDetails(dessertId));
     }
 }

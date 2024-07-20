@@ -6,6 +6,7 @@ import com.POG.julindang.cafe.dto.response.beverage.BeverageFindResponseDto;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
 import com.POG.julindang.cafe.repository.CafeRepository;
 import com.POG.julindang.cafe.util.JwtUtil;
+import com.POG.julindang.cafe.vo.BeverageDetailVo;
 import com.POG.julindang.cafe.vo.BeverageNameVo;
 import com.POG.julindang.common.exception.beverage.ParameterInvalidException;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +50,8 @@ public class BeverageServiceImpl implements BeverageService {
                     .beverageName(beverageNameVo.getBeverageName())
                     .cafeId(beverageNameVo.getCafeId())
                     .url(beverageNameVo.getUrl())
-                    .sugar(beverageNameVo.getSugar())
+                    .minSugar(beverageNameVo.getMinSugar())
+                    .maxSugar(beverageNameVo.getMaxSugar())
                     .cafeName(beverageNameVo.getCafeName())
                     .bookmarked(beverageNameVo.getBookmarked())
                     .build());
@@ -96,5 +98,11 @@ public class BeverageServiceImpl implements BeverageService {
         else throw new ParameterInvalidException("Parameter sort can be 0 or 1 but sort: " + sort);
 
         return beverages;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<BeverageDetailVo> getDetails(Long cafeId) {
+        return cafeRepository.getBeverageDetails(cafeId);
     }
 }

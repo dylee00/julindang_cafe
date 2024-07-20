@@ -7,6 +7,7 @@ import com.POG.julindang.cafe.dto.response.dessert.DessertFindResponseDto;
 import com.POG.julindang.cafe.dto.response.dessert.DessertDetailResponseDto;
 import com.POG.julindang.cafe.repository.DessertRepository;
 import com.POG.julindang.cafe.util.JwtUtil;
+import com.POG.julindang.cafe.vo.DessertDetailVo;
 import com.POG.julindang.cafe.vo.DessertNameVo;
 import com.POG.julindang.common.exception.beverage.ParameterInvalidException;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +57,7 @@ public class DessertServiceImpl implements DessertService {
     @Override
     @Transactional(readOnly = true)
     public List<DessertFindResponseDto> findAll(){
-        return getDessertNameResponseDto(dessertRepository.findAll(JwtUtil.getEmail()));
+        return getDessertNameResponseDto(dessertRepository.findAll(JwtUtil.getMemberId()));
     }
 
     @Override
@@ -92,5 +93,11 @@ public class DessertServiceImpl implements DessertService {
             return dessertRepository.findDessertListAsc();
         else
             throw new ParameterInvalidException("Parameter sort can be 0 or 1, but sort: " + sort);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DessertDetailVo> getDetails(Long dessertId) {
+        return dessertRepository.getDessertDetails(dessertId);
     }
 }
