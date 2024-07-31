@@ -11,9 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FreeConsumeBookmarkResponseDto {
     private Long consumeId;
+    private Long productId;
     private String name;
     private Long sugar;
     private Long calorie;
+    private Integer type;
     private LocalDateTime createdAt;
 
 }

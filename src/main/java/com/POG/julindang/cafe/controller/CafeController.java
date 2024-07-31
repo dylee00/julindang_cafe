@@ -32,7 +32,6 @@ public class CafeController {
         return ResponseEntity.ok(cafeService.findByCafeName(cafeName));
     }
 
-
     //모든 카페 리턴
     @Operation(description = "모든 카페 정보 리턴")
     @GetMapping

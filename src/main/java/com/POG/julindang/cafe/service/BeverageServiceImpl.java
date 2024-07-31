@@ -60,28 +60,11 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     //음료 이름과 카페 이름으로 디테일 불러오기
+    //BeverageDetailVo 재활용하기
     @Override
     @Transactional(readOnly = true)
-    public List<BeverageDetailResponseDto> findBeverageDetails(String cafeName, String beverageName){
-        List<Cafe> cafes = cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName);
-        List<BeverageDetailResponseDto> dto = new ArrayList<>();
-
-        for(Cafe cafe:cafes){
-            dto.add(
-                    BeverageDetailResponseDto.builder()
-                            .cafeName(cafe.getCafeName())
-                            .cafeId(cafe.getCafeId())
-                            .beverageName(cafe.getBeverageName())
-                            .size(cafe.getSize())
-                            .serve(cafe.getServe())
-                            .sugar(cafe.getSugar())
-                            .calorie(cafe.getCalorie())
-                            .temperature(cafe.getTemperature())
-                            .build()
-            );
-        }
-
-        return dto;
+    public List<BeverageDetailVo> findBeverageDetails(String cafeName, String beverageName){
+        return cafeRepository.findByCafeNameAndBeverageName(cafeName, beverageName, JwtUtil.getMemberId());
     }
 
 //홈 화면의 음료/디저트 항목들
@@ -103,6 +86,6 @@ public class BeverageServiceImpl implements BeverageService {
     @Override
     @Transactional(readOnly = true)
     public List<BeverageDetailVo> getDetails(Long cafeId) {
-        return cafeRepository.getBeverageDetails(cafeId);
+        return cafeRepository.getBeverageDetails(cafeId,JwtUtil.getMemberId());
     }
 }

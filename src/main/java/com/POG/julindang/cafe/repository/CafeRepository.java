@@ -51,8 +51,13 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "ORDER BY c.beverage_name ")
     List<BeverageNameVo> findByBeverageName(@Param("beverageName") String beverageName,@Param("memberId")Long memberId);
 
-    @Query("select c from Cafe c where c.cafeName=:cafeName and c.beverageName=:beverageName and c.deleted=false")
-    List<Cafe> findByCafeNameAndBeverageName(@Param("cafeName") String cafeName, @Param("beverageName") String beverageName);
+    @Query(nativeQuery = true, value = "SELECT c.cafe_id cafeId, c.beverage_name beverageName, c.cafe_name cafeName, c.calorie, c.serve, c.size, c.sugar, c.temperature, i.url, " +
+            "case when b.beverage_id is not null then 'true' else 'false' end as bookmarked " +
+            "from cafe c " +
+            "left join beverage_image i on i.beverage_name = c.beverage_name and i.cafe_name = c.cafe_name " +
+            "left join beverage_bookmark b on b.beverage_id = c.cafe_id  and b.member_id = :memberId and b.deleted = false " +
+            "where c.deleted=false and c.cafe_name = :cafeName and c.beverage_name = :beverageName ")
+    List<BeverageDetailVo> findByCafeNameAndBeverageName(@Param("cafeName") String cafeName, @Param("beverageName") String beverageName, @Param("memberId")Long memberId);
 
     @Query(nativeQuery = true,
             value = "select c.beverage_name as beverageName, " +
@@ -200,7 +205,11 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "  tb.min_sugar")
     public List<CommonResponseDto> getMaxSugarBeverageAsc();
 
-    @Query(nativeQuery = true, value = "SELECT cafe_id cafeId, beverage_name beverageName, cafe_name cafeName, calorie, serve, size, sugar, temperature " +
-            "from cafe where deleted=false and cafe_id = :cafeId")
-    public List<BeverageDetailVo> getBeverageDetails(@Param("cafeId")Long cafeId);
+    @Query(nativeQuery = true, value = "SELECT c.cafe_id cafeId, c.beverage_name beverageName, c.cafe_name cafeName, c.calorie, c.serve, c.size, c.sugar, c.temperature, i.url, " +
+            "case when b.beverage_id is not null then 'true' else 'false' end as bookmarked " +
+            "from cafe c " +
+            "left join beverage_image i on i.beverage_name = c.beverage_name and i.cafe_name = c.cafe_name " +
+            "left join beverage_bookmark b on b.beverage_id = c.cafe_id  and b.member_id = :memberId and b.deleted = false " +
+            "where c.deleted=false and c.cafe_id = :cafeId")
+    public List<BeverageDetailVo> getBeverageDetails(@Param("cafeId")Long cafeId,@Param("memberId")Long memberId);
 }

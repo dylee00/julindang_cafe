@@ -16,5 +16,7 @@ public class DessertDetailResponseDto {
     private Double serve;
     private Double sugar;
     private Double calorie;
+    private String url;
+    private String bookmarked;
 
 }

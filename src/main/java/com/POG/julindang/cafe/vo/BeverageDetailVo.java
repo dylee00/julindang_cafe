@@ -16,4 +16,7 @@ public interface BeverageDetailVo {
     Double getCalorie();
 
     Boolean getTemperature();
+
+    String getUrl();
+    String getBookmarked();
 }

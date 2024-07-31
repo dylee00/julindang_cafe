@@ -38,7 +38,7 @@ public class BeverageController {
             @Parameter(name="beverageName", description = "음료 이름")
 
     })
-    public ResponseEntity<List<BeverageDetailResponseDto>> findByCafeNameAndBeverageName(@RequestParam(value = "cafeName") String cafeName,
+    public ResponseEntity<List<BeverageDetailVo>> findByCafeNameAndBeverageName(@RequestParam(value = "cafeName") String cafeName,
                                                                                          @RequestParam(value = "beverageName") String beverageName){
         return ResponseEntity.ok(beverageService.findBeverageDetails(cafeName, beverageName));
     }

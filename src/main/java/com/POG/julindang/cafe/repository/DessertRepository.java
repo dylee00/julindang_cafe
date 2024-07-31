@@ -2,6 +2,7 @@ package com.POG.julindang.cafe.repository;
 
 import com.POG.julindang.cafe.domain.Dessert;
 import com.POG.julindang.cafe.dto.response.common.CommonResponseDto;
+import com.POG.julindang.cafe.vo.BeverageDetailVo;
 import com.POG.julindang.cafe.vo.DessertDetailVo;
 import com.POG.julindang.cafe.vo.DessertNameVo;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,8 +29,13 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "order by d.dessert_name ")
     List<DessertNameVo> findAll(@Param("memberId") Long memberId);
 
-    @Query("select d from Dessert d where d.cafeName=:cafeName and d.dessertName=:dessertName and d.deleted=false")
-    List<Dessert> findByCafeNameAndDessertName(@Param("cafeName") String cafeName, @Param("dessertName") String dessertName);
+    @Query(nativeQuery = true, value = "SELECT d.dessert_id dessertId, d.dessert_name dessertName, d.cafe_name cafeName, d.calorie, d.serve, d.sugar, i.url, " +
+            "case when b.dessert_id is not null then 'true' else 'false' end as bookmarked " +
+            "from dessert d " +
+            "left join dessert_image i on i.dessert_name = d.dessert_name and i.cafe_name = d.cafe_name " +
+            "left join dessert_bookmark b on b.dessert_id = d.dessert_id  and b.member_id = :memberId and b.deleted = false " +
+            "where d.deleted=false and d.cafe_name =:cafeName and d.dessert_name =:dessertName ")
+    List<DessertDetailVo> findByCafeNameAndDessertName(@Param("cafeName") String cafeName, @Param("dessertName") String dessertName, @Param("memberId")Long memberId);
 
     @Query(nativeQuery = true, value = "select d.dessert_name as dessertName, " +
             "i.url AS url, " +
@@ -180,7 +186,15 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "  td.min_sugar ")
     public List<CommonResponseDto> findDessertListAsc();
 
-    @Query(nativeQuery = true,value = "select dessert_id dessertId, dessert_name dessertName, cafe_name cafeName, calorie, serve,sugar " +
-            "from dessert where deleted=false and dessert_id = :dessertId ")
-    public List<DessertDetailVo> getDessertDetails(@Param("dessertId")Long dessertId);
+//    @Query(nativeQuery = true,value = "select dessert_id dessertId, dessert_name dessertName, cafe_name cafeName, calorie, serve,sugar " +
+//            "from dessert where deleted=false and dessert_id = :dessertId ")
+//    public List<DessertDetailVo> getDessertDetails(@Param("dessertId")Long dessertId);
+
+    @Query(nativeQuery = true, value = "SELECT d.dessert_id dessertId, d.dessert_name dessertName, d.cafe_name cafeName, d.calorie, d.serve, d.sugar, i.url, " +
+            "case when b.dessert_id is not null then 'true' else 'false' end as bookmarked " +
+            "from dessert d " +
+            "left join dessert_image i on i.dessert_name = d.dessert_name and i.cafe_name = d.cafe_name " +
+            "left join dessert_bookmark b on b.dessert_id = d.dessert_id  and b.member_id = :memberId and b.deleted = false " +
+            "where d.deleted=false and d.dessert_id = :dessertId")
+    public List<DessertDetailVo> getDessertDetails(@Param("dessertId")Long dessertId, @Param("memberId")Long memberId);
 }

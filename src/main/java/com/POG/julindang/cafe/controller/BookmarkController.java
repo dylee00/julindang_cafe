@@ -53,6 +53,4 @@ public class BookmarkController {
         return ResponseEntity.ok(bookmarkService.getBeverageBookmark());
     }
 
-
-
 }

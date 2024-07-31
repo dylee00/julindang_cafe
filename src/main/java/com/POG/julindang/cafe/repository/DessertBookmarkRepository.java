@@ -24,10 +24,10 @@ public interface DessertBookmarkRepository extends JpaRepository<DessertBookmark
             "WHERE member_id = :memberId AND d.deleted = 0 ")
     List<DessertBookmarkVo> findDessertBookmarkByMemberId(@Param("memberId") Long memberId);
 
-    @Query(nativeQuery = true, value = " SELECT f.consume_id consumeId ,f.name , b.created_at createdAt, f.calorie, f.sugar " +
+    @Query(nativeQuery = true, value = " SELECT f.consume_id consumeId ,p.product_id productId,f.name , p.created_at createdAt, f.calorie, f.sugar, f.type " +
             "FROM free_consume f " +
-            "LEFT JOIN free_consume_bookmark b on b.name = f.name " +
-            "WHERE b.member_id = :memberId AND b.deleted = 0 AND f.type = 0 ")
+            "LEFT JOIN free_product p on p.product_id = f.product_id " +
+            "WHERE p.bookmark = true AND p.member_id = :memberId AND f.deleted = 0 AND f.type = 0 ")
     List<FreeConsumeBookmarkVo> findFreeConsumeDessertBookmarkByMemberId(@Param("memberId") Long memberId);
 
 }

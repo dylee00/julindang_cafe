@@ -32,25 +32,11 @@ public class DessertServiceImpl implements DessertService {
         return getDessertNameResponseDto(dessertRepository.findByCafeName(cafeNameWithWildcards,memberId));
     }
 
+    //dessertDetailVo 재활용하기
     @Override
     @Transactional(readOnly = true)
-    public List<DessertDetailResponseDto> findDessertDetails(String cafeName, String dessertName){
-        List<Dessert> desserts= dessertRepository.findByCafeNameAndDessertName(cafeName, dessertName);
-        List<DessertDetailResponseDto> dto = new ArrayList<>();
-
-        for(Dessert dessert:desserts){
-            dto.add(
-                    DessertDetailResponseDto.builder()
-                            .cafeName(dessert.getCafeName())
-                            .dessertId(dessert.getDessertId())
-                            .dessertName(dessert.getDessertName())
-                            .calorie(dessert.getCalorie())
-                            .serve(dessert.getServe())
-                            .sugar(dessert.getSugar())
-                            .build()
-            );
-        }
-        return dto;
+    public List<DessertDetailVo> findDessertDetails(String cafeName, String dessertName){
+        return dessertRepository.findByCafeNameAndDessertName(cafeName, dessertName, JwtUtil.getMemberId());
     }
 
 
@@ -98,6 +84,6 @@ public class DessertServiceImpl implements DessertService {
     @Override
     @Transactional(readOnly = true)
     public List<DessertDetailVo> getDetails(Long dessertId) {
-        return dessertRepository.getDessertDetails(dessertId);
+        return dessertRepository.getDessertDetails(dessertId,JwtUtil.getMemberId());
     }
 }

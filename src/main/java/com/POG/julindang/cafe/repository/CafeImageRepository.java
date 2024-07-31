@@ -16,7 +16,7 @@ public interface CafeImageRepository extends JpaRepository<CafeImage, Long> {
     List<CafeResponseDto> getCafeName(@Param("cafeName") String cafeName);
 
     @Query(nativeQuery = true, value = "SELECT " +
-            "ci.cafe_name cafeName, " +
+            "ci.cafe_name cafeName, cb.created_at createdAt, " +
             "ci.url, " +
             "CASE " +
             "WHEN cb.cafe_name IS NOT NULL THEN TRUE " +
@@ -32,7 +32,7 @@ public interface CafeImageRepository extends JpaRepository<CafeImage, Long> {
     List<CafeLikeResponseDto> getAllCafeImages();
 
     @Query(nativeQuery = true, value = "SELECT " +
-            "ci.cafe_name cafeName, " +
+            "ci.cafe_name cafeName, cb.created_at createdAt, " +
             "ci.url, " +
             "CASE " +
             "WHEN cb.cafe_name IS NOT NULL THEN TRUE " +

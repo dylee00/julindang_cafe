@@ -15,7 +15,7 @@ public interface DessertService {
 
     public List<DessertFindResponseDto> findByDessertName(String dessertName);
 
-    public List<DessertDetailResponseDto> findDessertDetails(String cafeName, String dessertName);
+    public List<DessertDetailVo> findDessertDetails(String cafeName, String dessertName);
 
     public List<CommonResponseDto> getDessertList(Long sort);
 

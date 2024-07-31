@@ -11,7 +11,7 @@ public interface BeverageService {
     public List<BeverageFindResponseDto> findByCafeName(String cafeName);
 
     public List<BeverageFindResponseDto> findByBeverageName(String beverageName);
-    public List<BeverageDetailResponseDto> findBeverageDetails(String cafeName, String beverageName);
+    public List<BeverageDetailVo> findBeverageDetails(String cafeName, String beverageName);
     public List<CommonResponseDto> getBeverageList(Long sort);
     public List<BeverageDetailVo> getDetails(Long cafeId);
 }

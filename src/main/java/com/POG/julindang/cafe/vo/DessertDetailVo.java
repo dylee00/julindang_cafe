@@ -12,4 +12,6 @@ public interface DessertDetailVo {
     Double getServe();
 
     Double getSugar();
+    String getUrl();
+    String getBookmarked();
 }

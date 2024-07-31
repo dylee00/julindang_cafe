@@ -33,7 +33,7 @@ public class DessertController {
             @Parameter(name="cafeName", description = "카페 이름"),
             @Parameter(name="beverageName", description = "디저트 이름")
     })
-    public ResponseEntity<List<DessertDetailResponseDto>> findByCafeNameAndBeverageName(@RequestParam(value = "cafeName") String cafeName,
+    public ResponseEntity<List<DessertDetailVo>> findByCafeNameAndDessertName(@RequestParam(value = "cafeName") String cafeName,
                                                                                         @RequestParam(value = "beverageName") String beverageName){
         return ResponseEntity.ok(dessertService.findDessertDetails(cafeName, beverageName));
     }
@@ -65,7 +65,7 @@ public class DessertController {
     }
 
     @Operation(description = "dessertId에 따른 세부 정보")
-    @GetMapping("details/dessertId")
+    @GetMapping("/details/dessertId")
     public ResponseEntity<List<DessertDetailVo>> getDetails(@RequestParam Long dessertId) {
         return ResponseEntity.ok(dessertService.getDetails(dessertId));
     }
