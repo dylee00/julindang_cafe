@@ -17,4 +17,7 @@ public class BookMarkSaveRequestDto {
 
     @Schema(description = "type 이 1 또는 2일때만 필요", example = "아이스 아메리카노")
     private String productName;
+
+    @Schema(description = "type 이 1 또는 2일때만 필요", example = "1234")
+    private Long productId;
 }

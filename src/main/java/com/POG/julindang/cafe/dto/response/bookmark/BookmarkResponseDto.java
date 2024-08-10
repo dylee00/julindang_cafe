@@ -12,4 +12,5 @@ import lombok.*;
 public class BookmarkResponseDto {
     private String cafeName;
     private String productName;
+    private Long productId;
 }

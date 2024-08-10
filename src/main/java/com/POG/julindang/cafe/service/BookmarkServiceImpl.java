@@ -47,39 +47,47 @@ public class BookmarkServiceImpl implements BookmarkService {
 
         switch (type) {
             case 0:
-                CafeBookmark cafeBookmark = CafeBookmark.builder()
-                        .cafeName(cafeName)
-                        .deleted(false)
-                        .memberId(memberId)
-                        .userEmail(userEmail)
-                        .build();
-                cafeBookmarkRepository.save(cafeBookmark);
-                break;
+                if(!cafeBookmarkRepository.existsByMemberIdAndCafeNameAndDeleted(memberId,cafeName,false)) {
 
+                    CafeBookmark cafeBookmark = CafeBookmark.builder()
+                            .cafeName(cafeName)
+                            .deleted(false)
+                            .memberId(memberId)
+                            .userEmail(userEmail)
+                            .build();
+                    cafeBookmarkRepository.save(cafeBookmark);
+                }
+                break;
             case 1:
                 String beverageName = bookMarkSaveRequestDto.getProductName();
-                BeverageBookmark beverageBookmark = BeverageBookmark.builder()
-                        .cafeName(cafeName)
-                        .beverageName(beverageName)
-                        .deleted(false)
-                        .memberId(memberId)
-                        .userEmail(userEmail)
-                        .build();
-                beverageBookmarkRepository.save(beverageBookmark);
+                Long beverageId = bookMarkSaveRequestDto.getProductId();
+                if(!beverageBookmarkRepository.existsByMemberIdAndBeverageIdAndDeleted(memberId,beverageId,false)) {
+                    BeverageBookmark beverageBookmark = BeverageBookmark.builder()
+                            .cafeName(cafeName)
+                            .beverageName(beverageName)
+                            .deleted(false)
+                            .memberId(memberId)
+                            .userEmail(userEmail)
+                            .beverageId(beverageId)
+                            .build();
+                    beverageBookmarkRepository.save(beverageBookmark);
+                }
                 break;
-
             case 2:
                 String dessertName = bookMarkSaveRequestDto.getProductName();
-                DessertBookmark dessertBookmark = DessertBookmark.builder()
-                        .cafeName(cafeName)
-                        .dessertName(dessertName)
-                        .deleted(false)
-                        .memberId(memberId)
-                        .userEmail(userEmail)
-                        .build();
-                dessertBookmarkRepository.save(dessertBookmark);
+                Long dessertId = bookMarkSaveRequestDto.getProductId();
+                if(!dessertBookmarkRepository.existsByMemberIdAndDessertIdAndDeleted(memberId,dessertId,false)) {
+                    DessertBookmark dessertBookmark = DessertBookmark.builder()
+                            .cafeName(cafeName)
+                            .dessertName(dessertName)
+                            .deleted(false)
+                            .memberId(memberId)
+                            .userEmail(userEmail)
+                            .dessertId(dessertId)
+                            .build();
+                    dessertBookmarkRepository.save(dessertBookmark);
+                }
                 break;
-
             default:
                 throw new InvalidBookmarkType(type);
         }
@@ -87,6 +95,7 @@ public class BookmarkServiceImpl implements BookmarkService {
         return BookmarkResponseDto.builder()
                 .cafeName(cafeName)
                 .productName(bookMarkSaveRequestDto.getProductName())
+                .productId(bookMarkSaveRequestDto.getProductId())
                 .build();
     }
     @Override
@@ -110,8 +119,8 @@ public class BookmarkServiceImpl implements BookmarkService {
 
             case 1:
                 // 음료 즐겨찾기 삭제
-                String beverageName = bookmarkDeleteRequestDto.getProductName();
-                BeverageBookmark beverageBookmark = beverageBookmarkRepository.findByUserEmailAndCafeNameAndBeverageName(JwtUtil.getEmail(), cafeName, beverageName)
+                Long beverageId = bookmarkDeleteRequestDto.getProductId();
+                BeverageBookmark beverageBookmark = beverageBookmarkRepository.findBymemberIdAndBeverageId(JwtUtil.getMemberId(),beverageId)
                         .orElseThrow(() -> new BookMarkDoesNotExist("beverage Bookmark is not found"));
                 beverageBookmark.setDeleted(true);
                 beverageBookmarkRepository.save(beverageBookmark);
@@ -119,8 +128,8 @@ public class BookmarkServiceImpl implements BookmarkService {
 
             case 2:
                 // 디저트 즐겨찾기 삭제
-                String dessertName = bookmarkDeleteRequestDto.getProductName();
-                DessertBookmark dessertBookmark = dessertBookmarkRepository.findByUserEmailAndCafeNameAndDessertName(JwtUtil.getEmail(), cafeName, dessertName)
+                Long dessertId = bookmarkDeleteRequestDto.getProductId();
+                DessertBookmark dessertBookmark = dessertBookmarkRepository.findBymemberIdAndDessertId(JwtUtil.getMemberId(),dessertId)
                         .orElseThrow(() -> new BookMarkDoesNotExist("dessert Bookmark is not found"));
                 dessertBookmark.setDeleted(true);
                 dessertBookmarkRepository.save(dessertBookmark);
@@ -146,7 +155,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                             .sugar(beverageBookmarkVo.getSugar())
                             .calorie(beverageBookmarkVo.getCalorie())
                             .createdAt(beverageBookmarkVo.getCreatedAt())
-                            .cafeId(beverageBookmarkVo.getCafeId())
+                            .cafeId(beverageBookmarkVo.getBeverageId())
                     .build());
         }
 
@@ -240,7 +249,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                     .sugar(beverageBookmarkVo.getSugar())
                     .calorie(beverageBookmarkVo.getCalorie())
                     .createdAt(beverageBookmarkVo.getCreatedAt())
-                    .cafeId(beverageBookmarkVo.getCafeId())
+                    .cafeId(beverageBookmarkVo.getBeverageId())
                     .build());
         }
 

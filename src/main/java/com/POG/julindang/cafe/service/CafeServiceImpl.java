@@ -33,7 +33,7 @@ CafeServiceImpl implements CafeService {
     @Override
     @Transactional(readOnly = true)
     public List<CafeLikeResponseDto> findCafeNames(){
-        return cafeImageRepository.getAllCafeImages();
+        return cafeImageRepository.getAllCafeImages(JwtUtil.getMemberId());
     }
 
     // 카페 검색

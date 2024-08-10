@@ -13,5 +13,5 @@ public interface BeverageBookmarkVo {
 
     Double getSugar();
 
-    Long getCafeId();
+    Long getBeverageId();
 }

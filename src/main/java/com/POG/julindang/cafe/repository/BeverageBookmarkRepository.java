@@ -18,6 +18,9 @@ public interface BeverageBookmarkRepository extends JpaRepository<BeverageBookma
 
     Optional<BeverageBookmark> findByUserEmailAndCafeNameAndBeverageName(@Param("userEmail") String userEmail, @Param("cafeName") String cafeName, @Param("beverageName") String beverageName);
 
+    Optional<BeverageBookmark> findBymemberIdAndBeverageId(@Param("memberId") Long memberId, @Param("beverageId") Long beverageId);
+
+    Boolean existsByMemberIdAndBeverageIdAndDeleted(@Param("memberId") Long memberId, @Param("beverageId") Long beverageId, @Param("deleted") Boolean deleted);
     @Query(nativeQuery = true, value =  " SELECT f.consume_id consumeId ,p.product_id productId,f.name , p.created_at createdAt, f.calorie, f.sugar, f.type " +
             "FROM free_consume f " +
             "LEFT JOIN free_product p on p.product_id = f.product_id " +
@@ -36,7 +39,7 @@ public interface BeverageBookmarkRepository extends JpaRepository<BeverageBookma
             "MIN(b.created_at) AS createdAt, " +
             "MIN(c.calorie) AS calorie, " +
             "MIN(c.sugar) AS sugar, " +
-            "MIN(c.cafe_id) AS cafeId " +
+            "MIN(b.beverage_id) AS beverageId " +
             "FROM beverage_bookmark b " +
             "LEFT JOIN cafe c ON c.beverage_name = b.beverage_name " +
             "WHERE b.member_id = :memberId AND b.deleted = 0 " +

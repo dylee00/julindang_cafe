@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 public class BookmarkDeleteRequestDto {
     private Integer type;
     private String cafeName;
-    private String productName;
+    private Long productId;
 }
