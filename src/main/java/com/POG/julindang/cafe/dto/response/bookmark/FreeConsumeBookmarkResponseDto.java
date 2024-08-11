@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FreeConsumeBookmarkResponseDto {
-    private Long consumeId;
     private Long productId;
     private String name;
     private Long sugar;
