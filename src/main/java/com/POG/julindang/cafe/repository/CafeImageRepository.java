@@ -16,10 +16,14 @@ public interface CafeImageRepository extends JpaRepository<CafeImage, Long> {
     List<CafeResponseDto> getCafeName(@Param("cafeName") String cafeName);
 
     @Query(nativeQuery = true, value = "SELECT " +
-            "ci.cafe_name cafeName, cb.created_at createdAt, " +
+            "ci.cafe_name cafeName, MAX(cb.created_at) createdAt, " +
             "ci.url, " +
             "CASE " +
-            "WHEN cb.member_id =:memberId AND cb.cafe_name IS NOT NULL AND cb.deleted = false THEN TRUE " +
+            "WHEN MAX(CASE " +
+            "WHEN cb.member_id =:memberId " +
+            "AND cb.cafe_name IS NOT NULL AND cb.deleted = false THEN 1 " +
+            "ELSE 0 " +
+            "END) = 1 THEN TRUE " +
             "ELSE FALSE " +
             "END AS isLiked " +
             "FROM " +
@@ -28,6 +32,7 @@ public interface CafeImageRepository extends JpaRepository<CafeImage, Long> {
             "cafe_bookmark cb " +
             "ON " +
             "ci.cafe_name = cb.cafe_name " +
+            "GROUP BY ci.cafe_name, ci.url " +
             "order by ci.cafe_name")
     List<CafeLikeResponseDto> getAllCafeImages(@Param("memberId") Long memberId);
 
@@ -63,3 +68,4 @@ public interface CafeImageRepository extends JpaRepository<CafeImage, Long> {
             "ORDER BY ci.cafe_name")
     List<CafeLikeResponseDto> getNotLikedCafeImages(@Param("memberId") Long memberId);
 }
+

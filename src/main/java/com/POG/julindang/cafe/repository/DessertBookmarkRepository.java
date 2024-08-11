@@ -17,8 +17,10 @@ import java.util.Optional;
 @Repository
 public interface DessertBookmarkRepository extends JpaRepository<DessertBookmark, Long> {
 
+    @Query("SELECT d FROM DessertBookmark d WHERE d.userEmail =:userEmail AND d.cafeName =:cafeName AND d.dessertName =:dessertName ORDER BY d.createdAt DESC LIMIT 1 ")
     Optional<DessertBookmark> findByUserEmailAndCafeNameAndDessertName(@Param("userEmail") String userEmail, @Param("cafeName") String cafeName, @Param("dessertName") String dessertName);
 
+    @Query("SELECT d FROM DessertBookmark d WHERE d.memberId =:memberId AND d.dessertId =:dessertId ORDER BY d.createdAt DESC LIMIT 1 ")
     Optional<DessertBookmark> findBymemberIdAndDessertId(@Param("memberId") Long memberId, @Param("dessertId") Long dessertId);
 
     Boolean existsByMemberIdAndDessertIdAndDeleted(@Param("memberId") Long memberId, @Param("dessertId") Long dessertId, @Param("deleted") Boolean deleted);
@@ -29,10 +31,9 @@ public interface DessertBookmarkRepository extends JpaRepository<DessertBookmark
             "WHERE member_id = :memberId AND d.deleted = 0 ")
     List<DessertBookmarkVo> findDessertBookmarkByMemberId(@Param("memberId") Long memberId);
 
-    @Query(nativeQuery = true, value = " SELECT f.consume_id consumeId ,p.product_id productId,f.name , p.created_at createdAt, f.calorie, f.sugar, f.type " +
-            "FROM free_consume f " +
-            "LEFT JOIN free_product p on p.product_id = f.product_id " +
-            "WHERE p.bookmark = true AND p.member_id = :memberId AND f.deleted = 0 AND f.type = 0 ")
+    @Query(nativeQuery = true, value = " SELECT p.product_id productId,p.name , p.created_at createdAt, p.calorie, p.sugar, p.type  " +
+            "FROM free_product p " +
+            "WHERE p.bookmark = true AND p.member_id = :memberId AND p.type = 0 ")
     List<FreeConsumeBookmarkVo> findFreeConsumeDessertBookmarkByMemberId(@Param("memberId") Long memberId);
 
 }

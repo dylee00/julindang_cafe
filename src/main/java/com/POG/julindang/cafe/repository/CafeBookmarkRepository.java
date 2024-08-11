@@ -19,6 +19,7 @@ public interface CafeBookmarkRepository extends JpaRepository<CafeBookmark, Long
     List<String> findDistinctCafeNameByUserEmail(@Param("userEmail") String userEmail);
 
 
+    @Query("SELECT c FROM CafeBookmark c WHERE c.userEmail =:userEmail AND c.cafeName =:cafeName ORDER BY c.createdAt DESC LIMIT 1 ")
     Optional<CafeBookmark> findByUserEmailAndCafeName(@Param("userEmail") String userEmail, @Param("cafeName") String cafeName);
 
     Boolean existsByMemberIdAndCafeNameAndDeleted(@Param("memberId") Long memberId, @Param("cafeName") String cafeName, @Param("deleted") Boolean deleted);

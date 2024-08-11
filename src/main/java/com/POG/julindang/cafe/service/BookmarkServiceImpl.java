@@ -180,7 +180,6 @@ public class BookmarkServiceImpl implements BookmarkService {
                     .sugar(freeConsumeBookmarkVo.getSugar())
                     .calorie(freeConsumeBookmarkVo.getCalorie())
                     .createdAt(freeConsumeBookmarkVo.getCreatedAt())
-                    .consumeId(freeConsumeBookmarkVo.getConsumeId())
                     .productId(freeConsumeBookmarkVo.getProductId())
                     .type(freeConsumeBookmarkVo.getType())
                     .build());
@@ -220,7 +219,6 @@ public class BookmarkServiceImpl implements BookmarkService {
                             .sugar(freeConsumeBookmarkVo.getSugar())
                             .calorie(freeConsumeBookmarkVo.getCalorie())
                             .createdAt(freeConsumeBookmarkVo.getCreatedAt())
-                            .consumeId(freeConsumeBookmarkVo.getConsumeId())
                             .productId(freeConsumeBookmarkVo.getProductId())
                             .type(freeConsumeBookmarkVo.getType())
                     .build());
@@ -261,7 +259,6 @@ public class BookmarkServiceImpl implements BookmarkService {
                     .sugar(freeConsumeBookmarkVo.getSugar())
                     .calorie(freeConsumeBookmarkVo.getCalorie())
                     .createdAt(freeConsumeBookmarkVo.getCreatedAt())
-                    .consumeId(freeConsumeBookmarkVo.getConsumeId())
                     .productId(freeConsumeBookmarkVo.getProductId())
                     .type(freeConsumeBookmarkVo.getType())
                     .build());
