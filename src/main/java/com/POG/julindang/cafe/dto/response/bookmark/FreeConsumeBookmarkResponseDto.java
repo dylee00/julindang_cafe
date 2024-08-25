@@ -14,6 +14,7 @@ public class FreeConsumeBookmarkResponseDto {
     private String name;
     private Long sugar;
     private Long calorie;
+    private Integer size;
     private Integer type;
     private LocalDateTime createdAt;
 

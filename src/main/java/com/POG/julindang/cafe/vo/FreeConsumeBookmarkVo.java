@@ -8,6 +8,7 @@ public interface FreeConsumeBookmarkVo {
     String getName();
     Long getSugar();
     Long getCalorie();
+    Integer getSize();
     Integer getType();
     LocalDateTime getCreatedAt();
 }
