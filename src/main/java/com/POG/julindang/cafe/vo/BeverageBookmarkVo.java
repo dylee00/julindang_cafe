@@ -13,5 +13,7 @@ public interface BeverageBookmarkVo {
 
     Double getSugar();
 
+    String getSize();
+
     Long getBeverageId();
 }

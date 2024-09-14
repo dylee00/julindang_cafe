@@ -33,17 +33,16 @@ public interface BeverageBookmarkRepository extends JpaRepository<BeverageBookma
     List<FreeConsumeBookmarkVo> findFreeConsumeBookmarkByMemberId(@Param("memberId") Long memberId);
 
     @Query(nativeQuery = true, value = " SELECT " +
-            "b.beverage_name AS beverageName, " +
-            "MIN(b.cafe_name) AS cafeName, " +
-            "MIN(b.created_at) AS createdAt, " +
-            "MIN(c.calorie) AS calorie, " +
-            "MIN(c.sugar) AS sugar, " +
-            "MIN(b.beverage_id) AS beverageId " +
+            "c.beverage_name AS beverageName, " +
+            "c.cafe_name AS cafeName, " +
+            "b.created_at AS createdAt, " +
+            "c.calorie AS calorie, " +
+            "c.sugar AS sugar, " +
+            "c.size AS size, " +
+            "b.beverage_id AS beverageId " +
             "FROM beverage_bookmark b " +
-            "LEFT JOIN cafe c ON c.beverage_name = b.beverage_name " +
-            "WHERE b.member_id = :memberId AND b.deleted = 0 " +
-            "GROUP BY " +
-            "b.beverage_name ")
+            "JOIN cafe c ON c.cafe_id = b.beverage_id " +
+            "WHERE b.member_id = :memberId AND b.deleted = 0 ")
     List<BeverageBookmarkVo> findBeverageBookmarkByMemberId(@Param("memberId") Long memberId);
 }
 

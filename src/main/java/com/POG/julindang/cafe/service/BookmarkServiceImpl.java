@@ -154,6 +154,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                             .beverageName(beverageBookmarkVo.getBeverageName())
                             .sugar(beverageBookmarkVo.getSugar())
                             .calorie(beverageBookmarkVo.getCalorie())
+                            .size(beverageBookmarkVo.getSize())
                             .createdAt(beverageBookmarkVo.getCreatedAt())
                             .cafeId(beverageBookmarkVo.getBeverageId())
                     .build());
@@ -248,6 +249,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                     .beverageName(beverageBookmarkVo.getBeverageName())
                     .sugar(beverageBookmarkVo.getSugar())
                     .calorie(beverageBookmarkVo.getCalorie())
+                    .size(beverageBookmarkVo.getSize())
                     .createdAt(beverageBookmarkVo.getCreatedAt())
                     .cafeId(beverageBookmarkVo.getBeverageId())
                     .build());

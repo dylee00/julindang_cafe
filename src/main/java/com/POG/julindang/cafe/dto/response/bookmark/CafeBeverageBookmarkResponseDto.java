@@ -14,5 +14,6 @@ public class CafeBeverageBookmarkResponseDto {
     LocalDateTime createdAt;
     Double calorie;
     Double sugar;
+    String size;
     Long cafeId;
 }
