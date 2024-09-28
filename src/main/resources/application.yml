@@ -21,16 +21,6 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       ddl-auto: none
 
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: ${EUREKA_SERVER_HOST}/eureka
-    instance:
-      prefer-ip-address: ${EUREKA_INSTANCE_PREFER_IP_ADDRESS}
-      ip-address: ${EUREKA_INSTANCE_IP_ADDRESS}
-
 logging:
   slack:
     webhook-url: ${SLACK_WEBHOOK_URL}

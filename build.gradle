@@ -29,7 +29,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'com.mysql:mysql-connector-j'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
 	//actuator
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
