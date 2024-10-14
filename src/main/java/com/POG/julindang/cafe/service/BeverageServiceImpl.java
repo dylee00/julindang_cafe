@@ -37,11 +37,21 @@ public class BeverageServiceImpl implements BeverageService {
     //음료 이름에 따른 음료들 불러오기
     @Override
     @Transactional(readOnly = true)
-    public List<BeverageFindResponseDto> findByBeverageName(String beverageName){
+    public List<BeverageFindResponseDto> findByBeverageName(String beverageName) {
         Long memberId = JwtUtil.getMemberId();
-        String beverageNameWithWildcards = "+" + beverageName + "*";
-        return getBeverageFindResponseDto(cafeRepository.findByBeverageName(beverageNameWithWildcards, memberId));
+
+        // 검색어를 BOOLEAN MODE에 적합하게 변환
+        String[] keywords = beverageName.split(" ");
+        StringBuilder beverageNameWithWildcards = new StringBuilder();
+        for (String keyword : keywords) {
+            beverageNameWithWildcards.append("+").append(keyword).append(" ");
+        }
+        beverageNameWithWildcards.append("*");
+
+        // 변환된 검색어로 쿼리 실행
+        return getBeverageFindResponseDto(cafeRepository.findByBeverageName(beverageNameWithWildcards.toString().trim(), memberId));
     }
+
 
     private List<BeverageFindResponseDto> getBeverageFindResponseDto(List<BeverageNameVo> find){
         List<BeverageFindResponseDto> result = new ArrayList<>();

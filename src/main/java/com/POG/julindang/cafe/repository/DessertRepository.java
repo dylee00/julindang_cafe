@@ -19,12 +19,12 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "d.dessert_id as dessertId, " +
             "d.sugar as sugar, " +
             "CASE " +
-            "  WHEN d.dessert_name IN (SELECT db.dessert_name FROM dessert_bookmark AS db WHERE db.member_id = :memberId) " +
+            "  WHEN d.dessert_id IN (SELECT db.dessert_id FROM dessert_bookmark AS db WHERE db.member_id = :memberId AND db.deleted = false) " +
             "  THEN 'true' " +
             "  ELSE 'false' " +
             "END AS bookmarked " +
             "from dessert as d " +
-            "left join dessert_image as i ON i.dessert_name = d.dessert_name AND i.cafe_name = d.cafe_name " +
+            "join dessert_image as i ON i.dessert_name = d.dessert_name AND i.cafe_name = d.cafe_name " +
             "where d.deleted=false " +
             "order by d.dessert_name ")
     List<DessertNameVo> findAll(@Param("memberId") Long memberId);
@@ -32,8 +32,8 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
     @Query(nativeQuery = true, value = "SELECT d.dessert_id dessertId, d.dessert_name dessertName, d.cafe_name cafeName, d.calorie, d.serve, d.sugar, i.url, " +
             "case when b.dessert_id is not null then 'true' else 'false' end as bookmarked " +
             "from dessert d " +
-            "left join dessert_image i on i.dessert_name = d.dessert_name and i.cafe_name = d.cafe_name " +
-            "left join dessert_bookmark b on b.dessert_id = d.dessert_id  and b.member_id = :memberId and b.deleted = false " +
+            "join dessert_image i on i.dessert_name = d.dessert_name and i.cafe_name = d.cafe_name " +
+            "join dessert_bookmark b on b.dessert_id = d.dessert_id  and b.member_id = :memberId and b.deleted = false " +
             "where d.deleted=false and d.cafe_name =:cafeName and d.dessert_name =:dessertName ")
     List<DessertDetailVo> findByCafeNameAndDessertName(@Param("cafeName") String cafeName, @Param("dessertName") String dessertName, @Param("memberId")Long memberId);
 
@@ -43,7 +43,7 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "d.dessert_id as dessertId, " +
             "d.sugar as sugar, " +
             "CASE " +
-            "  WHEN d.dessert_name IN (SELECT db.dessert_name FROM dessert_bookmark AS db WHERE db.member_id = :memberId) " +
+            "  WHEN d.dessert_id IN (SELECT db.dessert_id FROM dessert_bookmark AS db WHERE db.member_id = :memberId AND db.deleted = false) " +
             "  THEN 'true' " +
             "  ELSE 'false' " +
             "END AS bookmarked " +
@@ -59,7 +59,7 @@ public interface DessertRepository extends JpaRepository<Dessert, Long> {
             "d.dessert_id as dessertId, " +
             "d.sugar as sugar, " +
             "CASE " +
-            "  WHEN d.dessert_name IN (SELECT db.dessert_name FROM dessert_bookmark AS db WHERE db.member_id = :memberId) " +
+            "  WHEN d.dessert_id IN (SELECT db.dessert_id FROM dessert_bookmark AS db WHERE db.member_id = :memberId AND db.deleted = false) " +
             "  THEN 'true' " +
             "  ELSE 'false' " +
             "END AS bookmarked " +

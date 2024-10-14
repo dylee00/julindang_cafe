@@ -27,7 +27,7 @@ public interface DessertBookmarkRepository extends JpaRepository<DessertBookmark
 
     @Query(nativeQuery = true, value = " SELECT d.dessert_name dessertName, d.cafe_name cafeName, d.created_at createdAt, ds.calorie, ds.sugar, d.dessert_id dessertId " +
             "FROM dessert_bookmark d " +
-            "LEFT JOIN dessert ds on ds.dessert_name = d.dessert_name " +
+            "JOIN dessert ds on ds.dessert_id = d.dessert_id " +
             "WHERE member_id = :memberId AND d.deleted = 0 ")
     List<DessertBookmarkVo> findDessertBookmarkByMemberId(@Param("memberId") Long memberId);
 

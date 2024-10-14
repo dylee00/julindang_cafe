@@ -20,7 +20,7 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "MIN(c.sugar) AS minSugar, " +
             "MAX(c.sugar) AS maxSugar, " +
             "CASE " +
-            "  WHEN c.beverage_name IN (SELECT bb.beverage_name FROM beverage_bookmark AS bb WHERE bb.member_id = :memberId) " +
+            "  WHEN c.beverage_name IN (SELECT bb.beverage_name FROM beverage_bookmark AS bb WHERE bb.member_id = :memberId AND bb.deleted = false) " +
             "  THEN 'true' " +
             "  ELSE 'false' " +
             "END AS bookmarked " +
@@ -39,7 +39,7 @@ public interface CafeRepository extends JpaRepository <Cafe, Long>{
             "MIN(c.sugar) AS minSugar, " +
             "MAX(c.sugar) AS maxSugar, " +
             "CASE " +
-            "  WHEN c.beverage_name IN (SELECT bb.beverage_name FROM beverage_bookmark AS bb WHERE bb.member_id = :memberId) " +
+            "  WHEN c.beverage_name IN (SELECT bb.beverage_name FROM beverage_bookmark AS bb WHERE bb.member_id = :memberId AND bb.deleted = false) " +
             "  THEN 'true' " +
             "  ELSE 'false' " +
             "END AS bookmarked " +

@@ -50,8 +50,17 @@ public class DessertServiceImpl implements DessertService {
     @Transactional(readOnly = true)
     public List<DessertFindResponseDto> findByDessertName(String dessertName){
         Long memberId = JwtUtil.getMemberId();
-        String dessertNameWithWildcards = "+" + dessertName + "*";
-        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertNameWithWildcards,memberId));
+//        String dessertNameWithWildcards = "+" + dessertName + "*";
+
+        // 검색어를 BOOLEAN MODE에 적합하게 변환
+        String[] keywords = dessertName.split(" ");
+        StringBuilder dessertNameWithWildcards = new StringBuilder();
+        for (String keyword : keywords) {
+            dessertNameWithWildcards.append("+").append(keyword).append(" ");
+        }
+        dessertNameWithWildcards.append("*");
+
+        return getDessertNameResponseDto(dessertRepository.findByDessertName(dessertNameWithWildcards.toString().trim(),memberId));
     }
 
     private List<DessertFindResponseDto> getDessertNameResponseDto(List<DessertNameVo> find){
